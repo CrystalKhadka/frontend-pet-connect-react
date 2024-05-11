@@ -10,3 +10,15 @@
 .navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
     color: #9A93FF;
 }
+
+.login-logo{
+    height: 75%;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center{
+  text-align: center;
+}
