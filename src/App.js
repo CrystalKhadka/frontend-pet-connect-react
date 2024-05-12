@@ -1,5 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
@@ -14,6 +15,7 @@ function App() {
 
         <Route path="/login" element={<Login />} />
       </Routes>
+      <Footer />
     </Router>
   );
 }

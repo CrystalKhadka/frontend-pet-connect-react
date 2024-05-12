@@ -11,7 +11,7 @@ const Login = () => {
         <div className="col-lg-6 ">
           <div className="form-container ">
             <h2 className="text-center mb-4">Login</h2>
-            <form className="d-flex flex-column ">
+            <form className="d-flex flex-column">
               <div className="form-group mb-3">
                 <label htmlFor="email">Email</label>
                 <input
@@ -35,7 +35,7 @@ const Login = () => {
               <div className="text-right">
                 <button
                   type="button"
-                  className="btn btn-link mb-3"
+                  className="btn mb-3"
                   onClick={() => {
                     // Add your forgot password functionality here
                   }}

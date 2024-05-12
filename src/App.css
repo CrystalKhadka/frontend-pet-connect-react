@@ -22,3 +22,16 @@
 .text-center{
   text-align: center;
 }
+
+.footer-logo{
+  height: 2.5rem;
+}
+
+.footer{
+  color: #714949 !important;
+}
+
+.footer a{
+  color: #714949 !important;
+  text-decoration: none;
+}

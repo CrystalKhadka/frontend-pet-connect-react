@@ -35,7 +35,7 @@ const Navbar = () => {
               <NavLink
                 className="nav-link"
                 activeClassName="active"
-                to="/login"
+                to="/about"
               >
                 About Us
               </NavLink>
@@ -44,7 +44,7 @@ const Navbar = () => {
               <NavLink
                 className="nav-link"
                 activeClassName="active"
-                to="/register"
+                to="/pet-list"
               >
                 Pet List
               </NavLink>
