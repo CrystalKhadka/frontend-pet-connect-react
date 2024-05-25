@@ -35,3 +35,19 @@
   color: #714949 !important;
   text-decoration: none;
 }
+
+
+/* Register.css */
+
+.custom-card {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-logo {
+
+  object-fit: cover;
+  /* border-radius: 50%; */
+  margin-bottom: 20px;
+}
