@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { registerUserApi } from "../../apis/Api";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -94,6 +95,25 @@ const Register = () => {
       toast.error("Password and Confirm Password doesn't match");
       return;
     }
+
+    const data = {
+      firstName,
+      lastName,
+      email,
+      password,
+      birthDate,
+      phone,
+      address,
+      gender,
+    };
+
+    registerUserApi(data).then((res) => {
+      if (res.data.success) {
+        toast.success(res.data.message);
+      } else {
+        toast.error(res.data.message);
+      }
+    });
   };
 
   return (
