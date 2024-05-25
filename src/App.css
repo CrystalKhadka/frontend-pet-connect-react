@@ -36,6 +36,13 @@
   text-decoration: none;
 }
 
+.footer p{
+ cursor:default; 
+}
+.footer span{
+ cursor:default; 
+}
+
 
 /* Register.css */
 
