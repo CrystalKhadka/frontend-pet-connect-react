@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { loginUserApi } from "../../apis/Api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +19,7 @@ const Login = () => {
       setPasswordError("Password is required");
       return false;
     }
+    return true;
   };
 
   const resetErrors = () => {
@@ -28,7 +31,6 @@ const Login = () => {
     e.preventDefault();
     resetErrors();
 
-    
     if (!validate()) {
       return;
     }
@@ -38,7 +40,21 @@ const Login = () => {
       password: password,
     };
 
-    console.log(email);
+    loginUserApi(data).then((res) => {
+      if (res.data.success === false) {
+        toast.error(res.data.message);
+      } else {
+        toast.success(res.data.message);
+
+        console.log(res.data);
+
+        localStorage.setItem("token", res.data.token);
+
+        const convertedUser = JSON.stringify(res.data.user);
+        localStorage.setItem("user", convertedUser);
+        window.location.href = "/";
+      }
+    });
 
     // Add your login functionality here
   };

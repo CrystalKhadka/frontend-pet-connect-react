@@ -2,6 +2,8 @@ import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   return (
     <>
       <nav className="navbar navbar-expand-lg">
@@ -73,14 +75,55 @@ const Navbar = () => {
                 </NavLink>
               </li>
             </ul>
-            <form className="d-flex" role="search">
-              <Link to="/login" className="btn btn-primary mx-2" t>
-                Login
-              </Link>
-              <a className="btn btn-primary ms-2" href="/register">
-                Register
-              </a>
-            </form>
+            {user ? (
+              <>
+                <div class="dropdown">
+                  <button
+                    class="btn btn-dark dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {user.firstName}
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="/profile">
+                        Profile
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="/settings">
+                        Settings
+                      </a>
+                    </li>
+                    <li>
+                      <button
+                        class="dropdown-item"
+                        onClick={() => {
+                          localStorage.removeItem("user");
+                          localStorage.removeItem("token");
+                          window.location.href = "/login";
+                        }}
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <>
+                <form className="d-flex" role="search">
+                  <Link to="/login" className="btn btn-primary mx-2" t>
+                    Login
+                  </Link>
+                  <a className="btn btn-primary ms-2" href="/register">
+                    Register
+                  </a>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </nav>

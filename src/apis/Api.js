@@ -12,4 +12,8 @@ const Api = axios.create({
 // Test API
 export const testApi = () => Api.get("/test");
 
+// Register API
 export const registerUserApi = (data) => Api.post("/api/user/register", data);
+
+// Login API
+export const loginUserApi = (data) => Api.post("/api/user/login", data);
