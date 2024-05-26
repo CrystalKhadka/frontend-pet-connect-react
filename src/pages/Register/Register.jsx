@@ -12,7 +12,7 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("");
-  const [obsurePassword, setObsurePassword] = useState(false);
+  const [obscurePassword, setObscurePassword] = useState(true);
 
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
@@ -124,7 +124,7 @@ const Register = () => {
             <div className="card border-0 shadow-lg rounded-lg">
               <div className="card-body p-5">
                 <h2 className="text-center mb-4">Register</h2>
-                <form onSubmit={handleSubmit}>
+                <div>
                   <div className="row mb-3">
                     <div className="col">
                       <label htmlFor="firstName">First Name</label>
@@ -198,7 +198,7 @@ const Register = () => {
                           </span>
                         </div>
                         <input
-                          type={obsurePassword ? "password" : "text"}
+                          type={obscurePassword ? "password" : "text"}
                           className="form-control"
                           placeholder="Password"
                           onChange={(e) => setPassword(e.target.value)}
@@ -208,11 +208,13 @@ const Register = () => {
                         <div className="input-group-append">
                           <span
                             className="input-group-text"
-                            onClick={() => setObsurePassword(!obsurePassword)}
+                            onClick={() => setObscurePassword(!obscurePassword)}
                           >
                             <i
                               className={
-                                obsurePassword ? "bi bi-eye" : "bi bi-eye-slash"
+                                obscurePassword
+                                  ? "bi bi-eye"
+                                  : "bi bi-eye-slash"
                               }
                             ></i>
                           </span>
@@ -231,7 +233,7 @@ const Register = () => {
                           </span>
                         </div>
                         <input
-                          type={obsurePassword ? "password" : "text"}
+                          type={obscurePassword ? "password" : "text"}
                           className="form-control"
                           placeholder="Confirm Password"
                           onChange={(e) => setConfirmPassword(e.target.value)}
@@ -241,11 +243,13 @@ const Register = () => {
                         <div className="input-group-append">
                           <span
                             className="input-group-text"
-                            onClick={() => setObsurePassword(!obsurePassword)}
+                            onClick={() => setObscurePassword(!obscurePassword)}
                           >
                             <i
                               className={
-                                obsurePassword ? "bi bi-eye" : "bi bi-eye-slash"
+                                obscurePassword
+                                  ? "bi bi-eye"
+                                  : "bi bi-eye-slash"
                               }
                             ></i>
                           </span>
@@ -381,11 +385,15 @@ const Register = () => {
                     <button
                       type="submit"
                       className="btn btn-primary btn-block py-3"
+                      onClick={handleSubmit}
                     >
                       Register Now
                     </button>
                   </div>
-                </form>
+                  <div className="text-center mt-4">
+                    Already have an account? <a href="/login">Login</a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
