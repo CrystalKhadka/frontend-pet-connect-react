@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { registerUserApi } from "../../apis/Api";
 
+
 const Register = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -13,6 +14,8 @@ const Register = () => {
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("");
   const [obscurePassword, setObscurePassword] = useState(true);
+  const [role, setRole] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
@@ -23,6 +26,7 @@ const Register = () => {
   const [phoneError, setPhoneError] = useState("");
   const [addressError, setAddressError] = useState("");
   const [genderError, setGenderError] = useState("");
+  const [roleError, setRoleError] = useState("");
 
   const handleGenderChange = (e) => {
     setGender(e.target.value);
@@ -38,6 +42,7 @@ const Register = () => {
     setPhoneError("");
     setAddressError("");
     setGenderError("");
+    setRoleError("");
   };
 
   var validate = () => {
@@ -64,7 +69,6 @@ const Register = () => {
       setConfirmPasswordError("Confirm Password is required");
       isValid = false;
     }
-
     if (birthDate.trim() === "") {
       setBirthDateError("Birth Date is required");
       isValid = false;
@@ -81,12 +85,17 @@ const Register = () => {
       setGenderError("Gender is required");
       isValid = false;
     }
+    if (role.trim() === "") {
+      setRoleError("Role selection is required");
+      isValid = false;
+    }
     return isValid;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setDefaultError();
+    setShowModal(true);
     if (!validate()) {
       return;
     }
@@ -95,6 +104,13 @@ const Register = () => {
       toast.error("Password and Confirm Password doesn't match");
       return;
     }
+
+     // Show modal before making the API call
+  };
+
+  const handleRoleSelect = (selectedRole) => {
+    setRole(selectedRole);
+    setShowModal(false); // Hide modal after role selection
 
     const data = {
       firstName,
@@ -105,6 +121,7 @@ const Register = () => {
       phone,
       address,
       gender,
+      role,
     };
 
     registerUserApi(data).then((res) => {
@@ -117,289 +134,320 @@ const Register = () => {
   };
 
   return (
-    <div className="min-vh-100 py-5 bg-light">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-8 col-xl-6">
-            <div className="card border-0 shadow-lg rounded-lg">
-              <div className="card-body p-5">
-                <h2 className="text-center mb-4">Register</h2>
-                <div>
-                  <div className="row mb-3">
-                    <div className="col">
-                      <label htmlFor="firstName">First Name</label>
-                      <div className="input-group">
-                        <div className="input-group-prepend">
-                          <span className="input-group-text">
-                            <i className="bi bi-person"></i>
-                          </span>
-                        </div>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="First Name"
-                          onChange={(e) => setFirstName(e.target.value)}
-                          id="firstName"
-                          value={firstName}
-                        />
-                      </div>
-                      {firstNameError && (
-                        <p className="text-danger">{firstNameError}</p>
-                      )}
-                    </div>
-                    <div className="col">
-                      <label htmlFor="lastName">Last Name</label>
-                      <div className="input-group">
-                        <div className="input-group-prepend">
-                          <span className="input-group-text">
-                            <i className="bi bi-person"></i>
-                          </span>
-                        </div>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Last Name"
-                          onChange={(e) => setLastName(e.target.value)}
-                          id="lastName"
-                          value={lastName}
-                        />
-                      </div>
-                      {lastNameError && (
-                        <p className="text-danger">{lastNameError}</p>
-                      )}
-                    </div>
+      <>
+
+        {/* Modal */}
+        {showModal && (
+            <div className="modal" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Select Your Role</h5>
+                    <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowModal(false)}></button>
                   </div>
-                  <div className="mb-3">
-                    <label htmlFor="email">Email</label>
-                    <div className="input-group">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="bi bi-envelope"></i>
-                        </span>
-                      </div>
-                      <input
-                        type="email"
-                        className="form-control"
-                        placeholder="Email"
-                        onChange={(e) => setEmail(e.target.value)}
-                        id="email"
-                        value={email}
-                      />
-                    </div>
-                    {emailError && <p className="text-danger">{emailError}</p>}
-                  </div>
-                  <div className="row mb-3">
-                    <div className="col">
-                      <label htmlFor="password">Password</label>
-                      <div className="input-group">
-                        <div className="input-group-prepend">
-                          <span className="input-group-text">
-                            <i className="bi bi-lock"></i>
-                          </span>
-                        </div>
-                        <input
-                          type={obscurePassword ? "password" : "text"}
-                          className="form-control"
-                          placeholder="Password"
-                          onChange={(e) => setPassword(e.target.value)}
-                          id="password"
-                          value={password}
-                        />
-                        <div className="input-group-append">
-                          <span
-                            className="input-group-text"
-                            onClick={() => setObscurePassword(!obscurePassword)}
-                          >
-                            <i
-                              className={
-                                obscurePassword
-                                  ? "bi bi-eye"
-                                  : "bi bi-eye-slash"
-                              }
-                            ></i>
-                          </span>
-                        </div>
-                      </div>
-                      {passwordError && (
-                        <p className="text-danger">{passwordError}</p>
-                      )}
-                    </div>
-                    <div className="col">
-                      <label htmlFor="confirmPassword">Confirm Password</label>
-                      <div className="input-group">
-                        <div className="input-group-prepend">
-                          <span className="input-group-text">
-                            <i className="bi bi-lock"></i>
-                          </span>
-                        </div>
-                        <input
-                          type={obscurePassword ? "password" : "text"}
-                          className="form-control"
-                          placeholder="Confirm Password"
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          id="confirmPassword"
-                          value={confirmPassword}
-                        />
-                        <div className="input-group-append">
-                          <span
-                            className="input-group-text"
-                            onClick={() => setObscurePassword(!obscurePassword)}
-                          >
-                            <i
-                              className={
-                                obscurePassword
-                                  ? "bi bi-eye"
-                                  : "bi bi-eye-slash"
-                              }
-                            ></i>
-                          </span>
-                        </div>
-                      </div>
-                      {confirmPasswordError && (
-                        <p className="text-danger">{confirmPasswordError}</p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="birthDate">Birth Date</label>
-                    <div className="input-group">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="bi bi-calendar"></i>
-                        </span>
-                      </div>
-                      <input
-                        type="date"
-                        className="form-control"
-                        onChange={(e) => setBirthDate(e.target.value)}
-                        id="birthDate"
-                        value={birthDate}
-                      />
-                    </div>
-                    {birthDateError && (
-                      <p className="text-danger">{birthDateError}</p>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="phone">Phone</label>
-                    <div className="input-group">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="bi bi-telephone"></i>
-                        </span>
-                      </div>
-                      <input
-                        type="tel"
-                        className="form-control"
-                        placeholder="Phone"
-                        onChange={(e) => setPhone(e.target.value)}
-                        id="phone"
-                        value={phone}
-                      />
-                    </div>
-                    {phoneError && <p className="text-danger">{phoneError}</p>}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="address">Address</label>
-                    <div className="input-group">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="bi bi-house"></i>
-                        </span>
-                      </div>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Address"
-                        onChange={(e) => setAddress(e.target.value)}
-                        id="address"
-                        value={address}
-                      />
-                    </div>
-                    {addressError && (
-                      <p className="text-danger">{addressError}</p>
-                    )}
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="gender">Gender</label>
+                  <div className="modal-body">
                     <div className="d-flex justify-content-around">
-                      <div className="form-check">
+                      <button className="btn btn-primary" onClick={() => handleRoleSelect("adopter")}>
+                        Pet Adopter
+                      </button>
+                      <button className="btn btn-secondary" onClick={() => handleRoleSelect("owner")}>
+                        Pet Owner
+                      </button>
+                      <button className="btn btn-success" onClick={() => handleRoleSelect("shelter")}>
+                        Pet Shelter
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        )}
+        
+
+        <div className="min-vh-100 py-5 bg-light">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-lg-8 col-xl-6">
+                <div className="card border-0 shadow-lg rounded-lg">
+                  <div className="card-body p-5">
+                    <h2 className="text-center mb-4">Register</h2>
+                    <div>
+                      <div className="row mb-3">
+                        <div className="col">
+                          <label htmlFor="firstName">First Name</label>
+                          <div className="input-group">
+                            <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="bi bi-person"></i>
+                            </span>
+                            </div>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="First Name"
+                                onChange={(e) => setFirstName(e.target.value)}
+                                id="firstName"
+                                value={firstName}
+                            />
+                          </div>
+                          {firstNameError && (
+                              <p className="text-danger">{firstNameError}</p>
+                          )}
+                        </div>
+                        <div className="col">
+                          <label htmlFor="lastName">Last Name</label>
+                          <div className="input-group">
+                            <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="bi bi-person"></i>
+                            </span>
+                            </div>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Last Name"
+                                onChange={(e) => setLastName(e.target.value)}
+                                id="lastName"
+                                value={lastName}
+                            />
+                          </div>
+                          {lastNameError && (
+                              <p className="text-danger">{lastNameError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="email">Email</label>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                          <span className="input-group-text">
+                            <i className="bi bi-envelope"></i>
+                          </span>
+                          </div>
+                          <input
+                              type="email"
+                              className="form-control"
+                              placeholder="Email"
+                              onChange={(e) => setEmail(e.target.value)}
+                              id="email"
+                              value={email}
+                          />
+                        </div>
+                        {emailError && <p className="text-danger">{emailError}</p>}
+                      </div>
+                      <div className="row mb-3">
+                        <div className="col">
+                          <label htmlFor="password">Password</label>
+                          <div className="input-group">
+                            <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="bi bi-lock"></i>
+                            </span>
+                            </div>
+                            <input
+                                type={obscurePassword ? "password" : "text"}
+                                className="form-control"
+                                placeholder="Password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                id="password"
+                                value={password}
+                            />
+                            <div className="input-group-append">
+                            <span
+                                className="input-group-text"
+                                onClick={() => setObscurePassword(!obscurePassword)}
+                            >
+                              <i
+                                  className={
+                                    obscurePassword
+                                        ? "bi bi-eye"
+                                        : "bi bi-eye-slash"
+                                  }
+                              ></i>
+                            </span>
+                            </div>
+                          </div>
+                          {passwordError && (
+                              <p className="text-danger">{passwordError}</p>
+                          )}
+                        </div>
+                        <div className="col">
+                          <label htmlFor="confirmPassword">Confirm Password</label>
+                          <div className="input-group">
+                            <div className="input-group-prepend">
+                            <span className="input-group-text">
+                              <i className="bi bi-lock"></i>
+                            </span>
+                            </div>
+                            <input
+                                type={obscurePassword ? "password" : "text"}
+                                className="form-control"
+                                placeholder="Confirm Password"
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                id="confirmPassword"
+                                value={confirmPassword}
+                            />
+                            <div className="input-group-append">
+                            <span
+                                className="input-group-text"
+                                onClick={() => setObscurePassword(!obscurePassword)}
+                            >
+                              <i
+                                  className={
+                                    obscurePassword
+                                        ? "bi bi-eye"
+                                        : "bi bi-eye-slash"
+                                  }
+                              ></i>
+                            </span>
+                            </div>
+                          </div>
+                          {confirmPasswordError && (
+                              <p className="text-danger">{confirmPasswordError}</p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="birthDate">Birth Date</label>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                          <span className="input-group-text">
+                            <i className="bi bi-calendar"></i>
+                          </span>
+                          </div>
+                          <input
+                              type="date"
+                              className="form-control"
+                              onChange={(e) => setBirthDate(e.target.value)}
+                              id="birthDate"
+                              value={birthDate}
+                          />
+                        </div>
+                        {birthDateError && (
+                            <p className="text-danger">{birthDateError}</p>
+                        )}
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="phone">Phone</label>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                          <span className="input-group-text">
+                            <i className="bi bi-telephone"></i>
+                          </span>
+                          </div>
+                          <input
+                              type="tel"
+                              className="form-control"
+                              placeholder="Phone"
+                              onChange={(e) => setPhone(e.target.value)}
+                              id="phone"
+                              value={phone}
+                          />
+                        </div>
+                        {phoneError && <p className="text-danger">{phoneError}</p>}
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="address">Address</label>
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                          <span className="input-group-text">
+                            <i className="bi bi-house"></i>
+                          </span>
+                          </div>
+                          <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Address"
+                              onChange={(e) => setAddress(e.target.value)}
+                              id="address"
+                              value={address}
+                          />
+                        </div>
+                        {addressError && (
+                            <p className="text-danger">{addressError}</p>
+                        )}
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="gender">Gender</label>
+                        <div className="d-flex justify-content-around">
+                          <div className="form-check">
+                            <input
+                                className="form-check-input"
+                                type="radio"
+                                name="gender"
+                                id="male"
+                                value="male"
+                                checked={gender === "male"}
+                                onChange={handleGenderChange}
+                            />
+                            <label className="form-check-label" htmlFor="male">
+                              Male
+                            </label>
+                          </div>
+                          <div className="form-check">
+                            <input
+                                className="form-check-input"
+                                type="radio"
+                                name="gender"
+                                id="female"
+                                value="female"
+                                checked={gender === "female"}
+                                onChange={handleGenderChange}
+                            />
+                            <label className="form-check-label" htmlFor="female">
+                              Female
+                            </label>
+                          </div>
+                          <div className="form-check">
+                            <input
+                                className="form-check-input"
+                                type="radio"
+                                name="gender"
+                                id="other"
+                                value="other"
+                                checked={gender === "other"}
+                                onChange={handleGenderChange}
+                            />
+                            <label className="form-check-label" htmlFor="other">
+                              Other
+                            </label>
+                          </div>
+                        </div>
+                        {genderError && (
+                            <p className="text-danger">{genderError}</p>
+                        )}
+                      </div>
+                      <div className="form-check mb-3">
                         <input
-                          className="form-check-input"
-                          type="radio"
-                          name="gender"
-                          id="male"
-                          value="male"
-                          checked={gender === "male"}
-                          onChange={handleGenderChange}
+                            type="checkbox"
+                            className="form-check-input"
+                            id="acceptTerms"
                         />
-                        <label className="form-check-label" htmlFor="male">
-                          Male
+                        <label className="form-check-label" htmlFor="acceptTerms">
+                          I accept the <a href="/">Terms of Use</a> &{" "}
+                          <a href="/">Privacy Policy</a>
                         </label>
                       </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="gender"
-                          id="female"
-                          value="female"
-                          checked={gender === "female"}
-                          onChange={handleGenderChange}
-                        />
-                        <label className="form-check-label" htmlFor="female">
-                          Female
-                        </label>
+                      <div className="d-grid">
+                        <button
+                            type="submit"
+                            className="btn btn-primary btn-block py-3"
+                            onClick={handleSubmit}
+                        >
+                          Register Now
+                        </button>
                       </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="gender"
-                          id="other"
-                          value="other"
-                          checked={gender === "other"}
-                          onChange={handleGenderChange}
-                        />
-                        <label className="form-check-label" htmlFor="other">
-                          Other
-                        </label>
+                      <div className="text-center mt-4">
+                        Already have an account? <a href="/login">Login</a>
                       </div>
                     </div>
-                    {genderError && (
-                      <p className="text-danger">{genderError}</p>
-                    )}
-                  </div>
-                  <div className="form-check mb-3">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="acceptTerms"
-                    />
-                    <label className="form-check-label" htmlFor="acceptTerms">
-                      I accept the <a href="/">Terms of Use</a> &{" "}
-                      <a href="/">Privacy Policy</a>
-                    </label>
-                  </div>
-                  <div className="d-grid">
-                    <button
-                      type="submit"
-                      className="btn btn-primary btn-block py-3"
-                      onClick={handleSubmit}
-                    >
-                      Register Now
-                    </button>
-                  </div>
-                  <div className="text-center mt-4">
-                    Already have an account? <a href="/login">Login</a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </>
   );
 };
 
