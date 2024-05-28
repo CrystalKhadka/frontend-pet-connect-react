@@ -1,133 +1,161 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
 const Navbar = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem('user'));
 
   return (
-    <>
-      <nav className="navbar navbar-expand-lg">
-        <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
-            <img
-              src="./assets/icons/icon.jpg"
-              alt="Icon"
-              className="App-logo"
+    <nav className='bg-gray-800 text-white'>
+      <div className='container mx-auto flex flex-wrap items-center justify-between p-4'>
+        {/* Logo */}
+        <Link
+          to='/'
+          className='flex items-center space-x-3 rtl:space-x-reverse'>
+          <img
+            src='./assets/icons/icon.jpg'
+            className='h-16'
+            alt='App Logo'
+          />
+          <span className='self-center text-2xl font-semibold whitespace-nowrap'>
+            Pet Connect
+          </span>
+        </Link>
+
+        {/* Mobile Menu Button */}
+        <button
+          data-collapse-toggle='navbar-dropdown'
+          type='button'
+          className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200'
+          aria-controls='navbar-dropdown'
+          aria-expanded='false'>
+          <span className='sr-only'>Open main menu</span>
+          <svg
+            className='w-5 h-5'
+            aria-hidden='true'
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 17 14'>
+            <path
+              stroke='currentColor'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth='2'
+              d='M1 1h15M1 7h15M1 13h15'
             />
-          </Link>
-          <button
-            className="navbar-toggler bg-white"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  activeClassName="active"
-                  exact
-                  to="/"
-                >
-                  Home
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  activeClassName="active"
-                  to="/about"
-                >
-                  About Us
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  activeClassName="active"
-                  to="/pet-list"
-                >
-                  Pet List
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  activeClassName="active"
-                  to="/favorite"
-                >
-                  Favorite
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link"
-                  activeClassName="active"
-                  to="/settings"
-                >
-                  Settings
-                </NavLink>
-              </li>
-            </ul>
+          </svg>
+        </button>
+
+        {/* Desktop Menu */}
+        <div
+          className='hidden font-medium flex flex-col p-4 md:p-0 mt-4 md:mt-0 md:block md:flex md:flex-row'
+          id='navbar-dropdown'>
+          <NavLink
+            to='/'
+            className='block py-2 px-3 hover:bg-gray-700 text-white md:hover:text-white md:p-2'>
+            Home
+          </NavLink>
+          <NavLink
+            to='/about'
+            className='block py-2 px-3 hover:bg-gray-700 text-white md:hover:text-white md:p-2'>
+            About
+          </NavLink>
+          <NavLink
+            to='/mypets'
+            className='block py-2 px-3 hover:bg-gray-700 text-white md:hover:text-white md:p-2'>
+            My Pets
+          </NavLink>
+          <NavLink
+            to='/favorite'
+            className='block py-2 px-3 hover:bg-gray-700 text-white md:hover:text-white md:p-2'>
+            Favorite
+          </NavLink>
+
+          {/* User Dropdown */}
+          <div>
             {user ? (
               <>
-                <div class="dropdown">
-                  <button
-                    class="btn btn-dark dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    {user.firstName}
-                  </button>
-                  <ul class="dropdown-menu">
+                <button
+                  id='dropdownNavbarLink'
+                  data-dropdown-toggle='dropdownNavbar'
+                  className='flex items-center justify-between w-full py-2 px-3 text-white'>
+                  {user.firstName}
+                  <svg
+                    className='w-2.5 h-2.5 ms-2.5'
+                    aria-hidden='true'
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 10 6'>
+                    <path
+                      stroke='currentColor'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='m1 1 4 4 4-4'
+                    />
+                  </svg>
+                </button>
+                <div
+                  id='dropdownNavbar'
+                  className='z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow'>
+                  <ul
+                    className='py-2 text-sm text-gray-700'
+                    aria-labelledby='dropdownLargeButton'>
                     <li>
-                      <a class="dropdown-item" href="/profile">
+                      <Link
+                        to='/profile'
+                        className='block px-4 py-2 hover:bg-gray-100'>
                         Profile
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="/settings">
+                      <Link
+                        to='/my-pets'
+                        className='block px-4 py-2 hover:bg-gray-100'>
+                        My Pets
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to='/settings'
+                        className='block px-4 py-2 hover:bg-gray-100'>
                         Settings
-                      </a>
-                    </li>
-                    <li>
-                      <button
-                        class="dropdown-item"
-                        onClick={() => {
-                          localStorage.removeItem("user");
-                          localStorage.removeItem("token");
-                          window.location.href = "/login";
-                        }}
-                      >
-                        Logout
-                      </button>
+                      </Link>
                     </li>
                   </ul>
+                  <div className='py-1'>
+                    <a
+                      onClick={() => {
+                        localStorage.removeItem('user');
+                        localStorage.removeItem('token');
+                        window.location.href = '/';
+                      }}
+                      className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+                      Sign out
+                    </a>
+                  </div>
                 </div>
               </>
             ) : (
               <>
-                <form className="d-flex" role="search">
-                  <Link to="/login" className="btn btn-primary mx-2" t>
+                <div className='flex space-x-2'>
+                  <Link
+                    to='/login'
+                    className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100'>
                     Login
                   </Link>
-                  <a className="btn btn-primary ms-2" href="/register">
+                  <Link
+                    to='/register'
+                    className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100'>
                     Register
-                  </a>
-                </form>
+                  </Link>
+                </div>
               </>
             )}
           </div>
         </div>
-      </nav>
-    </>
+      </div>
+    </nav>
   );
 };
 

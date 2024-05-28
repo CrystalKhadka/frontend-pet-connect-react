@@ -1,187 +1,207 @@
-import React, {useState} from "react";
-import {toast} from "react-toastify";
-import {loginUserApi} from "../../apis/Api";
+import React, { useState } from "react";
+import { loginUserApi } from "../../apis/Api";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [obscurePassword, setObscurePassword] = useState(true);
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [obscurePassword, setObscurePassword] = useState(true);
 
-    const [emailError, setEmailError] = useState("");
-    const [passwordError, setPasswordError] = useState("");
+	const [emailError, setEmailError] = useState("");
+	const [passwordError, setPasswordError] = useState("");
 
-    const validate = () => {
-        if (email.trim() === "") {
-            setEmailError("Email is required");
-            return false;
-        }
-        if (password.trim() === "") {
-            setPasswordError("Password is required");
-            return false;
-        }
-        return true;
-    };
+	const validate = () => {
+		let isValid = true;
+		if (email.trim() === "") {
+			setEmailError("Email is required");
+			isValid = false;
+		}
+		if (password.trim() === "") {
+			setPasswordError("Password is required");
+			isValid = false;
+		}
+		return isValid;
+	};
 
-    const resetErrors = () => {
-        setEmailError("");
-        setPasswordError("");
-    };
+	const resetErrors = () => {
+		setEmailError("");
+		setPasswordError("");
+	};
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        resetErrors();
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		resetErrors();
 
-        if (!validate()) {
-            return;
-        }
+		if (!validate()) {
+			return;
+		}
 
-        const data = {
-            email: email,
-            password: password,
-        };
+		const data = { email, password };
 
-        loginUserApi(data).then((res) => {
-            if (res.data.success === false) {
-                toast.error(res.data.message);
-            } else {
-                toast.success(res.data.message);
+		loginUserApi(data).then((res) => {
+			if (!res.data.success) {
+			} else {
+				localStorage.setItem("token", res.data.token);
+				localStorage.setItem("user", JSON.stringify(res.data.user));
 
-                console.log(res.data);
+				window.location.href = "/";
+			}
+		});
+	};
 
-                localStorage.setItem("token", res.data.token);
+	return (
+		<div className="flex min-h-screen flex-col justify-center bg-gray-200 py-12 sm:px-4 lg:px-8">
+			<div className="sm:mx-auto sm:w-full sm:max-w-6xl ">
+				<div className="flex flex-col bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+					<div className="sm:mx-auto sm:w-full sm:max-w-md">
+						<h2 className="text-center text-3xl font-extrabold text-gray-900">
+							Pet Connect
+						</h2>
+					</div>
+					<form onSubmit={handleSubmit}>
+						<>
+							<div className="mx-auto mt-10 max-w-xl  space-y-3 space-y-6">
+								<div>
+									<label
+										htmlFor="email"
+										className="block text-sm font-medium text-gray-700"
+									>
+										Email
+									</label>
+									<div className="relative mt-1 max-w-xl rounded-md shadow-sm">
+										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+											<i className="bi bi-envelope text-gray-400"></i>
+										</div>
+										<input
+											id="email"
+											name="email"
+											type="email"
+											autoComplete="email"
+											required
+											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+											placeholder="you@example.com"
+											onChange={(e) => setEmail(e.target.value)}
+										/>
+									</div>
+									{emailError && (
+										<p className="mt-2 text-sm text-red-600">{emailError}</p>
+									)}
+								</div>
+								<div>
+									<label
+										htmlFor="password"
+										className="block text-sm font-medium text-gray-700"
+									>
+										Password
+									</label>
+									<div className="relative mt-1 max-w-xl rounded-md shadow-sm">
+										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+											<i className="bi bi-lock text-gray-400"></i>
+										</div>
+										<input
+											id="password"
+											name="password"
+											type={obscurePassword ? "password" : "text"}
+											autoComplete="current-password"
+											required
+											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-10 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+											placeholder="********"
+											onChange={(e) => setPassword(e.target.value)}
+										/>
+										<div
+											className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3"
+											onClick={() => setObscurePassword(!obscurePassword)}
+										>
+											<i
+												className={
+													obscurePassword
+														? "bi bi-eye-slash text-gray-400"
+														: "bi bi-eye text-gray-400"
+												}
+											></i>
+										</div>
+									</div>
+									{passwordError && (
+										<p className="mt-2 text-sm text-red-600">{passwordError}</p>
+									)}
+								</div>
+								<div className="flex items-center justify-end">
+									<div className="text-sm">
+										<a
+											href="/forgot"
+											className="font-medium text-blue-600 hover:text-blue-500"
+										>
+											Forgot your password?
+										</a>
+									</div>
+								</div>
+								<div>
+									<button
+										type="submit"
+										className="flex w-full max-w-xl justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+									>
+										Log in
+									</button>
+								</div>
+							</div>
+						</>
+					</form>
 
-                const convertedUser = JSON.stringify(res.data.user);
-                localStorage.setItem("user", convertedUser);
+					{/* Sign Up Section */}
+					<div className="mt-6">
+						<div className="relative">
+							<div className="absolute inset-0 flex items-center">
+								<div className="w-full border-t border-gray-300"></div>
+							</div>
+							<div className="relative flex justify-center text-sm">
+								<span className="bg-white px-2 text-gray-500">
+									Don't have an account?
+								</span>
+							</div>
+						</div>
+						<div className="mt-6">
+							<a
+								href="/register"
+								className="mx-auto flex max-w-md justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-blue-600 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+							>
+								Sign up
+							</a>
+						</div>
+					</div>
 
-                window.location.href = "/";
-            }
-        });
-
-
-        // Add your login functionality here
-    };
-    return (
-        <div className="min-vh-100 py-5 bg-light d-flex align-items-center">
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-lg-8 col-xl-6">
-                        <div className="card border-0 shadow-lg rounded-lg">
-                            <div className="card-body p-5">
-                                <h2 className="text-center mb-4">Pet Connect</h2>
-
-                                <form className="d-flex flex-column">
-                                    <div className="mb-3">
-                                        <label htmlFor="email" className="form-label">
-                                            Email
-                                        </label>
-                                        <div className="input-group">
-                      <span className="input-group-text">
-                        <i className="bi bi-envelope"></i>
-                      </span>
-                                            <input
-                                                type="email"
-                                                className="form-control"
-                                                placeholder="abc@gmail.com"
-                                                id="email"
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                required
-                                            />
-                                        </div>
-
-                                        {emailError && <p className="text-danger">{emailError}</p>}
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="password" className="form-label">
-                                            Password
-                                        </label>
-                                        <div className="input-group">
-                                            <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="bi bi-lock"></i>
-                        </span>
-                                            </div>
-                                            <input
-                                                type={obscurePassword ? "password" : "text"}
-                                                className="form-control"
-                                                placeholder="Password"
-                                                onChange={(e) => setPassword(e.target.value)}
-                                                id="password"
-                                                value={password}
-                                            />
-                                            <div className="input-group-append">
-                        <span
-                            className="input-group-text"
-                            onClick={() => setObscurePassword(!obscurePassword)}
-                        >
-                          <i
-                              className={
-                                  obscurePassword ? "bi bi-eye" : "bi bi-eye-slash"
-                              }
-                          ></i>
-                        </span>
-                                            </div>
-                                        </div>
-                                        {passwordError && (
-                                            <p className="text-danger">{passwordError}</p>
-                                        )}
-                                    </div>
-
-                                    <div className="text-end mb-3">
-                                        <button
-                                            type="button"
-                                            className="btn btn-link"
-                                            onClick={() => {
-                                                // Add your forgot password functionality here
-                                            }}
-                                        >
-                                            Forgot your password?
-                                        </button>
-                                    </div>
-                                    <div className="text-center mb-3">
-                                        <button
-                                            type="submit"
-                                            className="btn btn-primary btn-block"
-                                            onClick={handleSubmit}
-                                        >
-                                            Log in
-                                        </button>
-                                    </div>
-                                </form>
-                                <div className="text-center mb-4">
-                                    <p className="mb-0">
-                                        Don't have an account?{" "}
-                                        <a href="/register" className="text-primary">
-                                            Sign up
-                                        </a>
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="mt-3 text-center">Continue With</p>
-                                    <div className="text-center mb-3">
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-secondary btn-block"
-                                            onClick={() => {
-                                                // Add your Google login functionality here
-                                            }}
-                                        >
-                                            <img
-                                                src="./assets/icons/google.png"
-                                                className="me-2"
-                                                alt="Google"
-                                                style={{width: "20px", height: "20px"}}
-                                            />
-                                            Google
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+					{/* Social Login Section */}
+					<div className="mt-6">
+						<div className="relative">
+							<div className="absolute inset-0 flex items-center">
+								<div className="w-full border-t border-gray-300"></div>
+							</div>
+							<div className="relative flex justify-center text-sm">
+								<span className="bg-white px-2 text-gray-500">
+									Or continue with
+								</span>
+							</div>
+						</div>
+						<div className="mt-6 flex ">
+							<button
+								type="button"
+								className="mx-auto  flex items-center justify-center rounded-md border border-gray-300 bg-white px-4  py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 "
+								onClick={() => {
+									// Add your Google login functionality here
+								}}
+							>
+								<span className="sr-only">Sign in with Google</span>
+								<img
+									className="mr-2 h-5 w-5"
+									src="./assets/icons/google.png"
+									alt="Google"
+								/>
+								Google
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default Login;

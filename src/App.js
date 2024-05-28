@@ -8,31 +8,21 @@ import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import AdminDashboard from "./pages/Admin/Dashboard/AdminDashboard";
+import UserDashboard from "./pages/User/Dashboard/UserDashboard";
 
 function App() {
-    const user = JSON.parse(localStorage.getItem("user"));
-
+    
 
     return (
         <Router>
             <Navbar/>
             <ToastContainer/>
             <Routes>
-                <Route path="/" element={
-                    <>
-                        {
-                            localStorage.getItem("token") ? <>
-                                {user.role === 'adopter' ? <Homepage/> : <AdminDashboard/>}
-                            </> : <Login/>
-                        }
-
-                    </>
-                }/>
-
+                <Route path="/" element={<Homepage/>}/>
                 <Route path="/register" element={<Register/>}/>
-
                 <Route path="/login" element={<Login/>}/>
-
+                <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+                <Route path="/user/dashboard" element={<UserDashboard/>}/>
             </Routes>
             <Footer/>
         </Router>

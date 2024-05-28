@@ -3,62 +3,63 @@ import { FaFacebookF, FaGithub, FaInstagram } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const Footer = () => {
-  const handleEmailClick = () => {
-    toast.success("Email copied to clipboard");
-  };
-  return (
-    <>
-      <footer className="bg-black text-white p-3 footer">
-        <div className="d-flex justify-content-between align-items-center mx-5">
-          <div>
-            <div className="d-flex">
-              <img
-                src="./assets/icons/icon.jpg"
-                alt="Icon"
-                className="footer-logo"
-              />
-              <h3>Pet Connect</h3>
-            </div>
-            <p>Swipe. Adopt. Love.</p>
-          </div>
-          <div className="d-flex flex-column">
-            <span className=" h2" >
-              Help
-            </span>
-            <a href="/terms" className="">
-              Terms & Conditions
-            </a>
-            <a href="/privacy" className="">
-              Privacy Policy
-            </a>
-          </div>
-          <div>
-            <span className="row mx-2">Contact Us</span>
-            <span className="row mx-2 " onClick={handleEmailClick}>
-              khadkacrystal@gmail.com
-            </span>
-            <div className="row my-2 mx-1">
-              <a
-                href="https://www.instagram.com/khadkacrystal/?hl=en"
-                className="col-4"
-              >
-                <FaInstagram />
-              </a>
-              <a
-                href="https://www.facebook.com/crystal.khadka/"
-                className="col-4"
-              >
-                <FaFacebookF />
-              </a>
-              <a href="https://github.com/CrystalKhadka" className="col-4">
-                <FaGithub />
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </>
-  );
+	const handleEmailClick = () => {
+		toast.success("Email copied to clipboard");
+	};
+	return (
+		<footer className="bg-gray-800 py-6 text-white">
+			<div className="container mx-auto px-4">
+				<div className="flex flex-wrap justify-between gap-4">
+					<div className="md:col-span-1">
+						<div className="flex items-center">
+							<img
+								src="./assets/icons/icon.jpg"
+								alt="Icon"
+								className="mr-2 h-8"
+							/>
+							<h3 className="text-lg font-bold">Pet Connect</h3>
+						</div>
+						<p className="text-sm">Swipe. Adopt. Love.</p>
+					</div>
+					<div className="md:col-span-1">
+						<span className="mb-2 block text-lg font-bold">Help</span>
+						<a href="/terms" className="mb-1 block text-sm">
+							Terms & Conditions
+						</a>
+						<a href="/privacy" className="mb-1 block text-sm">
+							Privacy Policy
+						</a>
+					</div>
+					<div className="md:col-span-1">
+						<span className="mb-2 block text-lg font-bold">Contact Us</span>
+						<span
+							className="mb-1 block cursor-pointer text-sm"
+							onClick={handleEmailClick}
+						>
+							khadkacrystal@gmail.com
+						</span>
+						<div className="flex justify-between">
+							<a
+								href="https://www.instagram.com/khadkacrystal/?hl=en"
+								className="mr-2"
+							>
+								<FaInstagram className="text-lg text-white" />
+							</a>
+							<a
+								href="https://www.facebook.com/crystal.khadka/"
+								className="mr-2"
+							>
+								<FaFacebookF className="text-lg text-white" />
+							</a>
+							<a href="https://github.com/CrystalKhadka">
+								<FaGithub className="text-lg text-white" />
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	);
 };
 
 export default Footer;
