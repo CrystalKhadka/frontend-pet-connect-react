@@ -9,7 +9,7 @@ const Footer = () => {
 	return (
 		<footer className="bg-gray-800 py-6 text-white">
 			<div className="container mx-auto px-4">
-				<div className="flex flex-wrap justify-between gap-4">
+				<div className="flex flex-wrap justify-evenly gap-4">
 					<div className="md:col-span-1">
 						<div className="flex items-center">
 							<img

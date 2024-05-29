@@ -50,7 +50,7 @@ const Login = () => {
 
 	return (
 		<div className="flex min-h-screen flex-col justify-center bg-gray-200 py-12 sm:px-4 lg:px-8">
-			<div className="sm:mx-auto sm:w-full sm:max-w-6xl ">
+			<div className="sm:mx-auto sm:w-full sm:max-w-5xl ">
 				<div className="flex flex-col bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
 					<div className="sm:mx-auto sm:w-full sm:max-w-md">
 						<h2 className="text-center text-3xl font-extrabold text-gray-900">
@@ -59,7 +59,7 @@ const Login = () => {
 					</div>
 					<form onSubmit={handleSubmit}>
 						<>
-							<div className="mx-auto mt-10 max-w-xl  space-y-3 space-y-6">
+							<div className="mx-auto mt-10   space-y-6">
 								<div>
 									<label
 										htmlFor="email"
@@ -67,7 +67,7 @@ const Login = () => {
 									>
 										Email
 									</label>
-									<div className="relative mt-1 max-w-xl rounded-md shadow-sm">
+									<div className="relative mt-1 rounded-md shadow-sm">
 										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
 											<i className="bi bi-envelope text-gray-400"></i>
 										</div>
@@ -93,7 +93,7 @@ const Login = () => {
 									>
 										Password
 									</label>
-									<div className="relative mt-1 max-w-xl rounded-md shadow-sm">
+									<div className="relative mt-1  rounded-md shadow-sm">
 										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
 											<i className="bi bi-lock text-gray-400"></i>
 										</div>
@@ -137,7 +137,7 @@ const Login = () => {
 								<div>
 									<button
 										type="submit"
-										className="flex w-full max-w-xl justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+										className="flex w-full  justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 									>
 										Log in
 									</button>
