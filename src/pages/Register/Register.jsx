@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { registerUserApi } from "../../apis/Api";
 
@@ -155,7 +155,7 @@ const Register = () => {
 			.then((res) => {
 				if (res.status === 201) {
 					toast.success(res.data.message);
-					Navigate("/login");
+					window.location.href = "/login";
 				}
 			})
 			.catch((err) => {

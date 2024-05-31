@@ -17,7 +17,7 @@ const Homepage = () => {
 							<button
 								className="btn btn-primary rounded bg-blue-500 px-6 py-3 font-bold text-white hover:bg-blue-700"
 								onClick={() => {
-									window.location.href = "/register";
+									window.location.href = "/login";
 								}}
 							>
 								Get Started
