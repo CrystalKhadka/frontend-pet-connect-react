@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { registerUserApi } from "../../apis/Api";
 
@@ -83,15 +84,39 @@ const Register = () => {
 			setGenderError("Gender is required");
 			isValid = false;
 		}
+		if (password.trim().length < 8) {
+			setPasswordError("Password must be at least 8 characters long");
+			isValid = false;
+		}
 
+		if (email.includes("@") === false || email.includes(".") === false) {
+			setEmailError("Invalid Email");
+			isValid = false;
+		}
 		return isValid;
+	};
+
+	const checkBirthDate = () => {
+		var today = new Date();
+		var date = new Date(birthDate);
+
+		var age = today.getFullYear() - date.getFullYear();
+		var m = today.getMonth() - date.getMonth();
+		if (m < 0 || (m === 0 && today.getDate() < date.getDate())) {
+			age--;
+		}
+		if (age < 18) {
+			setBirthDateError("You must be 18 years or older");
+			return false;
+		}
+		return true;
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setDefaultError();
 
-		if (!validate()) {
+		if (!validate() || !checkBirthDate()) {
 			return;
 		}
 
@@ -126,14 +151,27 @@ const Register = () => {
 			role,
 		};
 
-		registerUserApi(data).then((res) => {
-			if (!res.data.success) {
-				toast.error(res.data.message);
-			} else {
-				toast.success(res.data.message);
-				window.location.href = "/login";
-			}
-		});
+		registerUserApi(data)
+			.then((res) => {
+				if (res.status === 201) {
+					toast.success(res.data.message);
+					Navigate("/login");
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				if (err.response) {
+					if (err.response.status === 400) {
+						toast.warning(err.response.data.message);
+					} else if (err.response.status === 500) {
+						toast.error(err.response.data.message);
+					} else {
+						toast.error("Something went wrong");
+					}
+				} else {
+					toast.error("Something went wrong");
+				}
+			});
 	};
 
 	return (
@@ -152,7 +190,7 @@ const Register = () => {
 									value="adopter"
 									onChange={() => handleRoleSelect("adopter")}
 								/>
-								<label htmlFor="adopter">Pet Adopt er</label>
+								<label htmlFor="adopter">Pet Adopter</label>
 							</div>
 							<div>
 								<input
@@ -202,10 +240,10 @@ const Register = () => {
 						<h2 className="mb-8 text-center text-3xl font-extrabold text-gray-900">
 							Register
 						</h2>
-						<form className="" onSubmit={handleSubmit}>
-							<div className="space-x-3 space-y-6 ">
-								<div className="mx-3 flex flex-wrap gap-x-16 gap-y-6 ">
-									<div className="w-full max-w-96 md:w-full">
+						<form onSubmit={handleSubmit}>
+							<div className="space-y-6 ">
+								<div className="flex flex-wrap gap-x-6 gap-y-6 md:grid md:grid-cols-2 md:gap-4	 ">
+									<div className="w-full md:w-full">
 										<label
 											htmlFor="firstName"
 											className="block text-sm font-medium text-gray-700"
@@ -222,7 +260,7 @@ const Register = () => {
 												name="firstName"
 												autoComplete="given-name"
 												required
-												className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+												className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 												value={firstName}
 												onChange={(e) => setFirstName(e.target.value)}
 											/>
@@ -231,7 +269,7 @@ const Register = () => {
 											<p className="text-sm text-red-500">{firstNameError}</p>
 										)}
 									</div>
-									<div className="w-full max-w-96">
+									<div className="w-full md:w-full">
 										<label
 											htmlFor="lastName"
 											className="block text-sm font-medium text-gray-700"
@@ -248,7 +286,7 @@ const Register = () => {
 												name="lastName"
 												autoComplete="family-name"
 												required
-												className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+												className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 												value={lastName}
 												onChange={(e) => setLastName(e.target.value)}
 											/>
@@ -275,7 +313,7 @@ const Register = () => {
 											name="email"
 											autoComplete="email"
 											required
-											className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 											value={email}
 											onChange={(e) => setEmail(e.target.value)}
 										/>
@@ -377,7 +415,7 @@ const Register = () => {
 											type="date"
 											id="birthDate"
 											name="birthDate"
-											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10  placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-green-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 											required
 											value={birthDate}
 											onChange={(e) => setBirthDate(e.target.value)}
@@ -404,7 +442,7 @@ const Register = () => {
 											name="phone"
 											autoComplete="tel"
 											required
-											className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 											value={phone}
 											onChange={(e) => setPhone(e.target.value)}
 										/>
@@ -430,7 +468,7 @@ const Register = () => {
 											name="address"
 											autoComplete="address"
 											required
-											className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 											value={address}
 											onChange={(e) => setAddress(e.target.value)}
 										/>
@@ -538,12 +576,12 @@ const Register = () => {
 						<div className="mt-4 text-center">
 							<p className="text-sm">
 								Already have an account?{" "}
-								<a
-									href="/login"
+								<Link
+									to="/login"
 									className="font-medium text-blue-600 hover:text-blue-500"
 								>
 									Log in
-								</a>
+								</Link>
 							</p>
 						</div>
 					</div>

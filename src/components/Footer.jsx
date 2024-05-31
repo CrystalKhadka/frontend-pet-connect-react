@@ -1,5 +1,6 @@
 import React from "react";
 import { FaFacebookF, FaGithub, FaInstagram } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Footer = () => {
@@ -38,22 +39,22 @@ const Footer = () => {
 						>
 							khadkacrystal@gmail.com
 						</span>
-						<div className="flex justify-between">
-							<a
-								href="https://www.instagram.com/khadkacrystal/?hl=en"
+						<div className="flex flex-wrap space-x-6">
+							<Link
+								to="https://www.instagram.com/khadkacrystal/?hl=en"
 								className="mr-2"
 							>
 								<FaInstagram className="text-lg text-white" />
-							</a>
-							<a
-								href="https://www.facebook.com/crystal.khadka/"
+							</Link>
+							<Link
+								to="https://www.facebook.com/crystal.khadka/"
 								className="mr-2"
 							>
 								<FaFacebookF className="text-lg text-white" />
-							</a>
-							<a href="https://github.com/CrystalKhadka">
+							</Link>
+							<Link to="https://github.com/CrystalKhadka">
 								<FaGithub className="text-lg text-white" />
-							</a>
+							</Link>
 						</div>
 					</div>
 				</div>

@@ -6,8 +6,8 @@ const Navbar = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	return (
-		<nav className="bg-gray-800 text-white">
-			<div className="container mx-auto flex flex-wrap items-center justify-between p-4">
+		<nav className="bg-gray-800 text-white ">
+			<div className="container  mx-auto flex flex-wrap items-center justify-between p-4">
 				{/* Logo */}
 				<Link
 					to="/"
@@ -48,26 +48,28 @@ const Navbar = () => {
 				{/* Desktop Menu */}
 				<div
 					id="navbar-dropdown"
-					className="flex hidden w-full flex-col md:flex md:w-auto md:flex-row"
+					className=" hidden w-full flex-col md:flex md:w-auto md:flex-1 md:flex-row md:justify-between	"
 				>
-					<div className="mt-4 flex w-full flex-col p-4 font-medium md:mt-0 md:w-auto md:flex-row md:p-0">
+					<div></div>
+					<div className="mt-4 flex w-full flex-col p-4 font-medium md:mt-0 md:w-auto  md:flex-row md:p-0">
 						<NavLink
 							to="/"
 							className="block px-3 py-2 text-white hover:bg-gray-700 active:bg-gray-200 md:p-2 md:hover:text-white md:active:bg-gray-900"
 						>
 							Home
 						</NavLink>
+
 						<NavLink
-							to="/about"
+							to="/pet/list"
 							className="block px-3 py-2 text-white hover:bg-gray-700 md:p-2 md:hover:text-white"
 						>
-							About
+							Pet List
 						</NavLink>
 						<NavLink
-							to="/mypets"
+							to="/pet/list"
 							className="block px-3 py-2 text-white hover:bg-gray-700 md:p-2 md:hover:text-white"
 						>
-							My Pets
+							Pet List
 						</NavLink>
 						<NavLink
 							to="/favorite"
@@ -78,7 +80,7 @@ const Navbar = () => {
 						</NavLink>
 					</div>
 					{/* User Dropdown */}
-					<div className="flex w-full justify-start md:w-auto">
+					<div className="flex w-full justify-start md:w-auto ">
 						{user ? (
 							<div>
 								<button

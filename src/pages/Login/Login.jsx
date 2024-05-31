@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { loginUserApi } from "../../apis/Api";
 
 const Login = () => {
@@ -37,27 +39,40 @@ const Login = () => {
 
 		const data = { email, password };
 
-		loginUserApi(data).then((res) => {
-			if (!res.data.success) {
-			} else {
-				localStorage.setItem("token", res.data.token);
-				localStorage.setItem("user", JSON.stringify(res.data.user));
-
-				window.location.href = "/";
-			}
-		});
+		loginUserApi(data)
+			.then((res) => {
+				if (res.status === 201) {
+					toast.success(res.data.message);
+					localStorage.setItem("token", res.data.token);
+					localStorage.setItem("user", JSON.stringify(res.data.user));
+					window.location.href = "/";
+				}
+			})
+			.catch((err) => {
+				if (err.response) {
+					if (err.response.status === 400) {
+						toast.warning(err.response.data.message);
+					} else if (err.response.status === 500) {
+						toast.error(err.response.data.message);
+					} else {
+						toast.error("Something went wrong");
+					}
+				} else {
+					toast.error("Something went wrong");
+				}
+			});
 	};
 
 	return (
-		<div className="flex min-h-screen flex-col justify-center bg-gray-200 py-12 sm:px-4 lg:px-8">
-			<div className="sm:mx-auto sm:w-full sm:max-w-5xl ">
+		<div className="flex min-h-screen items-center justify-center bg-gray-200 ">
+			<div className="my-10 w-full max-w-5xl px-6 ">
 				<div className="flex flex-col bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
 					<div className="sm:mx-auto sm:w-full sm:max-w-md">
 						<h2 className="text-center text-3xl font-extrabold text-gray-900">
 							Pet Connect
 						</h2>
 					</div>
-					<form onSubmit={handleSubmit}>
+					<form>
 						<>
 							<div className="mx-auto mt-10   space-y-6">
 								<div>
@@ -137,7 +152,8 @@ const Login = () => {
 								<div>
 									<button
 										type="submit"
-										className="flex w-full  justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+										onClick={handleSubmit}
+										className="mx-auto flex w-full max-w-96  justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 									>
 										Log in
 									</button>
@@ -147,25 +163,16 @@ const Login = () => {
 					</form>
 
 					{/* Sign Up Section */}
-					<div className="mt-6">
-						<div className="relative">
-							<div className="absolute inset-0 flex items-center">
-								<div className="w-full border-t border-gray-300"></div>
-							</div>
-							<div className="relative flex justify-center text-sm">
-								<span className="bg-white px-2 text-gray-500">
-									Don't have an account?
-								</span>
-							</div>
-						</div>
-						<div className="mt-6">
-							<a
-								href="/register"
-								className="mx-auto flex max-w-md justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-blue-600 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+					<div className="mt-4 text-center">
+						<p className="text-sm">
+							Don't have an account?{" "}
+							<Link
+								to="/register"
+								className="font-medium text-blue-600 hover:text-blue-500"
 							>
-								Sign up
-							</a>
-						</div>
+								Sign Up
+							</Link>
+						</p>
 					</div>
 
 					{/* Social Login Section */}
