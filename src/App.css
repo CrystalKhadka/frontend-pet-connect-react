@@ -1,12 +1,4 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.App-logo {
-  height: 4rem;
-}
-
-.nav-link{
-    color: #FFFFFF;
-}
-
-.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
-    color: #9A93FF;
-}
