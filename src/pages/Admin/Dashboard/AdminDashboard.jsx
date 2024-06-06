@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 
 const AdminDashboard = () => {
-	return <div>This is admin dashboard</div>;
+	return <>
+	</>;
 };
 
 export default AdminDashboard;
