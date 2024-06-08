@@ -8,7 +8,7 @@ const Footer = () => {
 		toast.success("Email copied to clipboard");
 	};
 	const user = JSON.parse(localStorage.getItem("user"));
-	return user.role === "owner" ? (
+	return user?.role === "owner" ? (
 		<></>
 	) : (
 		<>
