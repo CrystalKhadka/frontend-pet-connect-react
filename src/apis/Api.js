@@ -17,3 +17,6 @@ export const registerUserApi = (data) => Api.post("/api/user/register", data);
 
 // Login API
 export const loginUserApi = (data) => Api.post("/api/user/login", data);
+
+// Add pet API
+export const addPetApi = (data) => Api.post("/api/pet/add", data);

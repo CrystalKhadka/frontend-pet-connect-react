@@ -2,9 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const AdminNavbar = () => {
-	const user = JSON.parse(localStorage.getItem("user")) || {
-		firstName: "User",
-	};
+	const user = JSON.parse(localStorage.getItem("user"));
 	const activeLinkClass = ({ isActive }) =>
 		isActive
 			? "block rounded bg-gray-700 px-4 py-2 disabled-link"
