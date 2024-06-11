@@ -20,3 +20,6 @@ export const loginUserApi = (data) => Api.post("/api/user/login", data);
 
 // Add pet API
 export const addPetApi = (data) => Api.post("/api/pet/add", data);
+
+// View pet by owner
+export const viewPetByOwnerApi = (id) => Api.get(`/api/pet//all/${id}`);

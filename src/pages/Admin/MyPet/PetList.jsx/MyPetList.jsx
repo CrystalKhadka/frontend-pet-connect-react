@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { addPetApi } from "../../../../apis/Api";
+import { addPetApi, viewPetByOwnerApi } from "../../../../apis/Api";
 
 const MyPetList = () => {
 	const [petName, setPetName] = useState("");
@@ -12,6 +12,22 @@ const MyPetList = () => {
 	const [petDescription, setPetDescription] = useState("");
 	const [petImage, setPetImage] = useState("");
 	const [previewImage, setPreviewImage] = useState("");
+	const [pets, setPets] = useState([]);
+
+	useEffect(() => {
+		// pet owner
+		const user = JSON.parse(localStorage.getItem("user"));
+		const id = user.id;
+		viewPetByOwnerApi(id)
+			.then((response) => {
+				console.log(response.data.pets);
+				setPets(response.data.pets);
+				console.log(pets);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, []);
 
 	const handleImageChange = (e) => {
 		const file = e.target.files[0];
@@ -22,7 +38,6 @@ const MyPetList = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
 		// pet owner
 		const user = JSON.parse(localStorage.getItem("user"));
 
@@ -95,7 +110,7 @@ const MyPetList = () => {
 												Pet Species
 											</th>
 											<th scope="col" className="px-6 py-3">
-												Pet Age
+												Pet Colors
 											</th>
 											<th scope="col" className="px-6 py-3">
 												Pet Status
@@ -106,48 +121,56 @@ const MyPetList = () => {
 										</tr>
 									</thead>
 									<tbody>
-										<tr className="bg-white dark:bg-gray-800">
-											<td className="whitespace-nowrap px-6 py-4">
-												<div className="flex items-center">
-													<div className="h-10 w-10 flex-shrink-0">
-														<img
-															className="h-10 w-10 rounded-full"
-															src="https://images.unsplash.com/photo-1568572933382-4bbf1f3a7f7b"
-															alt=""
-														/>
+										{pets.map((pet) => (
+											<tr className="bg-white dark:bg-gray-800">
+												<td className="whitespace-nowrap px-6 py-4">
+													<div className="flex items-center">
+														<div className="h-10 w-10 flex-shrink-0">
+															<img
+																className="h-10 w-10 rounded-full"
+																src={`http://localhost:5000/pets/${pet.petImage}`}
+																alt=""
+															/>
+														</div>
 													</div>
-												</div>
-											</td>
-											<td className="whitespace-nowrap px-6 py-4">
-												<div className="text-sm font-medium text-gray-900">
-													Bella
-												</div>
-											</td>
-											<td className="whitespace-nowrap px-6 py-4">
-												<div className="text-sm text-gray-900">Dog</div>
-											</td>
-											<td className="whitespace-nowrap px-6 py-4">
-												<div className="text-sm text-gray-900">Labrador</div>
-											</td>
-											<td className="whitespace-nowrap px-6 py-4">
-												<div className="text-sm text-gray-900">2 years</div>
-											</td>
-											<td className="whitespace-nowrap px-6 py-4">
-												<span className=" inline-flex  rounded-full bg-yellow-100 px-4 py-2 text-xs font-semibold leading-5 text-gray-500">
-													Pending
-												</span>
-											</td>
-											<td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-												<div className="flex space-x-2">
-													<button className="block rounded-lg bg-gray-200 px-5 py-2.5 text-center text-sm font-medium text-indigo-600 hover:text-indigo-900 ">
-														Edit
-													</button>
-													<button className="block rounded-lg bg-gray-200 px-5 py-2.5 text-center text-sm font-medium text-red-600 hover:text-red-900">
-														Delete
-													</button>
-												</div>
-											</td>
-										</tr>
+												</td>
+												<td className="whitespace-nowrap px-6 py-4">
+													<div className="text-sm font-medium text-gray-900">
+														{pet.petName}
+													</div>
+												</td>
+												<td className="whitespace-nowrap px-6 py-4">
+													<div className="text-sm text-gray-900">
+														{pet.petBreed}
+													</div>
+												</td>
+												<td className="whitespace-nowrap px-6 py-4">
+													<div className="text-sm text-gray-900">
+														{pet.petSpecies}
+													</div>
+												</td>
+												<td className="whitespace-nowrap px-6 py-4">
+													<div className="text-sm text-gray-900">
+														{pet.petColor}
+													</div>
+												</td>
+												<td className="whitespace-nowrap px-6 py-4">
+													<span className=" inline-flex  rounded-full bg-yellow-100 px-4 py-2 text-xs font-semibold leading-5 text-gray-500">
+														{pet.petStatus}
+													</span>
+												</td>
+												<td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+													<div className="flex space-x-2">
+														<button className="block rounded-lg bg-gray-200 px-5 py-2.5 text-center text-sm font-medium text-indigo-600 hover:text-indigo-900 ">
+															Edit
+														</button>
+														<button className="block rounded-lg bg-gray-200 px-5 py-2.5 text-center text-sm font-medium text-red-600 hover:text-red-900">
+															Delete
+														</button>
+													</div>
+												</td>
+											</tr>
+										))}
 									</tbody>
 								</table>
 							</div>
@@ -169,11 +192,11 @@ const MyPetList = () => {
 							</h3>
 							<button
 								type="button"
-								class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+								className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
 								data-modal-toggle="default-modal"
 							>
 								<svg
-									class="h-3 w-3"
+									className="h-3 w-3"
 									aria-hidden="true"
 									xmlns="http://www.w3.org/2000/svg"
 									fill="none"
