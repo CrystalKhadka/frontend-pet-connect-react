@@ -22,4 +22,10 @@ export const loginUserApi = (data) => Api.post("/api/user/login", data);
 export const addPetApi = (data) => Api.post("/api/pet/add", data);
 
 // View pet by owner
-export const viewPetByOwnerApi = (id) => Api.get(`/api/pet//all/${id}`);
+export const viewPetByOwnerApi = (id) => Api.get(`/api/pet/all/${id}`);
+
+// View pet by id
+export const viewPetByIdApi = (id) => Api.get(`/api/pet/get/${id}`);
+
+// Delete pet by id
+export const deletePetByIdApi = (id) => Api.delete(`/api/pet/delete/${id}`);

@@ -1,10 +1,31 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { addPetApi, viewPetByOwnerApi } from "../../../../apis/Api";
+import {
+	addPetApi,
+	deletePetByIdApi,
+	viewPetByOwnerApi,
+} from "../../../../apis/Api";
 
 const MyPetList = () => {
+	const colors = [
+		"red",
+		"green",
+		"blue",
+		"yellow",
+		"orange",
+		"purple",
+		"black",
+		"white",
+	];
+	const [selectedColor, setSelectedColor] = useState("black");
+	const handleColorClick = (color) => {
+		setPetColor(color);
+		setSelectedColor(color);
+	};
+
 	const [petName, setPetName] = useState("");
-	const [petBreed, setPetType] = useState("");
+	const [petBreed, setPetBreed] = useState("");
 	const [petSpecies, setPetSpecies] = useState("");
 	const [petAge, setPetAge] = useState("");
 	const [petWeight, setPetWeight] = useState("");
@@ -56,6 +77,30 @@ const MyPetList = () => {
 		addPetApi(formData)
 			.then((response) => {
 				if (response.status === 201) {
+					toast.success(response.data.message);
+				}
+			})
+			.catch((error) => {
+				if (error.response) {
+					if (error.response.status === 400) {
+						toast.warning(error.response.data.message);
+					} else if (error.response.status === 500) {
+						toast.error(error.response.data.message);
+					} else {
+						toast.error("Something went wrong!");
+					}
+				} else {
+					toast.error("Something went wrong!");
+				}
+			});
+	};
+
+	const handleDelete = (id) => {
+		// pet owner
+
+		deletePetByIdApi(id)
+			.then((response) => {
+				if (response.status === 200) {
 					toast.success(response.data.message);
 				}
 			})
@@ -150,21 +195,44 @@ const MyPetList = () => {
 													</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm text-gray-900">
+													<div
+														className=" inline-flex rounded-full  px-4 py-2  text-xs font-semibold leading-5 text-gray-500"
+														style={{
+															backgroundColor: pet.petColor,
+														}}
+													>
 														{pet.petColor}
 													</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
-													<span className=" inline-flex  rounded-full bg-yellow-100 px-4 py-2 text-xs font-semibold leading-5 text-gray-500">
+													<span
+														className=" inline-flex  rounded-full px-4 py-2 text-xs font-semibold leading-5 text-gray-500"
+														style={{
+															backgroundColor:
+																pet.petStatus === "available"
+																	? "green"
+																	: pet.petStatus === "pending"
+																		? "yellow"
+																		: "red",
+															color:
+																pet.petStatus === "pending" ? "black" : "white",
+														}}
+													>
 														{pet.petStatus}
 													</span>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
 													<div className="flex space-x-2">
-														<button className="block rounded-lg bg-gray-200 px-5 py-2.5 text-center text-sm font-medium text-indigo-600 hover:text-indigo-900 ">
+														<Link
+															to={`/admin/myPet/edit/${pet._id}`}
+															className="block rounded-lg bg-gray-200 px-5 py-2.5 text-center text-sm font-medium text-indigo-600 hover:text-indigo-900 "
+														>
 															Edit
-														</button>
-														<button className="block rounded-lg bg-gray-200 px-5 py-2.5 text-center text-sm font-medium text-red-600 hover:text-red-900">
+														</Link>
+														<button
+															className="block rounded-lg bg-gray-200 px-5 py-2.5 text-center text-sm font-medium text-red-600 hover:text-red-900"
+															onClick={() => handleDelete(pet._id)}
+														>
 															Delete
 														</button>
 													</div>
@@ -225,24 +293,44 @@ const MyPetList = () => {
 									/>
 								</div>
 								<div className="mb-4 w-full">
-									<label className="block text-gray-700">Type</label>
-									<input
-										type="text"
-										name="type"
-										className="w-full rounded-lg border px-4 py-2"
-										onChange={(e) => setPetType(e.target.value)}
-										required
-									/>
+									<label className="block text-gray-700">Species</label>
+									<select
+										id="pet-select"
+										value={petSpecies}
+										onChange={(e) => {
+											setPetSpecies(e.target.value);
+										}}
+										className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+									>
+										<option value="">Choose a species</option>
+										<option value="dog">Dog</option>
+										<option value="cat">Cat</option>
+										<option value="rabbit">Rabbit</option>
+										<option value="hamster">Hamster</option>
+										<option value="bird">Bird</option>
+										<option value="fish">Fish</option>
+									</select>
 								</div>
+							</div>
+							<div className="mb-4">
+								<label htmlFor="petDescription" className="block">
+									Pet description
+								</label>
+								<textarea
+									name="petDescription"
+									id="petDescription"
+									className="w-full rounded-lg border px-4 py-2 "
+									onChange={(e) => setPetDescription(e.target.value)}
+								></textarea>
 							</div>
 							<div className="flex flex-wrap gap-x-6  md:grid md:grid-cols-2 md:gap-4">
 								<div className="mb-4 w-full">
-									<label className="block text-gray-700">Species</label>
+									<label className="block text-gray-700">Breed</label>
 									<input
 										type="text"
 										name="type"
 										className="w-full rounded-lg border px-4 py-2"
-										onChange={(e) => setPetSpecies(e.target.value)}
+										onChange={(e) => setPetBreed(e.target.value)}
 										required
 									/>
 								</div>
@@ -268,28 +356,36 @@ const MyPetList = () => {
 										required
 									/>
 								</div>
-								<div className="mb-4 w-full">
-									<label className="block text-gray-700">Color</label>
-									<input
-										type="number"
-										name="age"
-										className="w-full rounded-lg border px-4 py-2"
-										onChange={(e) => setPetColor(e.target.value)}
-										required
-									/>
+							</div>
+							<div className="mb-4 w-full">
+								<label className="block text-gray-700">Color</label>
+								<div
+									style={{
+										display: "flex",
+										justifyContent: "center",
+										margin: "20px 0",
+									}}
+								>
+									{colors.map((color) => (
+										<div
+											key={color}
+											onClick={() => handleColorClick(color)}
+											style={{
+												backgroundColor: color,
+												width: "50px",
+												height: "50px",
+												margin: "0 10px",
+												cursor: "pointer",
+												border:
+													selectedColor === color
+														? "3px solid black"
+														: "1px solid gray",
+											}}
+										/>
+									))}
 								</div>
 							</div>
-							<div className="mb-4">
-								<label htmlFor="petDescription" className="block">
-									Pet description
-								</label>
-								<textarea
-									name="petDescription"
-									id="petDescription"
-									className="w-full rounded-lg border px-4 py-2 "
-									onChange={(e) => setPetDescription(e.target.value)}
-								></textarea>
-							</div>
+
 							<div className="mb-4">
 								<label className="block text-gray-700" htmlFor="image">
 									Image
