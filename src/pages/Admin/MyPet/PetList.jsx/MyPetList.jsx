@@ -24,6 +24,8 @@ const MyPetList = () => {
 		setSelectedColor(color);
 	};
 
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [petToDelete, setPetToDelete] = useState(null);
 	const [petName, setPetName] = useState("");
 	const [petBreed, setPetBreed] = useState("");
 	const [petSpecies, setPetSpecies] = useState("");
@@ -78,6 +80,7 @@ const MyPetList = () => {
 			.then((response) => {
 				if (response.status === 201) {
 					toast.success(response.data.message);
+					window.location.reload();
 				}
 			})
 			.catch((error) => {
@@ -95,6 +98,23 @@ const MyPetList = () => {
 			});
 	};
 
+	const openDeleteModal = (petId) => {
+		setPetToDelete(petId);
+		setShowDeleteModal(true);
+	};
+
+	const closeDeleteModal = () => {
+		setPetToDelete(null);
+		setShowDeleteModal(false);
+	};
+
+	const confirmDelete = () => {
+		if (petToDelete) {
+			handleDelete(petToDelete);
+			closeDeleteModal();
+		}
+	};
+
 	const handleDelete = (id) => {
 		// pet owner
 
@@ -102,6 +122,7 @@ const MyPetList = () => {
 			.then((response) => {
 				if (response.status === 200) {
 					toast.success(response.data.message);
+					window.location.reload();
 				}
 			})
 			.catch((error) => {
@@ -167,7 +188,7 @@ const MyPetList = () => {
 									</thead>
 									<tbody>
 										{pets.map((pet) => (
-											<tr className="bg-white dark:bg-gray-800">
+											<tr className="bg-white dark:bg-gray-800" key={pet._id}>
 												<td className="whitespace-nowrap px-6 py-4">
 													<div className="flex items-center">
 														<div className="h-10 w-10 flex-shrink-0">
@@ -229,9 +250,11 @@ const MyPetList = () => {
 														>
 															Edit
 														</Link>
+
 														<button
-															className="block rounded-lg bg-gray-200 px-5 py-2.5 text-center text-sm font-medium text-red-600 hover:text-red-900"
-															onClick={() => handleDelete(pet._id)}
+															onClick={() => openDeleteModal(pet._id)}
+															class="block rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+															type="button"
 														>
 															Delete
 														</button>
@@ -246,6 +269,72 @@ const MyPetList = () => {
 					</div>
 				</main>
 			</div>
+
+			{showDeleteModal && (
+				<div
+					id="popup-modal"
+					tabIndex="-1"
+					className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4"
+				>
+					<div className="relative max-h-full w-full max-w-md">
+						<div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
+							<button
+								type="button"
+								className="absolute right-2.5 top-3 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+								onClick={closeDeleteModal}
+							>
+								<svg
+									className="h-5 w-5"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth="2"
+										d="M6 18L18 6M6 6l12 12"
+									/>
+								</svg>
+							</button>
+							<div className="p-6 text-center">
+								<svg
+									className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth="2"
+										d="M13 16h-1v-4h-1m-1 4h-1m6-2h-1m4 0a9 9 0 11-9-9 9 9 0 019 9z"
+									/>
+								</svg>
+								<h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+									Are you sure you want to delete this pet?
+								</h3>
+								<button
+									type="button"
+									className="mr-2 inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:focus:ring-red-800"
+									onClick={confirmDelete}
+								>
+									Yes, I'm sure
+								</button>
+								<button
+									type="button"
+									className="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600"
+									onClick={closeDeleteModal}
+								>
+									No, cancel
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
 
 			<div
 				id="default-modal"

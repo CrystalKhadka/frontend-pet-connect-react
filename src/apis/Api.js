@@ -29,3 +29,7 @@ export const viewPetByIdApi = (id) => Api.get(`/api/pet/get/${id}`);
 
 // Delete pet by id
 export const deletePetByIdApi = (id) => Api.delete(`/api/pet/delete/${id}`);
+
+// Update pet by id
+export const updatePetByIdApi = (id, data) =>
+	Api.put(`/api/pet/update/${id}`, data);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { viewPetByIdApi } from "../../../../apis/Api";
+import { updatePetByIdApi, viewPetByIdApi } from "../../../../apis/Api";
 
 const UpdatePet = () => {
 	const colors = [
@@ -29,6 +29,37 @@ const UpdatePet = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
+		const formData = new FormData();
+		formData.append("petName", petName);
+		formData.append("petSpecies", petSpecies);
+		formData.append("petBreed", petBreed);
+		formData.append("petAge", petAge);
+		formData.append("petWeight", petWeight);
+		formData.append("petColor", petColor);
+		formData.append("petDescription", petDescription);
+		formData.append("petImage", petImage);
+
+		console.log(formData);
+
+		updatePetByIdApi(id, formData)
+			.then((res) => {
+				toast.success(res.data.message);
+			})
+			.catch((err) => {
+				console.log(err);
+				if (err.response) {
+					if (err.response.status === 404) {
+						toast.error(err.response.data.message);
+					} else if (err.response.status === 500) {
+						toast.error(err.response.data.message);
+					} else {
+						toast.error("Something went wrong! Please try again later.");
+					}
+				} else {
+					toast.error("Server Error! Please try again later.");
+				}
+			});
 	};
 
 	const { id } = useParams();
@@ -59,6 +90,7 @@ const UpdatePet = () => {
 				setSelectedColor(pet.petColor);
 				setPetDescription(pet.petDescription);
 				setOldPreviewImage(pet.petImage);
+				setPetImage(pet.petImage);
 			})
 			.catch((err) => {
 				console.log(err);
