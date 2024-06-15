@@ -12,13 +12,13 @@ const Footer = () => {
 		<></>
 	) : (
 		<>
-			<footer className="bg-gray-800 py-6 text-white">
+			<footer className="fixed bottom-0 w-full bg-gray-800 py-6 text-white">
 				<div className="container mx-auto px-4">
 					<div className="flex flex-wrap justify-evenly gap-4">
 						<div className="md:col-span-1">
 							<div className="flex items-center">
 								<img
-									src="./assets/icons/icon.jpg"
+									src="./../assets/icons/icon.jpg"
 									alt="Icon"
 									className="mr-2 h-8"
 								/>

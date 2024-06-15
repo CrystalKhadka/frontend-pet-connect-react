@@ -1,12 +1,19 @@
-import React from "react";
+// src/components/AdminNavbar/AdminNavbar.js
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useTheme } from "../../theme/ThemeContext/ThemeContext";
 
 const AdminNavbar = () => {
+	const { toggleTheme } = useTheme();
+	const [theme, setTheme] = useState(
+		localStorage.getItem("theme") || "default",
+	);
 	const user = JSON.parse(localStorage.getItem("user"));
+
 	const activeLinkClass = ({ isActive }) =>
 		isActive
-			? "block rounded bg-gray-700 px-4 py-2 disabled-link"
-			: "block rounded px-4 py-2 hover:bg-gray-700";
+			? "block rounded bg-gray-700 px-4 py-2 text-white"
+			: "block rounded px-4 py-2 text-gray-300 hover:bg-gray-700";
 
 	return (
 		<div className="sidebar">
@@ -59,15 +66,19 @@ const AdminNavbar = () => {
 								Messaging
 							</NavLink>
 						</div>
-						<div>
+						<div className="relative">
 							<button
 								id="dropdownNavbarLink"
-								data-dropdown-toggle="dropdownNavbar"
-								className="flex w-full items-center justify-between px-3 py-2 text-white md:w-auto"
+								className="flex w-full items-center justify-between px-3 py-2 text-white"
+								onClick={() =>
+									document
+										.getElementById("dropdownNavbar")
+										.classList.toggle("hidden")
+								}
 							>
 								{user.firstName}
 								<svg
-									className="ms-2.5 h-2.5 w-2.5"
+									className="ml-2.5 h-2.5 w-2.5"
 									aria-hidden="true"
 									xmlns="http://www.w3.org/2000/svg"
 									fill="none"
@@ -84,19 +95,16 @@ const AdminNavbar = () => {
 							</button>
 							<div
 								id="dropdownNavbar"
-								className="z-10 hidden divide-y divide-gray-100 rounded-lg bg-white font-normal shadow"
+								className="z-10 hidden divide-y divide-gray-100 rounded-lg bg-white shadow dark:divide-gray-600 dark:bg-gray-700"
 							>
-								<ul
-									className="py-2 text-sm text-gray-700"
-									aria-labelledby="dropdownLargeButton"
-								>
+								<ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
 									<li>
 										<NavLink
 											to="/profile"
 											className={({ isActive }) =>
 												isActive
 													? "block bg-gray-100 px-4 py-2"
-													: "block px-4 py-2 hover:bg-gray-100"
+													: "block px-4 py-2 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-600"
 											}
 										>
 											Profile
@@ -108,7 +116,7 @@ const AdminNavbar = () => {
 											className={({ isActive }) =>
 												isActive
 													? "block bg-gray-100 px-4 py-2"
-													: "block px-4 py-2 hover:bg-gray-100"
+													: "block px-4 py-2 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-600"
 											}
 										>
 											My Pets
@@ -120,11 +128,34 @@ const AdminNavbar = () => {
 											className={({ isActive }) =>
 												isActive
 													? "block bg-gray-100 px-4 py-2"
-													: "block px-4 py-2 hover:bg-gray-100"
+													: "block px-4 py-2 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-600"
 											}
 										>
 											Settings
 										</NavLink>
+									</li>
+									<li>
+										<div className="px-4 py-2">
+											<label
+												htmlFor="theme-select"
+												className="mb-1 block text-sm text-gray-700 dark:text-gray-300"
+											>
+												Theme
+											</label>
+											<select
+												id="theme-select"
+												className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+												value={theme}
+												onChange={(e) => {
+													setTheme(e.target.value);
+													toggleTheme(e.target.value);
+												}}
+											>
+												<option value="light">Light</option>
+												<option value="dark">Dark</option>
+												<option value="default">Default</option>
+											</select>
+										</div>
 									</li>
 								</ul>
 								<div className="py-1">
@@ -134,7 +165,7 @@ const AdminNavbar = () => {
 											localStorage.removeItem("token");
 											window.location.href = "/";
 										}}
-										className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+										className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600"
 									>
 										Sign out
 									</button>

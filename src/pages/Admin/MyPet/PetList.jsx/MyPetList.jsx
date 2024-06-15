@@ -188,7 +188,10 @@ const MyPetList = () => {
 									</thead>
 									<tbody>
 										{pets.map((pet) => (
-											<tr className="bg-white dark:bg-gray-800" key={pet._id}>
+											<tr
+												className="bg-white dark:bg-gray-800 dark:text-white"
+												key={pet._id}
+											>
 												<td className="whitespace-nowrap px-6 py-4">
 													<div className="flex items-center">
 														<div className="h-10 w-10 flex-shrink-0">
@@ -201,19 +204,15 @@ const MyPetList = () => {
 													</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm font-medium text-gray-900">
+													<div className="text-sm font-medium ">
 														{pet.petName}
 													</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm text-gray-900">
-														{pet.petBreed}
-													</div>
+													<div className="text-sm">{pet.petBreed}</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm text-gray-900">
-														{pet.petSpecies}
-													</div>
+													<div className="text-sm">{pet.petSpecies}</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
 													<div
