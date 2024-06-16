@@ -1,9 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
+	
 	return (
 		<>
-			<div className="container">
+			<div className="container-fluid">
 				{/* Gap */}
 				<div className="py-4"></div>
 				<div>

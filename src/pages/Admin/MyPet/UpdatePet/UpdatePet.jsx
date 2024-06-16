@@ -110,8 +110,8 @@ const UpdatePet = () => {
 	return (
 		<>
 			<div className="md:ml-64 md:px-8 md:py-16">
-				<form id="add-pet-form">
-					<div className="grid grid-cols-2 gap-20">
+				<form id="update-pet-form">
+					<div className=" flex flex-wrap gap-x-20 gap-y-5 md:grid md:grid-cols-2  ">
 						<div>
 							<div className="flex flex-wrap gap-x-6  md:grid md:grid-cols-2 md:gap-2">
 								<div className="mb-4 w-full">

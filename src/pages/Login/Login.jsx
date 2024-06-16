@@ -45,7 +45,12 @@ const Login = () => {
 					toast.success(res.data.message);
 					localStorage.setItem("token", res.data.token);
 					localStorage.setItem("user", JSON.stringify(res.data.user));
-					window.location.href = "/";
+
+					if (res.data.user.role === "owner") {
+						window.location.href = "/admin/dashboard";
+					} else {
+						window.location.href = "/user/dashboard";
+					}
 				}
 			})
 			.catch((err) => {
