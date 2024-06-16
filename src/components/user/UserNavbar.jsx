@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const UserNavbar = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -14,15 +14,12 @@ const UserNavbar = () => {
 		<nav className="bg-gray-800 text-white">
 			<div className="container mx-auto flex flex-wrap items-center justify-between p-4">
 				{/* Logo */}
-				<Link
-					to="/"
-					className="flex items-center space-x-3 rtl:space-x-reverse"
-				>
-					<img src="./assets/icons/icon.jpg" className="h-16" alt="App Logo" />
-					<span className="self-center whitespace-nowrap text-2xl font-semibold">
-						Pet Connect
-					</span>
-				</Link>
+
+				<img
+					src="./../assets/icons/icon.jpg"
+					className="h-16 "
+					alt="App Logo"
+				/>
 
 				{/* Mobile Menu Button */}
 				<button
@@ -63,13 +60,16 @@ const UserNavbar = () => {
 						<NavLink to="/pet/list" className={activeLinkClass}>
 							Pet List
 						</NavLink>
-
 						<NavLink to="/settings" className={activeLinkClass}>
 							Settings
 						</NavLink>
-						<NavLink to="/chat" className={activeLinkClass}>
-							Chat
-						</NavLink>
+						{user ? (
+							<NavLink to="/chat" className={activeLinkClass}>
+								Chat
+							</NavLink>
+						) : (
+							<></>
+						)}
 					</div>
 
 					{/* User Dropdown */}

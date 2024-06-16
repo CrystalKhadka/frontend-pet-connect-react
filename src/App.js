@@ -11,23 +11,35 @@ import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import UserDashboard from "./pages/User/Dashboard/UserDashboard";
+import AdminRoutes from "./protected/Admin/AdminRoutes";
+import UserRoutes from "./protected/User/UserRoutes";
+import { ThemeProvider } from "./theme/ThemeContext/ThemeContext";
 
 function App() {
 	return (
-		<Router>
-			<Navbar />
-			<ToastContainer />
-			<Routes>
-				<Route path="/" element={<Homepage />} />
-				<Route path="/register" element={<Register />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/admin/dashboard" element={<AdminDashboard />} />
-				<Route path="/user/dashboard" element={<UserDashboard />} />
-				<Route path="/admin/myPet/list" element={<MyPetList />} />
-				<Route path="/admin/myPet/edit/:id" element={<UpdatePet />} />
-			</Routes>
-			<Footer />
-		</Router>
+		<ThemeProvider>
+			<Router>
+				<Navbar />
+				<ToastContainer />
+				<Routes>
+					<Route path="/" element={<Homepage />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/login" element={<Login />} />
+
+					<Route element={<UserRoutes />}>
+						<Route path="/user/dashboard" element={<UserDashboard />} />
+					</Route>
+
+					{/* Owner Routes */}
+					<Route element={<AdminRoutes />}>
+						<Route path="/admin/dashboard" element={<AdminDashboard />} />
+						<Route path="/admin/myPet/list" element={<MyPetList />} />
+						<Route path="/admin/myPet/edit/:id" element={<UpdatePet />} />
+					</Route>
+				</Routes>
+				<Footer />
+			</Router>
+		</ThemeProvider>
 	);
 }
 

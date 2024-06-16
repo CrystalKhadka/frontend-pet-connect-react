@@ -6,13 +6,7 @@ import UserNavbar from "./user/UserNavbar";
 const Navbar = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
 
-	return user?.role === "owner" ? (
-		<AdminNavbar  />
-	) : user ? (
-		<UserNavbar  />
-	) : (
-		<UserNavbar />
-	);
+	return user && user.role === "owner" ? <AdminNavbar /> : <UserNavbar />;
 };
 
 export default Navbar;

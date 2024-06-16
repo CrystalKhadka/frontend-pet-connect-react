@@ -1,8 +1,17 @@
+import React from "react";
+import { Navigate } from "react-router-dom";
+
 const Homepage = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
 
-	if (!user) {
-		return (
+	return user ? (
+		user.role === "owner" ? (
+			<Navigate to="/admin/dashboard" />
+		) : (
+			<Navigate to="/user/dashboard" />
+		)
+	) : (
+		<>
 			<div className="bg-[url('../public/assets/images/bg.png')] bg-cover bg-center bg-no-repeat">
 				<div className="container mx-auto flex min-h-screen flex-col justify-center py-12 sm:px-4 lg:px-8">
 					{/* Hero Section */}
@@ -86,12 +95,8 @@ const Homepage = () => {
 					</div>
 				</div>
 			</div>
-		);
-	} else if (user.role === "owner" || user.role === "shelter") {
-		window.location.href = "/admin/dashboard";
-	} else if (user.role === "adopter") {
-		window.location.href = "/user/dashboard";
-	}
+		</>
+	);
 };
 
 export default Homepage;

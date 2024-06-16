@@ -43,7 +43,7 @@ const MyPetList = () => {
 		const id = user.id;
 		viewPetByOwnerApi(id)
 			.then((response) => {
-				console.log(response.data.pets);
+				
 				setPets(response.data.pets);
 				console.log(pets);
 			})
@@ -64,6 +64,10 @@ const MyPetList = () => {
 		// pet owner
 		const user = JSON.parse(localStorage.getItem("user"));
 
+		console.log({
+			petImage,
+		});
+
 		const formData = new FormData();
 		formData.append("petName", petName);
 		formData.append("petBreed", petBreed);
@@ -80,7 +84,7 @@ const MyPetList = () => {
 			.then((response) => {
 				if (response.status === 201) {
 					toast.success(response.data.message);
-					window.location.reload();
+					// window.location.reload();
 				}
 			})
 			.catch((error) => {
@@ -130,6 +134,8 @@ const MyPetList = () => {
 					if (error.response.status === 400) {
 						toast.warning(error.response.data.message);
 					} else if (error.response.status === 500) {
+						toast.error(error.response.data.message);
+					} else if (error.response.status === 401) {
 						toast.error(error.response.data.message);
 					} else {
 						toast.error("Something went wrong!");
@@ -188,7 +194,10 @@ const MyPetList = () => {
 									</thead>
 									<tbody>
 										{pets.map((pet) => (
-											<tr className="bg-white dark:bg-gray-800" key={pet._id}>
+											<tr
+												className="bg-white dark:bg-gray-800 dark:text-white"
+												key={pet._id}
+											>
 												<td className="whitespace-nowrap px-6 py-4">
 													<div className="flex items-center">
 														<div className="h-10 w-10 flex-shrink-0">
@@ -201,19 +210,15 @@ const MyPetList = () => {
 													</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm font-medium text-gray-900">
+													<div className="text-sm font-medium ">
 														{pet.petName}
 													</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm text-gray-900">
-														{pet.petBreed}
-													</div>
+													<div className="text-sm">{pet.petBreed}</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm text-gray-900">
-														{pet.petSpecies}
-													</div>
+													<div className="text-sm">{pet.petSpecies}</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
 													<div
@@ -221,9 +226,7 @@ const MyPetList = () => {
 														style={{
 															backgroundColor: pet.petColor,
 														}}
-													>
-														{pet.petColor}
-													</div>
+													></div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
 													<span
