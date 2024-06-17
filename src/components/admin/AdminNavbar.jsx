@@ -1,11 +1,10 @@
 // src/components/AdminNavbar/AdminNavbar.js
 import React, { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useTheme } from "../../theme/ThemeContext/ThemeContext";
 
 const AdminNavbar = () => {
 	const { toggleTheme } = useTheme();
-	const navigate = useNavigate();
 	const [theme, setTheme] = useState(
 		localStorage.getItem("theme") || "default",
 	);
@@ -14,7 +13,7 @@ const AdminNavbar = () => {
 	const activeLinkClass = ({ isActive }) =>
 		isActive
 			? "block rounded bg-gray-700 px-4 py-2 text-white"
-			: "block rounded px-4 py-2 text-gray-300 hover:bg-gray-700";
+			: "block rounded px-4 py-2 text-gray-700 hover:bg-gray-700";
 
 	return (
 		<div className="sidebar">
@@ -45,12 +44,12 @@ const AdminNavbar = () => {
 				className="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0"
 				aria-label="Sidebar"
 			>
-				<div className="h-full w-64 bg-gray-800 text-white">
+				<div className="h-full w-64 bg-gray-100 text-black dark:bg-gray-800 dark:text-white ">
 					<div className="flex h-full flex-col justify-between p-6">
 						<h1 className="mb-6 text-center text-2xl font-semibold">
 							Pet Owner Dashboard
 						</h1>
-						<div className="flex flex-col space-y-4">
+						<div className="flex flex-col space-y-4 ">
 							<NavLink to="/admin/dashboard" className={activeLinkClass}>
 								Dashboard
 							</NavLink>
@@ -70,7 +69,7 @@ const AdminNavbar = () => {
 						<div className="relative">
 							<button
 								id="dropdownNavbarLink"
-								className="flex w-full items-center justify-between px-3 py-2 text-white"
+								className="flex w-full items-center justify-between px-3 py-2 text-black dark:text-white"
 								onClick={() =>
 									document
 										.getElementById("dropdownNavbar")
@@ -100,7 +99,7 @@ const AdminNavbar = () => {
 							>
 								<ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
 									<li>
-										<Link
+										<NavLink
 											to="/profile"
 											className={({ isActive }) =>
 												isActive
@@ -109,7 +108,7 @@ const AdminNavbar = () => {
 											}
 										>
 											Profile
-										</Link>
+										</NavLink>
 									</li>
 									<li>
 										<NavLink

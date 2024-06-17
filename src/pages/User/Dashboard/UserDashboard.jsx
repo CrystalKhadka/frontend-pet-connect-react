@@ -26,7 +26,7 @@ const UserDashboard = () => {
 
 	return (
 		<>
-			<div className="container-fluid">
+			<div className="container-fluid min-h-screen">
 				{/* Gap */}
 				<div className="py-4"></div>
 				<div>
@@ -68,25 +68,31 @@ const UserDashboard = () => {
 						</button>
 					</form>
 				</div>
-				<div className="my-10  overflow-auto py-10">
-					<Slider {...settings}>
-						{pets.map((pet) => (
-							<div key={pet._id} className="m-2 rounded border p-4 shadow-lg">
-								<img
-									src={`http://localhost:5000/pets/${pet.petImage}`}
-									alt={pet.petName}
-									className="rounded object-cover"
-									style={{
-										width: "100%",
-										height: "200px",
-									}}
-								/>
-								<h3 className="text-xl font-bold">{pet.petName}</h3>
-								<p className="text-gray-700">{pet.petSpecies}</p>
-							</div>
-						))}
-					</Slider>
-				</div>
+				{pets.length > 0 ? (
+					<div className="my-10  overflow-auto py-10">
+						<Slider {...settings}>
+							{pets.map((pet) => (
+								<div key={pet._id} className="m-2 rounded border p-4 shadow-lg">
+									<img
+										src={`http://localhost:5000/pets/${pet.petImage}`}
+										alt={pet.petName}
+										className="rounded object-cover"
+										style={{
+											width: "100%",
+											height: "200px",
+										}}
+									/>
+									<h3 className="text-xl font-bold">{pet.petName}</h3>
+									<p className="text-gray-700">{pet.petSpecies}</p>
+								</div>
+							))}
+						</Slider>
+					</div>
+				) : (
+					<p className="text-center text-2xl font-bold text-red-500">
+						No pets available
+					</p>
+				)}
 			</div>
 		</>
 	);
