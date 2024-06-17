@@ -1,25 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useTheme } from "../../theme/ThemeContext/ThemeContext";
 
 const UserNavbar = () => {
+	const { toggleTheme } = useTheme();
+	const [theme, setTheme] = useState(
+		localStorage.getItem("theme") || "default",
+	);
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	// Custom class for active link
 	const activeLinkClass = ({ isActive }) =>
 		isActive
-			? "block bg-blue-700 px-3 py-2 text-white mx-auto disabled-link"
-			: "block px-3 py-2 text-white hover:bg-gray-700 mx-auto";
+			? "block px-3 py-2 mx-auto rounded bg-blue-700 text-white"
+			: "block px-3 py-2 mx-auto rounded hover:bg-gray-700 text-gray-700 dark:text-white dark:hover:bg-gray-600";
+
+	// Dynamic classes based on theme
+
+	const dropdownHoverClass = "dark:hover:bg-gray-700  hover:bg-gray-100";
 
 	return (
-		<nav className="bg-gray-800 text-white">
+		<nav
+			className={` bg-gray-100 text-gray-800 shadow-lg dark:bg-gray-900 dark:text-white`}
+		>
 			<div className="container mx-auto flex flex-wrap items-center justify-between p-4">
 				{/* Logo */}
-
-				<img
-					src="./../assets/icons/icon.jpg"
-					className="h-16 "
-					alt="App Logo"
-				/>
+				<img src="./../assets/icons/icon.jpg" className="h-16" alt="App Logo" />
 
 				{/* Mobile Menu Button */}
 				<button
@@ -67,19 +73,22 @@ const UserNavbar = () => {
 							<NavLink to="/chat" className={activeLinkClass}>
 								Chat
 							</NavLink>
-						) : (
-							<></>
-						)}
+						) : null}
 					</div>
 
 					{/* User Dropdown */}
 					<div className="flex w-full justify-start md:w-auto">
 						{user ? (
-							<div>
+							<div className="relative">
 								<button
 									id="dropdownNavbarLink"
-									data-dropdown-toggle="dropdownNavbar"
-									className="flex w-full items-center justify-between px-3 py-2 text-white md:w-auto"
+									className={`flex items-center justify-between rounded bg-white px-3 py-2 text-gray-700 dark:bg-gray-800 dark:text-gray-300`}
+									onClick={() => {
+										const dropdown = document.getElementById("dropdownNavbar");
+										if (dropdown) {
+											dropdown.classList.toggle("hidden");
+										}
+									}}
 								>
 									{user.firstName}
 									<svg
@@ -100,19 +109,16 @@ const UserNavbar = () => {
 								</button>
 								<div
 									id="dropdownNavbar"
-									className="z-10 hidden divide-y divide-gray-100 rounded-lg bg-white font-normal shadow"
+									className={`absolute right-0 z-10 mt-2 hidden w-48 divide-y divide-gray-100 rounded-lg shadow-lg dark:bg-gray-800 dark:text-gray-300`}
 								>
-									<ul
-										className="py-2 text-sm text-gray-700"
-										aria-labelledby="dropdownLargeButton"
-									>
+									<ul className="py-2 text-sm">
 										<li>
 											<NavLink
 												to="/profile"
 												className={({ isActive }) =>
 													isActive
 														? "block bg-gray-100 px-4 py-2"
-														: "block px-4 py-2 hover:bg-gray-100"
+														: `block px-4 py-2 ${dropdownHoverClass}`
 												}
 											>
 												Profile
@@ -124,23 +130,47 @@ const UserNavbar = () => {
 												className={({ isActive }) =>
 													isActive
 														? "block bg-gray-100 px-4 py-2"
-														: "block px-4 py-2 hover:bg-gray-100"
+														: `block px-4 py-2 ${dropdownHoverClass}`
 												}
 											>
 												My Pets
 											</NavLink>
+										</li>
+										<li>
 											<NavLink
 												to="/favorite"
 												className={({ isActive }) =>
 													isActive
-														? "block bg-gray-700 px-3 py-2 text-white"
-														: "block px-3 py-2 text-white hover:bg-gray-700"
+														? "block bg-gray-100 px-4 py-2"
+														: `block px-4 py-2 ${dropdownHoverClass}`
 												}
 											>
 												Favorite
 											</NavLink>
 										</li>
-										<li></li>
+										<li>
+											<div className="px-4 py-2">
+												<label
+													htmlFor="theme-select"
+													className="mb-1 block text-sm text-gray-700 dark:text-gray-300"
+												>
+													Theme
+												</label>
+												<select
+													id="theme-select"
+													className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+													value={theme}
+													onChange={(e) => {
+														setTheme(e.target.value);
+														toggleTheme(e.target.value);
+													}}
+												>
+													<option value="light">Light</option>
+													<option value="dark">Dark</option>
+													<option value="default">Default</option>
+												</select>
+											</div>
+										</li>
 									</ul>
 									<div className="py-1">
 										<button
@@ -149,7 +179,7 @@ const UserNavbar = () => {
 												localStorage.removeItem("token");
 												window.location.href = "/";
 											}}
-											className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+											className={`block w-full px-4 py-2 text-sm ${dropdownHoverClass}`}
 										>
 											Sign out
 										</button>
@@ -162,7 +192,7 @@ const UserNavbar = () => {
 									to="/login"
 									className={({ isActive }) =>
 										isActive
-											? "disabled-link block rounded bg-gray-500 px-3 py-2 text-white"
+											? "block rounded bg-gray-500 px-3 py-2 text-white"
 											: "block rounded bg-blue-500 px-3 py-2 text-white hover:bg-gray-500"
 									}
 								>
@@ -172,7 +202,7 @@ const UserNavbar = () => {
 									to="/register"
 									className={({ isActive }) =>
 										isActive
-											? "disabled-link block rounded bg-gray-500 px-3 py-2 text-white"
+											? "block rounded bg-gray-500 px-3 py-2 text-white"
 											: "block rounded bg-blue-500 px-3 py-2 text-white hover:bg-gray-500"
 									}
 								>

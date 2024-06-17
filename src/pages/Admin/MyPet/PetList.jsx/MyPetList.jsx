@@ -84,7 +84,7 @@ const MyPetList = () => {
 			.then((response) => {
 				if (response.status === 201) {
 					toast.success(response.data.message);
-					// window.location.reload();
+					window.location.reload();
 				}
 			})
 			.catch((error) => {
