@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const Homepage = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -23,14 +23,12 @@ const Homepage = () => {
 							<p className="mb-8 text-xl md:text-3xl">
 								Adopt a furry friend today and make a difference!
 							</p>
-							<button
+							<Link
 								className="btn btn-primary rounded bg-blue-500 px-6 py-3 font-bold text-white hover:bg-blue-700"
-								onClick={() => {
-									window.location.href = "/login";
-								}}
+								to="/login"
 							>
 								Get Started
-							</button>
+							</Link>
 						</div>
 					</div>
 					{/* About Section */}
