@@ -25,6 +25,7 @@ const MyPetList = () => {
 	};
 
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [showAddPetModal, setShowAddPetModal] = useState(false);
 	const [petToDelete, setPetToDelete] = useState(null);
 	const [petName, setPetName] = useState("");
 	const [petBreed, setPetBreed] = useState("");
@@ -43,7 +44,6 @@ const MyPetList = () => {
 		const id = user.id;
 		viewPetByOwnerApi(id)
 			.then((response) => {
-				
 				setPets(response.data.pets);
 				console.log(pets);
 			})
@@ -102,6 +102,14 @@ const MyPetList = () => {
 			});
 	};
 
+	const openAddModal = () => {
+		setShowAddPetModal(true);
+	};
+
+	const closeAddModal = () => {
+		setShowAddPetModal(false);
+	};
+
 	const openDeleteModal = (petId) => {
 		setPetToDelete(petId);
 		setShowDeleteModal(true);
@@ -157,8 +165,7 @@ const MyPetList = () => {
 							<div className="mb-4 flex items-center justify-between">
 								<h2 className="text-xl font-semibold">Pet List</h2>
 								<button
-									data-modal-target="default-modal"
-									data-modal-toggle="default-modal"
+									onClick={openAddModal}
 									className="block rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 									type="button"
 								>
@@ -339,186 +346,188 @@ const MyPetList = () => {
 				</div>
 			)}
 
-			<div
-				id="default-modal"
-				aria-hidden="true"
-				className="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0"
-			>
-				<div className="fixed inset-0  flex  justify-center overflow-auto bg-gray-600 bg-opacity-50">
-					<div className="m-auto w-full overflow-auto   rounded-lg bg-white p-6 shadow-lg md:w-1/2 ">
-						<div className="flex items-center justify-between rounded-t border-b dark:border-gray-600 ">
-							<h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-								Add New Pet
-							</h3>
-							<button
-								type="button"
-								className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-								data-modal-toggle="default-modal"
-							>
-								<svg
-									className="h-3 w-3"
-									aria-hidden="true"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 14 14"
-								>
-									<path
-										stroke="currentColor"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-									/>
-								</svg>
-							</button>
-						</div>
-						<form id="add-pet-form">
-							<div className="flex flex-wrap gap-x-6  md:grid md:grid-cols-2 md:gap-2">
-								<div className="mb-4 w-full">
-									<label className="block text-gray-700">Name</label>
-									<input
-										type="text"
-										name="name"
-										className="w-full rounded-lg border px-4 py-2"
-										onChange={(e) => setPetName(e.target.value)}
-										required
-									/>
-								</div>
-								<div className="mb-4 w-full">
-									<label className="block text-gray-700">Species</label>
-									<select
-										id="pet-select"
-										value={petSpecies}
-										onChange={(e) => {
-											setPetSpecies(e.target.value);
-										}}
-										className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-									>
-										<option value="">Choose a species</option>
-										<option value="dog">Dog</option>
-										<option value="cat">Cat</option>
-										<option value="rabbit">Rabbit</option>
-										<option value="hamster">Hamster</option>
-										<option value="bird">Bird</option>
-										<option value="fish">Fish</option>
-									</select>
-								</div>
-							</div>
-							<div className="mb-4">
-								<label htmlFor="petDescription" className="block">
-									Pet description
-								</label>
-								<textarea
-									name="petDescription"
-									id="petDescription"
-									className="w-full rounded-lg border px-4 py-2 "
-									onChange={(e) => setPetDescription(e.target.value)}
-								></textarea>
-							</div>
-							<div className="flex flex-wrap gap-x-6  md:grid md:grid-cols-2 md:gap-4">
-								<div className="mb-4 w-full">
-									<label className="block text-gray-700">Breed</label>
-									<input
-										type="text"
-										name="type"
-										className="w-full rounded-lg border px-4 py-2"
-										onChange={(e) => setPetBreed(e.target.value)}
-										required
-									/>
-								</div>
-								<div className="mb-4 w-full">
-									<label className="block text-gray-700">Age</label>
-									<input
-										type="number"
-										name="age"
-										className="w-full rounded-lg border px-4 py-2"
-										onChange={(e) => setPetAge(e.target.value)}
-										required
-									/>
-								</div>
-							</div>
-							<div className="flex flex-wrap gap-x-6  md:grid md:grid-cols-2 md:gap-4">
-								<div className="mb-4 w-full">
-									<label className="block text-gray-700">Weight</label>
-									<input
-										type="number"
-										name="type"
-										className="w-full rounded-lg border px-4 py-2"
-										onChange={(e) => setPetWeight(e.target.value)}
-										required
-									/>
-								</div>
-							</div>
-							<div className="mb-4 w-full">
-								<label className="block text-gray-700">Color</label>
-								<div
-									style={{
-										display: "flex",
-										justifyContent: "center",
-										margin: "20px 0",
-									}}
-								>
-									{colors.map((color) => (
-										<div
-											key={color}
-											onClick={() => handleColorClick(color)}
-											style={{
-												backgroundColor: color,
-												width: "50px",
-												height: "50px",
-												margin: "0 10px",
-												cursor: "pointer",
-												border:
-													selectedColor === color
-														? "3px solid black"
-														: "1px solid gray",
-											}}
-										/>
-									))}
-								</div>
-							</div>
-
-							<div className="mb-4">
-								<label className="block text-gray-700" htmlFor="image">
-									Image
-								</label>
-								<input
-									type="file"
-									name="image"
-									className="w-full border px-4 py-2"
-									onChange={handleImageChange}
-									required
-								/>
-							</div>
-							{previewImage && (
-								<div className="mb-2">
-									<img
-										src={previewImage}
-										className="img-fluid rounded"
-										alt="product"
-									/>
-								</div>
-							)}
-							<hr />
-							<div className="mt-5 flex justify-end">
+			{showAddPetModal && (
+				<div
+					id="default-modal"
+					className="fixed left-0 right-0 top-0 z-50  h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0"
+				>
+					<div className="fixed inset-0  flex  justify-center overflow-auto bg-gray-600 bg-opacity-50">
+						<div className="m-auto w-full overflow-auto   rounded-lg bg-white p-6 shadow-lg md:w-1/2 ">
+							<div className="flex items-center justify-between rounded-t border-b dark:border-gray-600 ">
+								<h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+									Add New Pet
+								</h3>
 								<button
-									data-modal-toggle="default-modal"
 									type="button"
-									className="mr-2 rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+									onClick={closeAddModal}
+									className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+									data-modal-toggle="default-modal"
 								>
-									Cancel
-								</button>
-								<button
-									className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-									onClick={handleSubmit}
-								>
-									Add Pet
+									<svg
+										className="h-3 w-3"
+										aria-hidden="true"
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 14 14"
+									>
+										<path
+											stroke="currentColor"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+										/>
+									</svg>
 								</button>
 							</div>
-						</form>
+							<form id="add-pet-form">
+								<div className="flex flex-wrap gap-x-6  md:grid md:grid-cols-2 md:gap-2">
+									<div className="mb-4 w-full">
+										<label className="block text-gray-700">Name</label>
+										<input
+											type="text"
+											name="name"
+											className="w-full rounded-lg border px-4 py-2"
+											onChange={(e) => setPetName(e.target.value)}
+											required
+										/>
+									</div>
+									<div className="mb-4 w-full">
+										<label className="block text-gray-700">Species</label>
+										<select
+											id="pet-select"
+											value={petSpecies}
+											onChange={(e) => {
+												setPetSpecies(e.target.value);
+											}}
+											className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+										>
+											<option value="">Choose a species</option>
+											<option value="dog">Dog</option>
+											<option value="cat">Cat</option>
+											<option value="rabbit">Rabbit</option>
+											<option value="hamster">Hamster</option>
+											<option value="bird">Bird</option>
+											<option value="fish">Fish</option>
+										</select>
+									</div>
+								</div>
+								<div className="mb-4">
+									<label htmlFor="petDescription" className="block">
+										Pet description
+									</label>
+									<textarea
+										name="petDescription"
+										id="petDescription"
+										className="w-full rounded-lg border px-4 py-2 "
+										onChange={(e) => setPetDescription(e.target.value)}
+									></textarea>
+								</div>
+								<div className="flex flex-wrap gap-x-6  md:grid md:grid-cols-2 md:gap-4">
+									<div className="mb-4 w-full">
+										<label className="block text-gray-700">Breed</label>
+										<input
+											type="text"
+											name="type"
+											className="w-full rounded-lg border px-4 py-2"
+											onChange={(e) => setPetBreed(e.target.value)}
+											required
+										/>
+									</div>
+									<div className="mb-4 w-full">
+										<label className="block text-gray-700">Age</label>
+										<input
+											type="number"
+											name="age"
+											className="w-full rounded-lg border px-4 py-2"
+											onChange={(e) => setPetAge(e.target.value)}
+											required
+										/>
+									</div>
+								</div>
+								<div className="flex flex-wrap gap-x-6  md:grid md:grid-cols-2 md:gap-4">
+									<div className="mb-4 w-full">
+										<label className="block text-gray-700">Weight</label>
+										<input
+											type="number"
+											name="type"
+											className="w-full rounded-lg border px-4 py-2"
+											onChange={(e) => setPetWeight(e.target.value)}
+											required
+										/>
+									</div>
+								</div>
+								<div className="mb-4 w-full">
+									<label className="block text-gray-700">Color</label>
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "center",
+											margin: "20px 0",
+										}}
+									>
+										{colors.map((color) => (
+											<div
+												key={color}
+												onClick={() => handleColorClick(color)}
+												style={{
+													backgroundColor: color,
+													width: "50px",
+													height: "50px",
+													margin: "0 10px",
+													cursor: "pointer",
+													border:
+														selectedColor === color
+															? "3px solid black"
+															: "1px solid gray",
+												}}
+											/>
+										))}
+									</div>
+								</div>
+
+								<div className="mb-4">
+									<label className="block text-gray-700" htmlFor="image">
+										Image
+									</label>
+									<input
+										type="file"
+										name="image"
+										className="w-full border px-4 py-2"
+										onChange={handleImageChange}
+										required
+									/>
+								</div>
+								{previewImage && (
+									<div className="mb-2">
+										<img
+											src={previewImage}
+											className="img-fluid rounded"
+											alt="product"
+										/>
+									</div>
+								)}
+								<hr />
+								<div className="mt-5 flex justify-end">
+									<button
+										onClick={closeAddModal}
+										type="button"
+										className="mr-2 rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+									>
+										Cancel
+									</button>
+									<button
+										className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+										onClick={handleSubmit}
+									>
+										Add Pet
+									</button>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
 		</>
 	);
 };

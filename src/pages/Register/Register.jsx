@@ -155,7 +155,6 @@ const Register = () => {
 			.then((res) => {
 				if (res.status === 201) {
 					toast.success(res.data.message);
-					window.location.href = "/login";
 				}
 			})
 			.catch((err) => {

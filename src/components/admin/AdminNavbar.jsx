@@ -1,10 +1,11 @@
 // src/components/AdminNavbar/AdminNavbar.js
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "../../theme/ThemeContext/ThemeContext";
 
 const AdminNavbar = () => {
 	const { toggleTheme } = useTheme();
+	const navigate = useNavigate();
 	const [theme, setTheme] = useState(
 		localStorage.getItem("theme") || "default",
 	);
@@ -99,7 +100,7 @@ const AdminNavbar = () => {
 							>
 								<ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
 									<li>
-										<NavLink
+										<Link
 											to="/profile"
 											className={({ isActive }) =>
 												isActive
@@ -108,7 +109,7 @@ const AdminNavbar = () => {
 											}
 										>
 											Profile
-										</NavLink>
+										</Link>
 									</li>
 									<li>
 										<NavLink
@@ -163,7 +164,7 @@ const AdminNavbar = () => {
 										onClick={() => {
 											localStorage.removeItem("user");
 											localStorage.removeItem("token");
-											window.location.href = "/";
+											window.location.reload();
 										}}
 										className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600"
 									>

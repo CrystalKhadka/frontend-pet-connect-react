@@ -14,7 +14,7 @@ const config = {
 		authorization: `Bearer ${localStorage.getItem("token")}`,
 	},
 };
- 
+
 // Test API
 export const testApi = () => Api.get("/test");
 
@@ -40,3 +40,6 @@ export const deletePetByIdApi = (id) =>
 // Update pet by id
 export const updatePetByIdApi = (id, data) =>
 	Api.put(`/api/pet/update/${id}`, data, config);
+
+// Get all pets
+export const getAllPetsApi = () => Api.get("/api/pet/all", config);
