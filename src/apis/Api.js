@@ -1,8 +1,11 @@
 import axios from "axios";
 
+// const baseurl = "http://192.168.18.7:5000";
+const baseurl = "http://localhost:5000";
+
 // Creating backend config
 const Api = axios.create({
-	baseURL: "http://localhost:5000",
+	baseURL: baseurl,
 	withCredentials: true,
 	headers: {
 		"Content-Type": "multipart/form-data",
@@ -14,6 +17,8 @@ const config = {
 		authorization: `Bearer ${localStorage.getItem("token")}`,
 	},
 };
+
+export const petImageUrl = baseurl + "/pets";
 
 // Test API
 export const testApi = () => Api.get("/test");
@@ -43,3 +48,8 @@ export const updatePetByIdApi = (id, data) =>
 
 // Get all pets
 export const getAllPetsApi = () => Api.get("/api/pet/all", config);
+
+// Pagination
+
+export const getPaginationApi = (page, limit) =>
+	Api.get(`/api/pet//pagination?page=${page}&limit=${limit}`, config);

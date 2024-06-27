@@ -2,15 +2,16 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { getAllPetsApi } from "../../../apis/Api";
+import { getPaginationApi } from "../../../apis/Api";
 
 const UserDashboard = () => {
 	const [pets, setPets] = useState([]);
+	const [page, setPage] = useState(1);
 
 	useEffect(() => {
 		// Fetch all pets
-		getAllPetsApi()
-			.then((res) => setPets(res.data.data))
+		getPaginationApi(page, 5)
+			.then((res) => setPets(res.data.pets))
 			.catch((err) => {
 				console.log(err);
 			});
