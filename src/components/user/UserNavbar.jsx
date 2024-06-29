@@ -25,7 +25,11 @@ const UserNavbar = () => {
 		>
 			<div className="container mx-auto flex flex-wrap items-center justify-between p-4">
 				{/* Logo */}
-				<img src="./../assets/icons/icon.jpg" className="h-16" alt="App Logo" />
+				<img
+					src="./../../assets/icons/icon.jpg"
+					className="h-16"
+					alt="App Logo"
+				/>
 
 				{/* Mobile Menu Button */}
 				<button
@@ -63,7 +67,7 @@ const UserNavbar = () => {
 						<NavLink to="/" className={activeLinkClass}>
 							Home
 						</NavLink>
-						<NavLink to="/pet/list" className={activeLinkClass}>
+						<NavLink to="/user/pet/list" className={activeLinkClass}>
 							Pet List
 						</NavLink>
 						<NavLink to="/settings" className={activeLinkClass}>

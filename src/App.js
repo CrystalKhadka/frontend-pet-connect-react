@@ -11,6 +11,7 @@ import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import UserDashboard from "./pages/User/Dashboard/UserDashboard";
+import PetList from "./pages/User/PetList/PetList";
 import AdminRoutes from "./protected/Admin/AdminRoutes";
 import UserRoutes from "./protected/User/UserRoutes";
 import { ThemeProvider } from "./theme/ThemeContext/ThemeContext";
@@ -28,6 +29,7 @@ function App() {
 
 					<Route element={<UserRoutes />}>
 						<Route path="/user/dashboard" element={<UserDashboard />} />
+						<Route path="/user/pet/list" element={<PetList />} />
 					</Route>
 
 					{/* Owner Routes */}
