@@ -17,11 +17,6 @@ const Footer = () => {
 					<div className="flex flex-wrap justify-evenly gap-4">
 						<div className="md:col-span-1">
 							<div className="flex items-center">
-								<img
-									src="./../assets/icons/icon.jpg"
-									alt="Icon"
-									className="mr-2 h-8"
-								/>
 								<h3 className="text-lg font-bold">Pet Connect</h3>
 							</div>
 							<p className="text-sm">Swipe. Adopt. Love.</p>

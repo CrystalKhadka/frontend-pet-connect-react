@@ -50,6 +50,11 @@ export const updatePetByIdApi = (id, data) =>
 export const getAllPetsApi = () => Api.get("/api/pet/all", config);
 
 // Pagination
-
 export const getPaginationApi = (page, limit) =>
-	Api.get(`/api/pet//pagination?page=${page}&limit=${limit}`, config);
+	Api.get(`/api/pet/pagination?page=${page}&limit=${limit}`, config);
+
+// Get Pet Breed
+export const getAllPetBreedApi = () => Api.get(`/api/pet/species`);
+
+//  Get Total pets
+export const getTotalPetsApi = () => Api.get("/api/pet/total");

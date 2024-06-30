@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { getPaginationApi } from "../../../apis/Api";
+import { getAllPetBreedApi, getPaginationApi } from "../../../apis/Api";
 
 const UserDashboard = () => {
 	const [pets, setPets] = useState([]);
 	const [page, setPage] = useState(1);
+	const [breeds, setBreeds] = useState([]);
 
 	useEffect(() => {
+		// Fetch all breed
+		getAllPetBreedApi()
+			.then((res) => setBreeds(res.data.species))
+			.catch((err) => {
+				console.log(err);
+			});
 		// Fetch all pets
 		getPaginationApi(page, 5)
 			.then((res) => setPets(res.data.pets))
@@ -51,9 +58,9 @@ const UserDashboard = () => {
 				<div className="mb-5 flex justify-center">
 					<form className="flex">
 						<select name="" id="" className="mr-2 rounded border p-2">
-							<option value="">Dog</option>
-							<option value="">Cat</option>
-							<option value="">Hamster</option>
+							{breeds.map((breed) => (
+								<option value={breed}>{breed}</option>
+							))}
 						</select>
 						<input
 							type="text"

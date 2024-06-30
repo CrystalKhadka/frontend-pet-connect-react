@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { getAllPetsApi } from "../../../apis/Api";
+import { getPaginationApi } from "../../../apis/Api";
 import PetCard from "../../../components/PetCard";
 
 const PetList = () => {
 	const [pets, setPets] = useState([]);
 	const [error, setError] = useState("");
+	const [page, setPage] = useState(1);
+	const [limit, setLimit] = useState(6);
+	const [totalPage, setTotalPage] = useState(2);
 
 	useEffect(() => {
-		getAllPetsApi()
+		getPaginationApi(page, limit)
 			.then((res) => setPets(res.data.pets))
 			.catch((err) => {
 				console.log(err);
 				setError("Error fetching data");
 			});
 	}, []);
+
+	const handlePagination = (page) => {
+		setPage(page);
+		getPaginationApi(page, limit)
+			.then((res) => setPets(res.data.pets))
+			.catch((err) => {
+				console.log(err);
+				setError("Error fetching data");
+			});
+	};
 	return (
 		<div className="flex min-h-lvh bg-gray-100">
 			<aside className="h-full w-1/4 bg-white p-6 shadow-lg">
@@ -93,13 +106,72 @@ const PetList = () => {
 					Filter
 				</button>
 			</aside>
-			<main className="grid w-3/4 grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3">
-				{pets.map((pet) => (
-					<div class="col">
-						<PetCard pet={pet} />
-					</div>
-				))}
-			</main>
+
+			<div className="container">
+				<main className="grid w-full grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3">
+					{pets.map((pet) => (
+						<div class="col">
+							<PetCard pet={pet} />
+						</div>
+					))}
+				</main>
+				<nav className="mb-5 flex w-full justify-center ">
+					<ul class="inline-flex w-full justify-center -space-x-px text-lg">
+						<li>
+							<button
+								onClick={() => {
+									handlePagination(1);
+								}}
+								className="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-e-0 border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+							>
+								Start
+							</button>
+						</li>
+						<li>
+							<button
+								onClick={() => {
+									handlePagination(page - 1);
+								}}
+								className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+							>
+								Previous
+							</button>
+						</li>
+						{Array.from({ length: totalPage }, (_, i) => (
+							<li>
+								<button
+									onClick={() => {
+										handlePagination(i + 1);
+									}}
+									className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+								>
+									{i + 1}
+								</button>
+							</li>
+						))}
+						<li>
+							<button
+								onClick={() => {
+									handlePagination(page + 1);
+								}}
+								className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+							>
+								Next
+							</button>
+						</li>
+
+						<li
+							onClick={() => {
+								handlePagination(totalPage);
+							}}
+						>
+							<button className="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+								End
+							</button>
+						</li>
+					</ul>
+				</nav>
+			</div>
 		</div>
 	);
 };
