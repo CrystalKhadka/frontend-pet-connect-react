@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { getAllPetBreedApi, getPaginationApi } from "../../../apis/Api";
+import {
+	getAllPetBreedApi,
+	getPaginationApi,
+	petImageUrl,
+} from "../../../apis/Api";
 
 const UserDashboard = () => {
 	const [pets, setPets] = useState([]);
@@ -82,7 +86,7 @@ const UserDashboard = () => {
 							{pets.map((pet) => (
 								<div key={pet._id} className="m-2 rounded border p-4 shadow-lg">
 									<img
-										src={`http://localhost:5000/pets/${pet.petImage}`}
+										src={petImageUrl + "/" + pet.petImage}
 										alt={pet.petName}
 										className="rounded object-cover"
 										style={{

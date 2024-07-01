@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import {
 	addPetApi,
 	deletePetByIdApi,
+	petImageUrl,
 	viewPetByOwnerApi,
 } from "../../../../apis/Api";
 
@@ -210,7 +211,7 @@ const MyPetList = () => {
 														<div className="h-10 w-10 flex-shrink-0">
 															<img
 																className="h-10 w-10 rounded-full"
-																src={`http://localhost:5000/pets/${pet.petImage}`}
+																src={petImageUrl + "/" + pet.petImage}
 																alt=""
 															/>
 														</div>

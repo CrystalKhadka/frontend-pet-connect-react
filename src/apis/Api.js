@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseurl = "http://192.168.18.7:5000";
-const baseurl = "http://localhost:5000";
+const baseurl = "http://192.168.18.7:5000";
+// const baseurl = "http://localhost:5000";
 
 // Creating backend config
 const Api = axios.create({
@@ -58,3 +58,7 @@ export const getAllPetBreedApi = () => Api.get(`/api/pet/species`);
 
 //  Get Total pets
 export const getTotalPetsApi = () => Api.get("/api/pet/total");
+
+// Forgot password by email api
+export const forgotPasswordByEmailApi = (email) =>
+	Api.post("/api/user/forgot/email", email);
