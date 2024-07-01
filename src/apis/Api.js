@@ -62,3 +62,10 @@ export const getTotalPetsApi = () => Api.get("/api/pet/total");
 // Forgot password by email api
 export const forgotPasswordByEmailApi = (email) =>
 	Api.post("/api/user/forgot/email", email);
+
+// Forgot password by phone api
+export const forgotPasswordByPhoneApi = (phone) =>
+	Api.post("/api/user/forgot/phone", phone);
+
+export const resetPasswordApi = (data) =>
+	Api.post("/api/user/reset/phone", data);
