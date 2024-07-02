@@ -14,9 +14,10 @@ const PetList = () => {
 	const [totalPage, setTotalPage] = useState(0);
 	const [categories, setCategories] = useState([]);
 	const [category, setCategory] = useState("all");
+	const [search, setSearch] = useState("");
 
 	useEffect(() => {
-		getTotalPetsApi(category)
+		getTotalPetsApi(category, search)
 			.then((res) => {
 				setTotalPage(Math.ceil(res.data.totalPets / limit));
 			})
@@ -24,7 +25,7 @@ const PetList = () => {
 				console.log(err);
 				setError("Error fetching data");
 			});
-		filterBySpeciesApi(category, page, limit)
+		filterBySpeciesApi(category, page, limit, search)
 			.then((res) => {
 				setPets(res.data.pets);
 			})
@@ -40,7 +41,7 @@ const PetList = () => {
 				console.log(err);
 				setError("Error fetching data");
 			});
-	}, [page, limit, category]);
+	}, [page, limit, category, search]);
 
 	const handlePagination = (page) => {
 		setPage(page);
@@ -57,6 +58,7 @@ const PetList = () => {
 						type="text"
 						placeholder="Search for breed"
 						className="w-full rounded-lg border border-gray-300 p-2 shadow-sm"
+						onChange={(e) => setSearch(e.target.value)}
 					/>
 				</div>
 				<div className="mb-6">

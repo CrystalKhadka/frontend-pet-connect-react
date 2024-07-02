@@ -71,11 +71,11 @@ export const getPaginationApi = (page, limit) =>
 export const getAllPetBreedApi = () => Api.get(`/api/pet/species`);
 
 //  Get Total pets
-export const getTotalPetsApi = (species) =>
-	Api.get(`/api/pet/total?species=${species}`);
+export const getTotalPetsApi = (species, search) =>
+	Api.get(`/api/pet/total?species=${species}&search=${search}`);
 
 // Filter by species
-export const filterBySpeciesApi = (species, page, limit) =>
+export const filterBySpeciesApi = (species, page, limit, search) =>
 	Api.get(
-		`/api/pet/filter/species?species=${species}&page=${page}&limit=${limit}`,
+		`/api/pet/filter/species?species=${species}&page=${page}&limit=${limit}&search=${search}`,
 	);
