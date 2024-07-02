@@ -13,11 +13,14 @@ const PetList = () => {
 	const [limit, setLimit] = useState(6);
 	const [totalPage, setTotalPage] = useState(0);
 	const [categories, setCategories] = useState([]);
-	const [category, setCategory] = useState("all");
+	const [species, setSpecies] = useState("all");
 	const [search, setSearch] = useState("");
+	const queryParams = new URLSearchParams(window.location.search);
 
 	useEffect(() => {
-		getTotalPetsApi(category, search)
+		setSpecies(queryParams.get("category") || "all");
+		setSearch(queryParams.get("search") || "");
+		getTotalPetsApi(species, search)
 			.then((res) => {
 				setTotalPage(Math.ceil(res.data.totalPets / limit));
 			})
@@ -25,7 +28,7 @@ const PetList = () => {
 				console.log(err);
 				setError("Error fetching data");
 			});
-		filterBySpeciesApi(category, page, limit, search)
+		filterBySpeciesApi(species, page, limit, search)
 			.then((res) => {
 				setPets(res.data.pets);
 			})
@@ -41,7 +44,7 @@ const PetList = () => {
 				console.log(err);
 				setError("Error fetching data");
 			});
-	}, [page, limit, category, search]);
+	}, [page, limit, species, search, queryParams]);
 
 	const handlePagination = (page) => {
 		setPage(page);
@@ -104,8 +107,9 @@ const PetList = () => {
 								name="category"
 								value="all"
 								onChange={() => {
-									setCategory("");
+									setSpecies("");
 								}}
+								defaultChecked={species === "all"}
 							/>
 							<label htmlFor="all" className="ml-2 text-gray-600">
 								all
@@ -119,8 +123,9 @@ const PetList = () => {
 									name="category"
 									value={category}
 									onChange={(e) => {
-										setCategory(e.target.value);
+										setSpecies(e.target.value);
 									}}
+									defaultChecked={category === species}
 								/>
 								<label htmlFor={category} className="ml-2 text-gray-600">
 									{category}
