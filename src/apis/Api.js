@@ -1,8 +1,11 @@
 import axios from "axios";
 
+const baseurl = "http://192.168.18.7:5000";
+// const baseurl = "http://localhost:5000";
+
 // Creating backend config
 const Api = axios.create({
-	baseURL: "http://localhost:5000",
+	baseURL: baseurl,
 	withCredentials: true,
 	headers: {
 		"Content-Type": "multipart/form-data",
@@ -14,6 +17,8 @@ const config = {
 		authorization: `Bearer ${localStorage.getItem("token")}`,
 	},
 };
+
+export const petImageUrl = baseurl + "/pets";
 
 // Test API
 export const testApi = () => Api.get("/test");
@@ -43,3 +48,24 @@ export const updatePetByIdApi = (id, data) =>
 
 // Get all pets
 export const getAllPetsApi = () => Api.get("/api/pet/all", config);
+
+// Pagination
+export const getPaginationApi = (page, limit) =>
+	Api.get(`/api/pet/pagination?page=${page}&limit=${limit}`, config);
+
+// Get Pet Breed
+export const getAllPetBreedApi = () => Api.get(`/api/pet/species`);
+
+//  Get Total pets
+export const getTotalPetsApi = () => Api.get("/api/pet/total");
+
+// Forgot password by email api
+export const forgotPasswordByEmailApi = (email) =>
+	Api.post("/api/user/forgot/email", email);
+
+// Forgot password by phone api
+export const forgotPasswordByPhoneApi = (phone) =>
+	Api.post("/api/user/forgot/phone", phone);
+
+export const resetPasswordApi = (data) =>
+	Api.post("/api/user/reset/phone", data);

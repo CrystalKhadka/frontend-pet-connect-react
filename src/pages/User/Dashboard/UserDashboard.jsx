@@ -2,15 +2,27 @@ import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import { getAllPetsApi } from "../../../apis/Api";
+import {
+	getAllPetBreedApi,
+	getPaginationApi,
+	petImageUrl,
+} from "../../../apis/Api";
 
 const UserDashboard = () => {
 	const [pets, setPets] = useState([]);
+	const [page, setPage] = useState(1);
+	const [breeds, setBreeds] = useState([]);
 
 	useEffect(() => {
+		// Fetch all breed
+		getAllPetBreedApi()
+			.then((res) => setBreeds(res.data.species))
+			.catch((err) => {
+				console.log(err);
+			});
 		// Fetch all pets
-		getAllPetsApi()
-			.then((res) => setPets(res.data.data))
+		getPaginationApi(page, 5)
+			.then((res) => setPets(res.data.pets))
 			.catch((err) => {
 				console.log(err);
 			});
@@ -50,9 +62,9 @@ const UserDashboard = () => {
 				<div className="mb-5 flex justify-center">
 					<form className="flex">
 						<select name="" id="" className="mr-2 rounded border p-2">
-							<option value="">Dog</option>
-							<option value="">Cat</option>
-							<option value="">Hamster</option>
+							{breeds.map((breed) => (
+								<option value={breed}>{breed}</option>
+							))}
 						</select>
 						<input
 							type="text"
@@ -74,7 +86,7 @@ const UserDashboard = () => {
 							{pets.map((pet) => (
 								<div key={pet._id} className="m-2 rounded border p-4 shadow-lg">
 									<img
-										src={`http://localhost:5000/pets/${pet.petImage}`}
+										src={petImageUrl + "/" + pet.petImage}
 										alt={pet.petName}
 										className="rounded object-cover"
 										style={{

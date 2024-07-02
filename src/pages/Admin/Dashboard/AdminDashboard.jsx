@@ -1,16 +1,21 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
-import { getAllPetsApi } from "../../../apis/Api"; // Adjust the import path as necessary
+import { petImageUrl, viewPetByOwnerApi } from "../../../apis/Api"; // Adjust the import path as necessary
 
 const AdminDashboard = () => {
 	const [pets, setPets] = useState([]);
 
 	useEffect(() => {
-		// Fetch all pets
-		getAllPetsApi()
-			.then((res) => setPets(res.data.data))
-			.catch((err) => {
-				console.log(err);
+		// pet owner
+		const user = JSON.parse(localStorage.getItem("user"));
+		const id = user.id;
+		viewPetByOwnerApi(id)
+			.then((response) => {
+				setPets(response.data.pets);
+				console.log(pets);
+			})
+			.catch((error) => {
+				console.log(error);
 			});
 	}, []);
 
@@ -18,7 +23,7 @@ const AdminDashboard = () => {
 
 	return (
 		<>
-			<div className="ml-64 px-8 py-16">
+			<div className="md:ml-64 md:px-8 md:py-16">
 				<div className="flex-1 bg-gray-100 p-8">
 					<header>
 						<h1 className="mb-8 text-center text-3xl font-bold">
@@ -35,7 +40,7 @@ const AdminDashboard = () => {
 											{latestPets.map((pet) => (
 												<li key={pet._id} className="mb-4 flex items-center">
 													<img
-														src={`http://localhost:5000/pets/${pet.petImage}`}
+														src={`${petImageUrl}/${pet.petImage}`}
 														alt={pet.petName}
 														className="mr-4 h-16 w-16 rounded-full object-cover"
 													/>

@@ -75,7 +75,7 @@ const Login = () => {
 					<div className="sm:mx-auto sm:w-full sm:max-w-md">
 						<h2 className="text-center text-3xl font-extrabold text-gray-900">
 							Pet Connect
-						</h2>
+						</h2> 
 					</div>
 					<form>
 						<>
