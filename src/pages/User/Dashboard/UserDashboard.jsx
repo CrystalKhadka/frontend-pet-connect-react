@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -11,12 +12,14 @@ import {
 const UserDashboard = () => {
 	const [pets, setPets] = useState([]);
 	const [page, setPage] = useState(1);
-	const [breeds, setBreeds] = useState([]);
+	const [species, setSpecies] = useState([]);
+	const [speciesFilter, setSpeciesFilter] = useState("");
+	const [search, setSearch] = useState("");
 
 	useEffect(() => {
 		// Fetch all breed
 		getAllPetBreedApi()
-			.then((res) => setBreeds(res.data.species))
+			.then((res) => setSpecies(res.data.species))
 			.catch((err) => {
 				console.log(err);
 			});
@@ -26,7 +29,7 @@ const UserDashboard = () => {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, []);
+	}, [page]);
 
 	const settings = {
 		dots: true,
@@ -61,8 +64,14 @@ const UserDashboard = () => {
 				</div>
 				<div className="mb-5 flex justify-center">
 					<form className="flex">
-						<select name="" id="" className="mr-2 rounded border p-2">
-							{breeds.map((breed) => (
+						<select
+							name=""
+							id=""
+							className="mr-2 rounded border p-2"
+							onChange={(e) => setSpeciesFilter(e.target.value)}
+						>
+							<option value="all">All Species</option>
+							{species.map((breed) => (
 								<option value={breed}>{breed}</option>
 							))}
 						</select>
@@ -70,14 +79,16 @@ const UserDashboard = () => {
 							type="text"
 							placeholder="search for pets"
 							className="w-full max-w-52 rounded border p-2"
+							onChange={(e) => setSearch(e.target.value)}
 						/>
-						<button
+						<Link
+							to={`/user/pet/list?category=${speciesFilter}&search=${search}`}
 							type="button"
 							className="flex h-full items-center bg-black px-3 text-white"
 						>
 							<i className="bi bi-search px-2"></i>
 							Search
-						</button>
+						</Link>
 					</form>
 				</div>
 				{pets.length > 0 ? (
