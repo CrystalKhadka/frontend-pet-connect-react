@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getPaginationApi } from "../../../apis/Api";
+import {
+	filterBySpeciesApi,
+	getAllPetBreedApi,
+	getTotalPetsApi,
+} from "../../../apis/Api";
 import PetCard from "../../../components/PetCard";
 
 const PetList = () => {
@@ -7,28 +11,43 @@ const PetList = () => {
 	const [error, setError] = useState("");
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(6);
-	const [totalPage, setTotalPage] = useState(2);
+	const [totalPage, setTotalPage] = useState(0);
+	const [categories, setCategories] = useState([]);
+	const [category, setCategory] = useState("all");
 
 	useEffect(() => {
-		getPaginationApi(page, limit)
-			.then((res) => setPets(res.data.pets))
+		getTotalPetsApi(category)
+			.then((res) => {
+				setTotalPage(Math.ceil(res.data.totalPets / limit));
+			})
 			.catch((err) => {
 				console.log(err);
 				setError("Error fetching data");
 			});
-	}, []);
+		filterBySpeciesApi(category, page, limit)
+			.then((res) => {
+				setPets(res.data.pets);
+			})
+			.catch((err) => {
+				console.log(err);
+				setError("Error fetching data");
+			});
+		getAllPetBreedApi()
+			.then((res) => {
+				setCategories(res.data.species);
+			})
+			.catch((err) => {
+				console.log(err);
+				setError("Error fetching data");
+			});
+	}, [page, limit, category]);
 
 	const handlePagination = (page) => {
 		setPage(page);
-		getPaginationApi(page, limit)
-			.then((res) => setPets(res.data.pets))
-			.catch((err) => {
-				console.log(err);
-				setError("Error fetching data");
-			});
 	};
+
 	return (
-		<div className="flex min-h-lvh bg-gray-100">
+		<div className="flex min-h-screen bg-gray-100">
 			<aside className="h-full w-1/4 bg-white p-6 shadow-lg">
 				<h2 className="mb-4 text-2xl font-bold text-gray-800">
 					Search and Filter
@@ -79,27 +98,33 @@ const PetList = () => {
 						<li>
 							<input
 								type="radio"
-								id="dog"
+								id="all"
 								name="category"
-								value="dog"
-								defaultChecked
+								value="all"
+								onChange={() => {
+									setCategory("");
+								}}
 							/>
-							<label htmlFor="dog" className="ml-2 text-gray-600">
-								Dog
+							<label htmlFor="all" className="ml-2 text-gray-600">
+								all
 							</label>
 						</li>
-						<li>
-							<input type="radio" id="cat" name="category" value="cat" />
-							<label htmlFor="cat" className="ml-2 text-gray-600">
-								Cat
-							</label>
-						</li>
-						<li>
-							<input type="radio" id="others" name="category" value="others" />
-							<label htmlFor="others" className="ml-2 text-gray-600">
-								Others
-							</label>
-						</li>
+						{categories.map((category) => (
+							<li>
+								<input
+									type="radio"
+									id={category}
+									name="category"
+									value={category}
+									onChange={(e) => {
+										setCategory(e.target.value);
+									}}
+								/>
+								<label htmlFor={category} className="ml-2 text-gray-600">
+									{category}
+								</label>
+							</li>
+						))}
 					</ul>
 				</div>
 				<button className="w-full rounded bg-blue-500 py-2 text-white hover:bg-blue-600">
@@ -107,43 +132,44 @@ const PetList = () => {
 				</button>
 			</aside>
 
-			<div className="container">
-				<main className="grid w-full grid-cols-1 gap-6 p-6 sm:grid-cols-2 lg:grid-cols-3">
+			<div className="flex-1 p-6">
+				<main className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 					{pets.map((pet) => (
-						<div class="col">
+						<div key={pet.id} className="col">
 							<PetCard pet={pet} />
 						</div>
 					))}
 				</main>
-				<nav className="mb-5 flex w-full justify-center ">
-					<ul class="inline-flex w-full justify-center -space-x-px text-lg">
+				{error && <div className="mt-4 text-red-500">{error}</div>}
+				<nav className="mt-6 flex justify-center">
+					<ul className="inline-flex items-center -space-x-px">
 						<li>
 							<button
-								onClick={() => {
-									handlePagination(1);
-								}}
-								className="ms-0 flex h-8 items-center justify-center rounded-s-lg border border-e-0 border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+								onClick={() => handlePagination(1)}
+								disabled={page === 1}
+								className="flex h-10 items-center justify-center rounded-l-lg border border-gray-300 bg-white px-4 text-gray-500 hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
 							>
 								Start
 							</button>
 						</li>
 						<li>
 							<button
-								onClick={() => {
-									handlePagination(page - 1);
-								}}
-								className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+								onClick={() => handlePagination(page - 1)}
+								disabled={page === 1}
+								className="flex h-10 items-center justify-center border border-gray-300 bg-white px-4 text-gray-500 hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
 							>
 								Previous
 							</button>
 						</li>
 						{Array.from({ length: totalPage }, (_, i) => (
-							<li>
+							<li key={i}>
 								<button
-									onClick={() => {
-										handlePagination(i + 1);
-									}}
-									className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+									onClick={() => handlePagination(i + 1)}
+									className={`flex h-10 items-center justify-center border border-gray-300  px-4 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
+										page === i + 1
+											? "bg-blue-500 text-white"
+											: "bg-white text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+									}`}
 								>
 									{i + 1}
 								</button>
@@ -151,21 +177,19 @@ const PetList = () => {
 						))}
 						<li>
 							<button
-								onClick={() => {
-									handlePagination(page + 1);
-								}}
-								className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+								onClick={() => handlePagination(page + 1)}
+								disabled={page === totalPage}
+								className="flex h-10 items-center justify-center border border-gray-300 bg-white px-4 text-gray-500 hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
 							>
 								Next
 							</button>
 						</li>
-
-						<li
-							onClick={() => {
-								handlePagination(totalPage);
-							}}
-						>
-							<button className="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+						<li>
+							<button
+								onClick={() => handlePagination(totalPage)}
+								disabled={page === totalPage}
+								className="flex h-10 items-center justify-center rounded-r-lg border border-gray-300 bg-white px-4 text-gray-500 hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
+							>
 								End
 							</button>
 						</li>
