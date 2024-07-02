@@ -1,7 +1,9 @@
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { loginUserApi } from "../../apis/Api";
+import { googleLoginApi, loginUserApi } from "../../apis/Api";
 
 const Login = () => {
 	const [email, setEmail] = useState("");
@@ -75,7 +77,7 @@ const Login = () => {
 					<div className="sm:mx-auto sm:w-full sm:max-w-md">
 						<h2 className="text-center text-3xl font-extrabold text-gray-900">
 							Pet Connect
-						</h2> 
+						</h2>
 					</div>
 					<form>
 						<>
@@ -193,21 +195,46 @@ const Login = () => {
 							</div>
 						</div>
 						<div className="mt-6 flex ">
-							<button
-								type="button"
-								className="mx-auto  flex items-center justify-center rounded-md border border-gray-300 bg-white px-4  py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 "
-								onClick={() => {
-									// Add your Google login functionality here
+							<GoogleLogin
+								className="sign"
+								onSuccess={(credentialResponse) => {
+									const token = credentialResponse.credential; // This is the token received from Google
+									const details = jwtDecode(token); // Decode the token if needed
+
+									// Assuming you have an API function to send data to your backend
+									const data = {
+										token: token,
+										googleId: details.sub, // Assuming details.sub contains the Google ID
+									};
+
+									// Example of sending data to backend using fetch or axios
+									googleLoginApi(data)
+										.then((response) => {
+											if (response.status === 201) {
+												// Handle success
+												console.log("Token sent to backend successfully");
+
+												// Redirect or handle further actions
+												toast.success("Login Successful");
+												localStorage.setItem("token", response.data.token);
+
+												const user = response.data.user;
+												localStorage.setItem("user", JSON.stringify(user));
+
+												window.location.href = "/user/dashboard";
+											} else {
+												// Handle error
+												console.error("Failed to send token to backend");
+											}
+										})
+										.catch((error) => {
+											console.error("Error sending token to backend:", error);
+										});
 								}}
-							>
-								<span className="sr-only">Sign in with Google</span>
-								<img
-									className="mr-2 h-5 w-5"
-									src="./assets/icons/google.png"
-									alt="Google"
-								/>
-								Google
-							</button>
+								onError={() => {
+									console.log("Login Failed");
+								}}
+							/>
 						</div>
 					</div>
 				</div>

@@ -69,3 +69,6 @@ export const forgotPasswordByPhoneApi = (phone) =>
 
 export const resetPasswordApi = (data) =>
 	Api.post("/api/user/reset/phone", data);
+
+// google login
+export const googleLoginApi = (data) => Api.post("/api/user/google", data);
