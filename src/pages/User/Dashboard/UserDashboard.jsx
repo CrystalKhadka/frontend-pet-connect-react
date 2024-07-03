@@ -77,7 +77,7 @@ const UserDashboard = () => {
 						</select>
 						<input
 							type="text"
-							placeholder="search for pets"
+							placeholder="search for breed"
 							className="w-full max-w-52 rounded border p-2"
 							onChange={(e) => setSearch(e.target.value)}
 						/>

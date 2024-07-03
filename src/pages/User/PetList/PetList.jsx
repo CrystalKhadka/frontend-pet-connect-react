@@ -7,19 +7,17 @@ import {
 import PetCard from "../../../components/PetCard";
 
 const PetList = () => {
+	const queryParams = new URLSearchParams(window.location.search);
 	const [pets, setPets] = useState([]);
 	const [error, setError] = useState("");
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(6);
 	const [totalPage, setTotalPage] = useState(0);
 	const [categories, setCategories] = useState([]);
-	const [species, setSpecies] = useState("all");
-	const [search, setSearch] = useState("");
-	const queryParams = new URLSearchParams(window.location.search);
+	const [species, setSpecies] = useState(queryParams.get("category") || "all");
+	const [search, setSearch] = useState(queryParams.get("search") || "");
 
 	useEffect(() => {
-		setSpecies(queryParams.get("category") || "all");
-		setSearch(queryParams.get("search") || "");
 		getTotalPetsApi(species, search)
 			.then((res) => {
 				setTotalPage(Math.ceil(res.data.totalPets / limit));
@@ -44,7 +42,7 @@ const PetList = () => {
 				console.log(err);
 				setError("Error fetching data");
 			});
-	}, [page, limit, species, search, queryParams]);
+	}, [page, limit, species, search]);
 
 	const handlePagination = (page) => {
 		setPage(page);
@@ -61,6 +59,7 @@ const PetList = () => {
 						type="text"
 						placeholder="Search for breed"
 						className="w-full rounded-lg border border-gray-300 p-2 shadow-sm"
+						value={search}
 						onChange={(e) => setSearch(e.target.value)}
 					/>
 				</div>
