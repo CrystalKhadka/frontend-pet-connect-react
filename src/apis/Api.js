@@ -23,12 +23,33 @@ export const petImageUrl = baseurl + "/pets";
 // Test API
 export const testApi = () => Api.get("/test");
 
+// ------------------- User API -------------------
+
 // Register API
 export const registerUserApi = (data) => Api.post("/api/user/register", data);
 
 // Login API
 export const loginUserApi = (data) => Api.post("/api/user/login", data);
 
+// Forgot password by email api
+export const forgotPasswordByEmailApi = (email) =>
+	Api.post("/api/user/forgot/email", email);
+
+// Forgot password by phone api
+export const forgotPasswordByPhoneApi = (phone) =>
+	Api.post("/api/user/forgot/phone", phone);
+
+export const resetPasswordApi = (data) =>
+	Api.post("/api/user/reset/phone", data);
+
+// google login
+export const googleLoginApi = (data) => Api.post("/api/user/google", data);
+
+// get by email
+export const getUserByGoogleEmail = (data) =>
+	Api.post(`/api/user/getGoogleUser`, data);
+
+// ------------------- Pet API -------------------
 // Add pet API
 export const addPetApi = (data) => Api.post("/api/pet/add", data);
 
@@ -57,22 +78,11 @@ export const getPaginationApi = (page, limit) =>
 export const getAllPetBreedApi = () => Api.get(`/api/pet/species`);
 
 //  Get Total pets
-export const getTotalPetsApi = () => Api.get("/api/pet/total");
+export const getTotalPetsApi = (species, search) =>
+	Api.get(`/api/pet/total?species=${species}&search=${search}`);
 
-// Forgot password by email api
-export const forgotPasswordByEmailApi = (email) =>
-	Api.post("/api/user/forgot/email", email);
-
-// Forgot password by phone api
-export const forgotPasswordByPhoneApi = (phone) =>
-	Api.post("/api/user/forgot/phone", phone);
-
-export const resetPasswordApi = (data) =>
-	Api.post("/api/user/reset/phone", data);
-
-// google login
-export const googleLoginApi = (data) => Api.post("/api/user/google", data);
-
-// get by email
-export const getUserByGoogleEmail = (data) =>
-	Api.post(`/api/user/getGoogleUser`, data);
+// Filter by species
+export const filterBySpeciesApi = (species, page, limit, search) =>
+	Api.get(
+		`/api/pet/filter/species?species=${species}&page=${page}&limit=${limit}&search=${search}`,
+	);
