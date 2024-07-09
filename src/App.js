@@ -5,9 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import AdminAdoptionForm from "./pages/Admin/AdoptionFormList/AdminAdoptionFormList";
 import AdminDashboard from "./pages/Admin/Dashboard/AdminDashboard";
 import MyPetList from "./pages/Admin/MyPet/PetList.jsx/MyPetList";
 import UpdatePet from "./pages/Admin/MyPet/UpdatePet/UpdatePet";
+import PetApplicationList from "./pages/Admin/PetApplicationList/PetApplicationList";
+import AdoptionForm from "./pages/Adoption/AdoptionForm";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/Login/Login";
@@ -33,6 +36,7 @@ function App() {
 					<Route element={<UserRoutes />}>
 						<Route path="/user/dashboard" element={<UserDashboard />} />
 						<Route path="/user/pet/list" element={<PetList />} />
+						<Route path="/user/adoption/form" element={<AdoptionForm />} />
 					</Route>
 
 					{/* Owner Routes */}
@@ -40,6 +44,11 @@ function App() {
 						<Route path="/admin/dashboard" element={<AdminDashboard />} />
 						<Route path="/admin/myPet/list" element={<MyPetList />} />
 						<Route path="/admin/myPet/edit/:id" element={<UpdatePet />} />
+						<Route
+							path="/admin/adoption/form"
+							element={<AdminAdoptionForm />}
+						/>
+						<Route path="/pet/applications" element={<PetApplicationList />} />
 					</Route>
 				</Routes>
 				<Footer />
