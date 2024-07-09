@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { petImageUrl } from "../apis/Api";
+import SinglePetModal from "./SinglePetModal";
 
-const PetCard = ({ pet }) => {
+const PetCard = ({ pet, onClick }) => {
+	const [toggleModal, setToggleModal] = useState(false);
 	return (
 		<>
 			<div
@@ -32,7 +34,12 @@ const PetCard = ({ pet }) => {
 						</p>
 					</div>
 					<div className="flex space-x-4">
-						<button className="flex-1 rounded bg-gray-500 py-2 text-white hover:bg-gray-600">
+						<button
+							className="flex-1 rounded bg-gray-500 py-2 text-white hover:bg-gray-600"
+							onClick={() => {
+								setToggleModal(!toggleModal);
+							}}
+						>
 							View Details
 						</button>
 						<button className="flex-1 rounded bg-green-500 py-2 text-white hover:bg-green-600">
@@ -41,6 +48,9 @@ const PetCard = ({ pet }) => {
 					</div>
 				</div>
 			</div>
+			{toggleModal && (
+				<SinglePetModal toggle={() => setToggleModal(!toggleModal)} pet={pet} />
+			)}
 		</>
 	);
 };

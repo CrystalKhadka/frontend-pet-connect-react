@@ -13,8 +13,8 @@ const Register = () => {
 	const [phone, setPhone] = useState("");
 	const [address, setAddress] = useState("");
 	const [gender, setGender] = useState("");
-	const [obscurePassword, setObscurePassword] = useState(true);
-	const [role, setRole] = useState("");
+	const [obscurePassword, setObscurePassword] = useState(false);
+	const [role, setRole] = useState("adopter");
 	const [showModal, setShowModal] = useState(false);
 
 	const [firstNameError, setFirstNameError] = useState("");
@@ -258,6 +258,7 @@ const Register = () => {
 												id="firstName"
 												name="firstName"
 												autoComplete="given-name"
+												placeholder="fname"
 												required
 												className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 												value={firstName}
@@ -284,6 +285,7 @@ const Register = () => {
 												id="lastName"
 												name="lastName"
 												autoComplete="family-name"
+												placeholder="lname"
 												required
 												className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 												value={lastName}
@@ -311,6 +313,7 @@ const Register = () => {
 											id="email"
 											name="email"
 											autoComplete="email"
+											placeholder="email"
 											required
 											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 											value={email}
@@ -377,7 +380,9 @@ const Register = () => {
 											autoComplete="current-password"
 											required
 											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-10 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-											placeholder={obscurePassword ? "********" : "Password"}
+											placeholder={
+												obscurePassword ? "********" : "confirm password"
+											}
 											onChange={(e) => setConfirmPassword(e.target.value)}
 										/>
 										<div
@@ -417,6 +422,7 @@ const Register = () => {
 											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-green-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 											required
 											value={birthDate}
+											placeholder="birth date"
 											onChange={(e) => setBirthDate(e.target.value)}
 										/>
 									</div>
@@ -443,6 +449,7 @@ const Register = () => {
 											required
 											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 											value={phone}
+											placeholder="phone"
 											onChange={(e) => setPhone(e.target.value)}
 										/>
 									</div>
@@ -467,6 +474,7 @@ const Register = () => {
 											name="address"
 											autoComplete="address"
 											required
+											placeholder="address"
 											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
 											value={address}
 											onChange={(e) => setAddress(e.target.value)}
