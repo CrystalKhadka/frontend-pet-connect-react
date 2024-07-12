@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { addAdoptionApi, viewPetByIdApi } from "../../apis/Api";
 
 const AdoptionForm = () => {
 	const [fname, setFname] = useState("");
@@ -11,11 +14,14 @@ const AdoptionForm = () => {
 	const [yard, setYard] = useState("Yard");
 	const [petExperience, setPetExperience] = useState("");
 	const [reason, setReason] = useState("");
+	const [pet, setPet] = useState("");
+
+	const param = useParams();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
-		const data = {
+		console.log(param.id);
+		const form = {
 			fname,
 			lname,
 			age,
@@ -28,7 +34,35 @@ const AdoptionForm = () => {
 			reason,
 		};
 
-		console.log(data);
+		viewPetByIdApi(param.id)
+			.then((res) => {
+				setPet(res.data.data);
+			})
+			.catch((err) => {
+				console.log(err.response.data);
+			});
+
+		console.log(pet);
+		const formData = JSON.stringify(form);
+
+		const data = {
+			form: formData,
+			formReceiver: pet.createdBy,
+			pet: param.id,
+		};
+
+		addAdoptionApi(data)
+			.then((res) => {
+				console.log(res);
+				toast.success(res.data.message);
+			})
+			.catch((err) => {
+				if (err.response) {
+					toast.error(err.response.data.message);
+				} else {
+					toast.error("Something went wrong");
+				}
+			});
 	};
 	return (
 		<div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">

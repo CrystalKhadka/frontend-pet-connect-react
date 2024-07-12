@@ -146,7 +146,7 @@ const PetList = () => {
 					<main className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 						{pets.map((pet) => (
 							<div key={pet.id} className="col">
-								<PetCard pet={pet} toggled={toggled} />
+								<PetCard pet={pet}  />
 							</div>
 						))}
 					</main>

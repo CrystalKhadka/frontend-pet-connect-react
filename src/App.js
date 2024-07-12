@@ -36,7 +36,7 @@ function App() {
 					<Route element={<UserRoutes />}>
 						<Route path="/user/dashboard" element={<UserDashboard />} />
 						<Route path="/user/pet/list" element={<PetList />} />
-						<Route path="/user/adoption/form" element={<AdoptionForm />} />
+						<Route path="/user/adoption/form/:id" element={<AdoptionForm />} />
 					</Route>
 
 					{/* Owner Routes */}

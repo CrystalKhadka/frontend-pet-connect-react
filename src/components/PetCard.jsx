@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { petImageUrl } from "../apis/Api";
 import SinglePetModal from "./SinglePetModal";
 
-const PetCard = ({ pet, onClick }) => {
+const PetCard = ({ pet }) => {
 	const [toggleModal, setToggleModal] = useState(false);
 	return (
 		<>
@@ -42,9 +43,12 @@ const PetCard = ({ pet, onClick }) => {
 						>
 							View Details
 						</button>
-						<button className="flex-1 rounded bg-green-500 py-2 text-white hover:bg-green-600">
+						<Link
+							to={`/user/adoption/form/${pet._id}`}
+							className="flex-1 rounded bg-green-500 py-2 text-white hover:bg-green-600"
+						>
 							Adopt Me
-						</button>
+						</Link>
 					</div>
 				</div>
 			</div>

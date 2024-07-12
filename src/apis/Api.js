@@ -86,3 +86,13 @@ export const filterBySpeciesApi = (species, page, limit, search) =>
 	Api.get(
 		`/api/pet/filter/species?species=${species}&page=${page}&limit=${limit}&search=${search}`,
 	);
+
+// Adoption Apis
+export const addAdoptionApi = (data) =>
+	Api.post("/api/adoption/create", data, config);
+
+// Get all adoption
+export const getAllAdoptionApi = () => Api.get("/api/adoption/all", config);
+
+// Get adoption by id
+export const countAdoptionApi = (id) => Api.get(`/api/adoption/count`, config);
