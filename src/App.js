@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import AdoptedPets from "./pages/Admin/AdoptedPets/AdoptedPets";
 import AdminAdoptionForm from "./pages/Admin/AdoptionFormList/AdminAdoptionFormList";
 import AdminDashboard from "./pages/Admin/Dashboard/AdminDashboard";
 import MyPetList from "./pages/Admin/MyPet/PetList.jsx/MyPetList";
@@ -49,6 +50,7 @@ function App() {
 							element={<AdminAdoptionForm />}
 						/>
 						<Route path="/pet/applications" element={<PetApplicationList />} />
+						<Route path="/pet/adopted" element={<AdoptedPets />} />
 					</Route>
 				</Routes>
 				<Footer />

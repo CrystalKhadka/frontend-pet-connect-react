@@ -91,6 +91,17 @@ export const filterBySpeciesApi = (species, page, limit, search) =>
 export const setPetStatusApi = (id, status) =>
 	Api.put(`/api/pet/status/${id}`, status, config);
 
+// get all pets by status: adopted
+export const getAllPetsByStatusApi = (id) =>
+	Api.get(`/api/pet/all/adopted/${id}`, config);
+
+// Get adopted pets
+export const getAdoptedPetsApi = () => Api.get(`/api/pet/adopted/all`, config);
+
+// Set pet adopted
+export const setPetAdoptedApi = (data) =>
+	Api.put(`/api/pet//set/adopted`, data, config);
+
 // ------------------- Adoption API -------------------
 
 // Adoption Apis

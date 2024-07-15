@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import {
 	getAllAdoptionApi,
 	setAdoptionStatusApi,
-	setPetStatusApi,
+	setPetAdoptedApi,
 } from "../../../apis/Api";
 
 const AdminAdoptionForm = () => {
@@ -36,27 +36,10 @@ const AdminAdoptionForm = () => {
 			.then((response) => {
 				console.log(response);
 				toast.success("Application approved successfully");
-				setPetStatus("adopted");
-				window.location.reload();
-			})
-			.catch((error) => {
-				if (error.response) {
-					toast.error(error.response.data.message);
-				} else {
-					toast.error("Something went wrong");
-				}
-			});
-	};
-
-	const setPetStatus = (status) => {
-		const id = selectedApplication.pet._id;
-		const data = {
-			status: status,
-		};
-
-		setPetStatusApi(id, data)
-			.then((response) => {
-				console.log(response);
+				setPetAdoptedApi({
+					petId: selectedApplication.pet._id,
+					userId: selectedApplication.formReceiver._id,
+				});
 				window.location.reload();
 			})
 			.catch((error) => {
