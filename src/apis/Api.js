@@ -87,12 +87,23 @@ export const filterBySpeciesApi = (species, page, limit, search) =>
 		`/api/pet/filter/species?species=${species}&page=${page}&limit=${limit}&search=${search}`,
 	);
 
+// set pet status
+export const setPetStatusApi = (id, status) =>
+	Api.put(`/api/pet/status/${id}`, status, config);
+
+// ------------------- Adoption API -------------------
+
 // Adoption Apis
 export const addAdoptionApi = (data) =>
 	Api.post("/api/adoption/create", data, config);
 
 // Get all adoption
-export const getAllAdoptionApi = () => Api.get("/api/adoption/all", config);
+export const getAllAdoptionApi = (id) =>
+	Api.get(`/api/adoption/get/${id}`, config);
 
 // Get adoption by id
-export const countAdoptionApi = (id) => Api.get(`/api/adoption/count`, config);
+export const countAdoptionApi = () => Api.get(`/api/adoption/count`, config);
+
+// Set adoption status
+export const setAdoptionStatusApi = (id, status) =>
+	Api.put(`/api/adoption/status/${id}`, status, config);

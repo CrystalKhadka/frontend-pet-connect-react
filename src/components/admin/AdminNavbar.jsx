@@ -12,8 +12,8 @@ const AdminNavbar = () => {
 
 	const activeLinkClass = ({ isActive }) =>
 		isActive
-			? "block rounded bg-gray-700 px-4 py-2 text-white"
-			: "block rounded px-4 py-2 text-gray-700 hover:bg-gray-700";
+			? "block rounded bg-gray-700 px-4 py-2 text-white dark:bg-green-900 dark:text-white"
+			: "block rounded px-4 py-2 text-gray-700 hover:bg-gray-700 dark:hover:bg-green-900 dark:text-white";
 
 	return (
 		<div className="sidebar">

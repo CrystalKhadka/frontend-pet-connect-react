@@ -45,7 +45,7 @@ function App() {
 						<Route path="/admin/myPet/list" element={<MyPetList />} />
 						<Route path="/admin/myPet/edit/:id" element={<UpdatePet />} />
 						<Route
-							path="/admin/adoption/form"
+							path="/admin/adoption/form/:id"
 							element={<AdminAdoptionForm />}
 						/>
 						<Route path="/pet/applications" element={<PetApplicationList />} />

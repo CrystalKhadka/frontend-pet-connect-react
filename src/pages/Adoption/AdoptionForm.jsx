@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { addAdoptionApi, viewPetByIdApi } from "../../apis/Api";
+import {
+	addAdoptionApi,
+	setPetStatusApi,
+	viewPetByIdApi,
+} from "../../apis/Api";
 
 const AdoptionForm = () => {
 	const [fname, setFname] = useState("");
@@ -54,6 +58,14 @@ const AdoptionForm = () => {
 		addAdoptionApi(data)
 			.then((res) => {
 				console.log(res);
+				setPetStatusApi(param.id, { status: "pending" })
+					.then((res) => {
+						console.log(res);
+					})
+					.catch((err) => {
+						console.log(err);
+						return;
+					});
 				toast.success(res.data.message);
 			})
 			.catch((err) => {

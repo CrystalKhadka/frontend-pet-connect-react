@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { countAdoptionApi, petImageUrl } from "../../../apis/Api";
 
 const PetApplicationList = () => {
@@ -84,7 +85,15 @@ const PetApplicationList = () => {
 													</div>
 												</td>
 												<td className="whitespace-nowrap px-6 py-4">
-													<span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
+													<span
+														className={
+															application.pet.petStatus === "adopted"
+																? "inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800"
+																: application.pet.petStatus === "available"
+																	? "inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
+																	: "inline-flex rounded-full bg-yellow-100 px-2 text-xs font-semibold leading-5 text-yellow-800"
+														}
+													>
 														{application.pet.petStatus}
 													</span>
 												</td>
@@ -92,12 +101,12 @@ const PetApplicationList = () => {
 													{application.count}
 												</td>
 												<td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
-													<button
-														href="#"
+													<Link
+														to={`/admin/adoption/form/${application.pet._id}`}
 														className="text-indigo-600 hover:text-indigo-900"
 													>
 														View
-													</button>
+													</Link>
 												</td>
 											</tr>
 										))}
