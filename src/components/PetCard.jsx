@@ -61,13 +61,68 @@
 
 // export default PetCard;
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { petImageUrl } from "../apis/Api";
+import { toast } from "react-toastify";
+import { addFavoriteApi, deleteFavoriteApi, petImageUrl } from "../apis/Api";
 import SinglePetModal from "./SinglePetModal";
 
-const PetCard = ({ pet }) => {
+const PetCard = ({ pet, favorites }) => {
 	const [toggleModal, setToggleModal] = useState(false);
+	const [isFavorite, setIsFavorite] = useState(false);
+
+	useEffect(() => {
+		for (let i = 0; i < favorites.length; i++) {
+			if (favorites[i].pet._id === pet._id) {
+				console.log("Favorite");
+				setIsFavorite(true);
+				break;
+			}
+		}
+	}, []);
+
+	const handleFavorite = () => {
+		console.log("Favorite");
+
+		const data = {
+			petId: pet._id,
+		};
+
+		console.log(data);
+
+		if (isFavorite) {
+			// Remove from favorite
+			deleteFavoriteApi(pet._id)
+				.then((res) => {
+					console.log(res);
+					toast.success(res.data.message);
+					window.location.reload();
+				})
+				.catch((err) => {
+					if (err.response) {
+						toast.error(err.response.data.message);
+					} else {
+						toast.error("Server Error");
+					}
+				});
+			return;
+		} else {
+			// Add to favorite
+			addFavoriteApi(data)
+				.then((res) => {
+					console.log(res);
+					toast.success(res.data.message);
+					window.location.reload();
+				})
+				.catch((err) => {
+					if (err.response) {
+						toast.error(err.response.data.message);
+					} else {
+						toast.error("Server Error");
+					}
+				});
+		}
+	};
 
 	return (
 		<>
@@ -78,21 +133,12 @@ const PetCard = ({ pet }) => {
 						src={`${petImageUrl}/${pet.petImage}`}
 						alt={pet.petName}
 					/>
-					<div className="absolute right-0 top-0 mr-4 mt-4 rounded-full bg-white p-2">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="h-6 w-6 text-red-500"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth={2}
-								d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-							/>
-						</svg>
+					<div className="absolute right-0 top-0 rounded-full  bg-white p-2">
+						<button className="" onClick={handleFavorite}>
+							<i
+								className={`bi ${isFavorite ? "bi-heart-fill text-red-500" : "bi-heart"}`}
+							></i>
+						</button>
 					</div>
 				</div>
 				<div className="p-6">
