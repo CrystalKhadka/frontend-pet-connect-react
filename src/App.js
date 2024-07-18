@@ -12,6 +12,7 @@ import MyPetList from "./pages/Admin/MyPet/PetList.jsx/MyPetList";
 import UpdatePet from "./pages/Admin/MyPet/UpdatePet/UpdatePet";
 import PetApplicationList from "./pages/Admin/PetApplicationList/PetApplicationList";
 import AdoptionForm from "./pages/Adoption/AdoptionForm";
+import Chat from "./pages/Chat/Chat";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/Login/Login";
@@ -33,6 +34,7 @@ function App() {
 					<Route path="/register" element={<Register />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/forgot" element={<ForgotPassword />} />
+					<Route path="/chat/:id" element={<Chat />} />
 
 					<Route element={<UserRoutes />}>
 						<Route path="/user/dashboard" element={<UserDashboard />} />

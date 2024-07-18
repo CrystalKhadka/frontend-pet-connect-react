@@ -74,7 +74,7 @@ const UserNavbar = () => {
 							Settings
 						</NavLink>
 						{user ? (
-							<NavLink to="/chat" className={activeLinkClass}>
+							<NavLink to={`/chat/${"all"}`} className={activeLinkClass}>
 								Chat
 							</NavLink>
 						) : null}

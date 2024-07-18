@@ -55,7 +55,6 @@ const MyPetList = () => {
 				if (response.status === 201) {
 					toast.success(response.data.message);
 					setShowAddPetModal(false);
-					// Refresh pet list
 					viewPetByOwnerApi(user.id).then((response) =>
 						setPets(response.data.pets),
 					);
@@ -85,7 +84,7 @@ const MyPetList = () => {
 	};
 
 	return (
-		<div className="container mx-auto px-4 py-8">
+		<div className="container mx-auto px-4 py-8 md:ml-64 md:px-8 md:py-16">
 			<div className="mb-6 flex items-center justify-between">
 				<h1 className="text-3xl font-bold text-gray-800">My Pets</h1>
 				<button
@@ -96,64 +95,103 @@ const MyPetList = () => {
 				</button>
 			</div>
 
-			<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-				{pets.map((pet) => (
-					<div
-						key={pet._id}
-						className="overflow-hidden rounded-lg bg-white shadow-lg transition duration-300 hover:shadow-xl"
-					>
-						<img
-							src={`${petImageUrl}/${pet.petImage}`}
-							alt={pet.petName}
-							className="h-48 w-full object-cover"
-						/>
-						<div className="p-4">
-							<h2 className="mb-2 text-xl font-semibold">{pet.petName}</h2>
-							<p className="mb-2 text-gray-600">
-								{pet.petSpecies} - {pet.petBreed}
-							</p>
-							<div className="mb-4 flex items-center">
-								<span
-									className="mr-2 rounded-full px-2 py-1 text-xs font-semibold"
-									style={{
-										backgroundColor: pet.petColor,
-										color: getContrastColor(pet.petColor),
-									}}
-								>
-									{pet.petColor}
-								</span>
-								<span
-									className={`rounded-full px-2 py-1 text-xs font-semibold ${
-										pet.petStatus === "available"
-											? "bg-green-200 text-green-800"
-											: pet.petStatus === "pending"
-												? "bg-yellow-200 text-yellow-800"
-												: "bg-red-200 text-red-800"
-									}`}
-								>
-									{pet.petStatus}
-								</span>
-							</div>
-							<div className="flex justify-between">
-								<Link
-									to={`/admin/myPet/edit/${pet._id}`}
-									className="flex items-center text-blue-600 hover:text-blue-800"
-								>
-									<FaPencilAlt className="mr-1" /> Edit
-								</Link>
-								<button
-									onClick={() => {
-										setPetToDelete(pet._id);
-										setShowDeleteModal(true);
-									}}
-									className="flex items-center text-red-600 hover:text-red-800"
-								>
-									<FaTrash className="mr-1" /> Delete
-								</button>
-							</div>
-						</div>
-					</div>
-				))}
+			<div className="overflow-x-auto rounded-lg shadow">
+				<table className="w-full text-left text-sm text-gray-500">
+					<thead className="bg-gray-50 text-xs uppercase text-gray-700">
+						<tr>
+							<th scope="col" className="px-6 py-3">
+								Image
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Name
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Species
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Breed
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Age
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Weight
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Color
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Status
+							</th>
+							<th scope="col" className="px-6 py-3">
+								Actions
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{pets.map((pet) => (
+							<tr key={pet._id} className="border-b bg-white">
+								<td className="px-6 py-4">
+									<img
+										src={`${petImageUrl}/${pet.petImage}`}
+										alt={pet.petName}
+										className="h-12 w-12 rounded-full object-cover"
+									/>
+								</td>
+								<td className="px-6 py-4 font-medium text-gray-900">
+									{pet.petName}
+								</td>
+								<td className="px-6 py-4">{pet.petSpecies}</td>
+								<td className="px-6 py-4">{pet.petBreed}</td>
+								<td className="px-6 py-4">{pet.petAge}</td>
+								<td className="px-6 py-4">{pet.petWeight} kg</td>
+								<td className="px-6 py-4">
+									<span
+										className="rounded-full px-2 py-1 text-xs font-semibold"
+										style={{
+											backgroundColor: pet.petColor,
+											color: getContrastColor(pet.petColor),
+										}}
+									>
+										{pet.petColor}
+									</span>
+								</td>
+								<td className="px-6 py-4">
+									<span
+										className={`rounded-full px-2 py-1 text-xs font-semibold ${
+											pet.petStatus === "available"
+												? "bg-green-200 text-green-800"
+												: pet.petStatus === "pending"
+													? "bg-yellow-200 text-yellow-800"
+													: "bg-red-200 text-red-800"
+										}`}
+									>
+										{pet.petStatus}
+									</span>
+								</td>
+								<td className="px-6 py-4">
+									<div className="flex space-x-2">
+										<Link
+											to={`/admin/myPet/edit/${pet._id}`}
+											className="text-blue-600 hover:text-blue-900"
+										>
+											<FaPencilAlt />
+										</Link>
+										<button
+											onClick={() => {
+												setPetToDelete(pet._id);
+												setShowDeleteModal(true);
+											}}
+											className="text-red-600 hover:text-red-900"
+										>
+											<FaTrash />
+										</button>
+									</div>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
 			</div>
 
 			{/* Delete Modal */}

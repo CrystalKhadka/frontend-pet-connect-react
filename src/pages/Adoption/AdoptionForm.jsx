@@ -51,7 +51,7 @@ const AdoptionForm = () => {
 
 		const data = {
 			form: formData,
-			formReceiver: pet.createdBy,
+			formReceiver: pet.createdBy._id,
 			pet: param.id,
 		};
 

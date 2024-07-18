@@ -49,6 +49,12 @@ export const googleLoginApi = (data) => Api.post("/api/user/google", data);
 export const getUserByGoogleEmail = (data) =>
 	Api.post(`/api/user/getGoogleUser`, data);
 
+// get user by id
+export const getUserByIdApi = (id) => Api.get(`/api/user/get/${id}`, config);
+
+// get all user
+export const getAllUserApi = () => Api.get("/api/user/all", config);
+
 // ------------------- Pet API -------------------
 // Add pet API
 export const addPetApi = (data) => Api.post("/api/pet/add", data);
@@ -127,3 +133,8 @@ export const getFavoriteApi = () => Api.get(`/api/favorite/get`, config);
 
 export const deleteFavoriteApi = (id) =>
 	Api.delete(`/api/favorite/delete/${id}`, config);
+
+// Chat api
+export const sendMessageApi = (message) =>
+	Api.post("/api/messages/send", message, config);
+export const getMessagesApi = (id) => Api.get(`/api/messages/get/${id}`, config);
