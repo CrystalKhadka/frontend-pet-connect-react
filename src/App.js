@@ -1,4 +1,3 @@
-import "flowbite";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,6 +11,7 @@ import MyPetList from "./pages/Admin/MyPet/PetList.jsx/MyPetList";
 import UpdatePet from "./pages/Admin/MyPet/UpdatePet/UpdatePet";
 import PetApplicationList from "./pages/Admin/PetApplicationList/PetApplicationList";
 import AdoptionForm from "./pages/Adoption/AdoptionForm";
+import Favorite from "./pages/Favorite/Favorite";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/Login/Login";
@@ -38,6 +38,8 @@ function App() {
 						<Route path="/user/dashboard" element={<UserDashboard />} />
 						<Route path="/user/pet/list" element={<PetList />} />
 						<Route path="/user/adoption/form/:id" element={<AdoptionForm />} />
+						{/* Favorite  */}
+						<Route path="/user/favorite" element={<Favorite />} />
 					</Route>
 
 					{/* Owner Routes */}

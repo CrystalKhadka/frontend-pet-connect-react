@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
 	filterBySpeciesApi,
 	getAllPetBreedApi,
+	getFavoriteApi,
 	getTotalPetsApi,
 } from "../../../apis/Api";
 import PetCard from "../../../components/PetCard";
@@ -18,23 +19,26 @@ const PetList = () => {
 	const [species, setSpecies] = useState(queryParams.get("category") || "all");
 	const [search, setSearch] = useState(queryParams.get("search") || "");
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
+	const [favorites, setFavorites] = useState([]);
 
 	useEffect(() => {
 		Promise.all([
 			getTotalPetsApi(species, search),
 			filterBySpeciesApi(species, page, limit, search),
 			getAllPetBreedApi(),
+			getFavoriteApi(),
 		])
-			.then(([totalRes, petsRes, categoriesRes]) => {
+			.then(([totalRes, petsRes, categoriesRes, favoriteRes]) => {
 				setTotalPage(Math.ceil(totalRes.data.totalPets / limit));
 				setPets(petsRes.data.pets);
 				setCategories(categoriesRes.data.species);
+				setFavorites(favoriteRes.data.favorites);
 			})
 			.catch((err) => {
 				console.error(err);
 				setError("Error fetching data");
 			});
-	}, [page, limit, species, search]);
+	}, [page, limit, species, search 	]);
 
 	const handlePagination = (newPage) => setPage(newPage);
 
@@ -119,7 +123,7 @@ const PetList = () => {
 						{/* Pet grid */}
 						<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 							{pets.map((pet) => (
-								<PetCard key={pet.id} pet={pet} />
+								<PetCard key={pet.id} pet={pet} favorites={favorites} />
 							))}
 						</div>
 

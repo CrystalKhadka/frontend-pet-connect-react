@@ -118,3 +118,12 @@ export const countAdoptionApi = () => Api.get(`/api/adoption/count`, config);
 // Set adoption status
 export const setAdoptionStatusApi = (id, status) =>
 	Api.put(`/api/adoption/status/${id}`, status, config);
+
+// ------------------- Favorite API -------------------
+export const addFavoriteApi = (data) =>
+	Api.post("/api/favorite/add", data, config);
+
+export const getFavoriteApi = () => Api.get(`/api/favorite/get`, config);
+
+export const deleteFavoriteApi = (id) =>
+	Api.delete(`/api/favorite/delete/${id}`, config);
