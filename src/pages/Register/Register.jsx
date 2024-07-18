@@ -233,319 +233,134 @@ const Register = () => {
 				</div>
 			)}
 
-			<div className="flex min-h-screen items-center justify-center bg-gray-200">
-				<div className="my-10 w-full max-w-5xl px-6">
-					<div className="rounded-lg bg-white p-8 shadow-lg">
-						<h2 className="mb-8 text-center text-3xl font-extrabold text-gray-900">
-							Register
-						</h2>
-						<form onSubmit={handleSubmit}>
-							<div className="space-y-6 ">
-								<div className="flex flex-wrap gap-x-6 gap-y-6 md:grid md:grid-cols-2 md:gap-4	 ">
-									<div className="w-full md:w-full">
-										<label
-											htmlFor="firstName"
-											className="block text-sm font-medium text-gray-700"
-										>
-											First Name
-										</label>
-										<div className="relative mt-1 rounded-md shadow-sm">
-											<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-												<i className="bi bi-person text-gray-400"></i>
-											</div>
-											<input
-												type="text"
-												id="firstName"
-												name="firstName"
-												autoComplete="given-name"
-												placeholder="fname"
-												required
-												className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
-												value={firstName}
-												onChange={(e) => setFirstName(e.target.value)}
-											/>
-										</div>
-										{firstNameError && (
-											<p className="text-sm text-red-500">{firstNameError}</p>
-										)}
-									</div>
-									<div className="w-full md:w-full">
-										<label
-											htmlFor="lastName"
-											className="block text-sm font-medium text-gray-700"
-										>
-											Last Name
-										</label>
-										<div className="relative mt-1 rounded-md shadow-sm">
-											<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-												<i className="bi bi-person text-gray-400"></i>
-											</div>
-											<input
-												type="text"
-												id="lastName"
-												name="lastName"
-												autoComplete="family-name"
-												placeholder="lname"
-												required
-												className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
-												value={lastName}
-												onChange={(e) => setLastName(e.target.value)}
-											/>
-										</div>
-										{lastNameError && (
-											<p className="text-sm text-red-500">{lastNameError}</p>
-										)}
-									</div>
+			<div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center p-4">
+				<div className="bg-white rounded-2xl shadow-xl overflow-hidden max-w-4xl w-full">
+					<div className="flex flex-col md:flex-row">
+						{/* Left Side - Image and Welcome Message */}
+						<div className="md:w-1/2 bg-indigo-600 p-12 hidden md:flex flex-col justify-between">
+							<div>
+								<h2 className="text-white text-4xl font-bold mb-6">Join Our Community!</h2>
+								<p className="text-indigo-200 mb-6">Create an account to start your journey with us.</p>
+							</div>
+							<img src="/path-to-your-illustration.svg" alt="Registration illustration" className="max-w-xs mx-auto" />
+						</div>
+
+						{/* Right Side - Registration Form */}
+						<div className="md:w-1/2 p-12">
+							<h2 className="text-3xl font-bold text-gray-800 mb-8">Create Your Account</h2>
+							<form onSubmit={handleSubmit} className="space-y-6">
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<InputField
+										label="First Name"
+										id="firstName"
+										name="firstName"
+										type="text"
+										icon="bi-person"
+										value={firstName}
+										onChange={(e) => setFirstName(e.target.value)}
+										error={firstNameError}
+									/>
+									<InputField
+										label="Last Name"
+										id="lastName"
+										name="lastName"
+										type="text"
+										icon="bi-person"
+										value={lastName}
+										onChange={(e) => setLastName(e.target.value)}
+										error={lastNameError}
+									/>
 								</div>
-								<div>
-									<label
-										htmlFor="email"
-										className="block text-sm font-medium text-gray-700"
-									>
-										Email
-									</label>
-									<div className="relative mt-1 rounded-md shadow-sm">
-										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-											<i className="bi bi-envelope text-gray-400"></i>
-										</div>
-										<input
-											type="email"
-											id="email"
-											name="email"
-											autoComplete="email"
-											placeholder="email"
-											required
-											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
-											value={email}
-											onChange={(e) => setEmail(e.target.value)}
-										/>
-									</div>
-									{emailError && (
-										<p className="text-sm text-red-500">{emailError}</p>
-									)}
-								</div>
-								<div>
-									<label
-										htmlFor="password"
-										className="block text-sm font-medium text-gray-700"
-									>
-										Password
-									</label>
-									<div className="relative mt-1 rounded-md shadow-sm">
-										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-											<i className="bi bi-lock text-gray-400"></i>
-										</div>
-										<input
-											id="password"
-											name="password"
-											type={obscurePassword ? "password" : "text"}
-											autoComplete="current-password"
-											required
-											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-10 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-											placeholder={obscurePassword ? "********" : "Password"}
-											onChange={(e) => setPassword(e.target.value)}
-										/>
-										<div
-											className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3"
+								<InputField
+									label="Email"
+									id="email"
+									name="email"
+									type="email"
+									icon="bi-envelope"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									error={emailError}
+								/>
+								<InputField
+									label="Password"
+									id="password"
+									name="password"
+									type={obscurePassword ? "password" : "text"}
+									icon="bi-lock"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
+									error={passwordError}
+									rightIcon={
+										<i
+											className={`bi ${obscurePassword ? "bi-eye-slash" : "bi-eye"} text-gray-400 cursor-pointer`}
 											onClick={() => setObscurePassword(!obscurePassword)}
-										>
-											<i
-												className={
-													obscurePassword
-														? "bi bi-eye-slash text-gray-400"
-														: "bi bi-eye text-gray-400"
-												}
-											></i>
-										</div>
-									</div>
-									{passwordError && (
-										<p className="mt-2 text-sm text-red-600">{passwordError}</p>
-									)}
-								</div>
-								<div>
-									<label
-										htmlFor="password"
-										className="block text-sm font-medium text-gray-700"
-									>
-										Confirm Password
-									</label>
-									<div className="relative mt-1 rounded-md shadow-sm">
-										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-											<i className="bi bi-lock text-gray-400"></i>
-										</div>
-										<input
-											id="confirmPassword"
-											name="confirmPassword"
-											type={obscurePassword ? "password" : "text"}
-											autoComplete="current-password"
-											required
-											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-10 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
-											placeholder={
-												obscurePassword ? "********" : "confirm password"
-											}
-											onChange={(e) => setConfirmPassword(e.target.value)}
-										/>
-										<div
-											className="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3"
+										></i>
+									}
+								/>
+								<InputField
+									label="Confirm Password"
+									id="confirmPassword"
+									name="confirmPassword"
+									type={obscurePassword ? "password" : "text"}
+									icon="bi-lock"
+									value={confirmPassword}
+									onChange={(e) => setConfirmPassword(e.target.value)}
+									error={confirmPasswordError}
+									rightIcon={
+										<i
+											className={`bi ${obscurePassword ? "bi-eye-slash" : "bi-eye"} text-gray-400 cursor-pointer`}
 											onClick={() => setObscurePassword(!obscurePassword)}
-										>
-											<i
-												className={
-													obscurePassword
-														? "bi bi-eye-slash text-gray-400"
-														: "bi bi-eye text-gray-400"
-												}
-											></i>
-										</div>
-									</div>
-									{confirmPasswordError && (
-										<p className="mt-2 text-sm text-red-600">
-											{confirmPasswordError}
-										</p>
-									)}
-								</div>
+										></i>
+									}
+								/>
+								<InputField
+									label="Birth Date"
+									id="birthDate"
+									name="birthDate"
+									type="date"
+									icon="bi-calendar"
+									value={birthDate}
+									onChange={(e) => setBirthDate(e.target.value)}
+									error={birthDateError}
+								/>
+								<InputField
+									label="Phone"
+									id="phone"
+									name="phone"
+									type="tel"
+									icon="bi-phone"
+									value={phone}
+									onChange={(e) => setPhone(e.target.value)}
+									error={phoneError}
+								/>
+								<InputField
+									label="Address"
+									id="address"
+									name="address"
+									type="text"
+									icon="bi-pin"
+									value={address}
+									onChange={(e) => setAddress(e.target.value)}
+									error={addressError}
+								/>
 								<div>
-									<label
-										htmlFor="birthDate"
-										className="block text-sm font-medium text-gray-700"
-									>
-										Birth Date
-									</label>
-									<div className="relative mt-1 rounded-md shadow-sm">
-										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-											<i className="bi bi-calendar text-gray-400"></i>
-										</div>
-										<input
-											type="date"
-											id="birthDate"
-											name="birthDate"
-											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-green-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
-											required
-											value={birthDate}
-											placeholder="birth date"
-											onChange={(e) => setBirthDate(e.target.value)}
-										/>
-									</div>
-									{birthDateError && (
-										<p className="text-sm text-red-500">{birthDateError}</p>
-									)}
-								</div>
-								<div>
-									<label
-										htmlFor="phone"
-										className="block text-sm font-medium text-gray-700"
-									>
-										Phone
-									</label>
-									<div className="relative mt-1 rounded-md">
-										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-											<i className="bi bi-phone text-gray-400"></i>
-										</div>
-										<input
-											type="tel"
-											id="phone"
-											name="phone"
-											autoComplete="tel"
-											required
-											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
-											value={phone}
-											placeholder="phone"
-											onChange={(e) => setPhone(e.target.value)}
-										/>
-									</div>
-									{phoneError && (
-										<p className="text-sm text-red-500">{phoneError}</p>
-									)}
-								</div>
-								<div>
-									<label
-										htmlFor="address"
-										className="block text-sm font-medium text-gray-700"
-									>
-										Address
-									</label>
-									<div className="relative mt-1 rounded">
-										<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-											<i className="bi bi-pin text-gray-400"></i>
-										</div>
-										<input
-											type="text"
-											id="address"
-											name="address"
-											autoComplete="address"
-											required
-											placeholder="address"
-											className="block w-full appearance-none rounded-md border border-gray-300 py-2 pl-10 pr-3 placeholder-gray-400 shadow-sm focus:border-red-500 focus:outline-none focus:ring-gray-500 sm:text-sm"
-											value={address}
-											onChange={(e) => setAddress(e.target.value)}
-										/>
-									</div>
-									{addressError && (
-										<p className="text-sm text-red-500">{addressError}</p>
-									)}
-								</div>
-								<div>
-									<fieldset>
-										<legend className="block text-sm font-medium text-gray-700">
-											Gender
-										</legend>
-										<div className="mt-1 grid grid-cols-3 gap-4">
-											<div className="flex items-center">
+									<label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+									<div className="flex space-x-4">
+										{['Male', 'Female', 'Other'].map((option) => (
+											<label key={option} className="flex items-center">
 												<input
-													id="gender-male"
-													name="gender"
 													type="radio"
-													className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
-													value="male"
-													checked={gender === "male"}
-													onChange={handleGenderChange}
-												/>
-												<label
-													htmlFor="gender-male"
-													className="ml-2 block text-sm text-gray-900"
-												>
-													Male
-												</label>
-											</div>
-											<div className="flex items-center">
-												<input
-													id="gender-female"
 													name="gender"
-													type="radio"
-													className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
-													value="female"
-													checked={gender === "female"}
+													value={option.toLowerCase()}
+													checked={gender === option.toLowerCase()}
 													onChange={handleGenderChange}
+													className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
 												/>
-												<label
-													htmlFor="gender-female"
-													className="ml-2 block text-sm text-gray-900"
-												>
-													Female
-												</label>
-											</div>
-											<div className="flex items-center">
-												<input
-													id="gender-other"
-													name="gender"
-													type="radio"
-													className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
-													value="other"
-													checked={gender === "other"}
-													onChange={handleGenderChange}
-												/>
-												<label
-													htmlFor="gender-other"
-													className="ml-2 block text-sm text-gray-900"
-												>
-													Other
-												</label>
-											</div>
-										</div>
-									</fieldset>
-									{genderError && (
-										<p className="text-sm text-red-500">{genderError}</p>
-									)}
+												<span className="ml-2 text-sm text-gray-700">{option}</span>
+											</label>
+										))}
+									</div>
+									{genderError && <p className="mt-1 text-sm text-red-600">{genderError}</p>}
 								</div>
 								<div className="flex items-center">
 									<input
@@ -553,40 +368,22 @@ const Register = () => {
 										name="acceptTerms"
 										type="checkbox"
 										required
-										className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
+										className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
 									/>
-									<label
-										htmlFor="acceptTerms"
-										className="ml-2 block text-sm text-gray-900"
-									>
-										I accept the{" "}
-										<a href="/" className="text-blue-600">
-											Terms of Use
-										</a>{" "}
-										&{" "}
-										<a href="/" className="text-blue-600">
-											Privacy Policy
-										</a>
+									<label htmlFor="acceptTerms" className="ml-2 block text-sm text-gray-900">
+										I accept the <a href="/" className="text-indigo-600 hover:text-indigo-500">Terms of Use</a> & <a href="/" className="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
 									</label>
 								</div>
-								<div>
-									<button
-										type="submit"
-										className="px- 4 flex w-full justify-center
-                    rounded-md border border-transparent bg-blue-600 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-									>
-										Register Now
-									</button>
-								</div>
-							</div>
-						</form>
-						<div className="mt-4 text-center">
-							<p className="text-sm">
-								Already have an account?{" "}
-								<Link
-									to="/login"
-									className="font-medium text-blue-600 hover:text-blue-500"
+								<button
+									type="submit"
+									className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
 								>
+									Register Now
+								</button>
+							</form>
+							<p className="mt-8 text-center text-sm text-gray-600">
+								Already have an account?{' '}
+								<Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
 									Log in
 								</Link>
 							</p>
@@ -596,6 +393,37 @@ const Register = () => {
 			</div>
 		</>
 	);
-};
+}
 
+
+const InputField = ({ label, id, name, type, icon, value, onChange, error, rightIcon }) => (
+	<div>
+	  <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
+		{label}
+	  </label>
+	  <div className="relative rounded-md shadow-sm">
+		<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+		  <i className={`bi ${icon} text-gray-400`}></i>
+		</div>
+		<input
+		  type={type}
+		  id={id}
+		  name={name}
+		  value={value}
+		  onChange={onChange}
+		  className={`block w-full pl-10 pr-10 py-2 sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 ${error ? 'border-red-300' : ''}`}
+		  placeholder={label}
+		/>
+		{rightIcon && (
+		  <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+			{rightIcon}
+		  </div>
+		)}
+	  </div>
+	  {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+	</div>
+  )
+  
+
+	
 export default Register;

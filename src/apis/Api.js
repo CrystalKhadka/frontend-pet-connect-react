@@ -86,3 +86,44 @@ export const filterBySpeciesApi = (species, page, limit, search) =>
 	Api.get(
 		`/api/pet/filter/species?species=${species}&page=${page}&limit=${limit}&search=${search}`,
 	);
+
+// set pet status
+export const setPetStatusApi = (id, status) =>
+	Api.put(`/api/pet/status/${id}`, status, config);
+
+// get all pets by status: adopted
+export const getAllPetsByStatusApi = (id) =>
+	Api.get(`/api/pet/all/adopted/${id}`, config);
+
+// Get adopted pets
+export const getAdoptedPetsApi = () => Api.get(`/api/pet/adopted/all`, config);
+
+// Set pet adopted
+export const setPetAdoptedApi = (data) =>
+	Api.put(`/api/pet//set/adopted`, data, config);
+
+// ------------------- Adoption API -------------------
+
+// Adoption Apis
+export const addAdoptionApi = (data) =>
+	Api.post("/api/adoption/create", data, config);
+
+// Get all adoption
+export const getAllAdoptionApi = (id) =>
+	Api.get(`/api/adoption/get/${id}`, config);
+
+// Get adoption by id
+export const countAdoptionApi = () => Api.get(`/api/adoption/count`, config);
+
+// Set adoption status
+export const setAdoptionStatusApi = (id, status) =>
+	Api.put(`/api/adoption/status/${id}`, status, config);
+
+// ------------------- Favorite API -------------------
+export const addFavoriteApi = (data) =>
+	Api.post("/api/favorite/add", data, config);
+
+export const getFavoriteApi = () => Api.get(`/api/favorite/get`, config);
+
+export const deleteFavoriteApi = (id) =>
+	Api.delete(`/api/favorite/delete/${id}`, config);
