@@ -1,36 +1,35 @@
-// src/components/Chat/AllUsers.jsx
-import React, { useEffect, useState } from "react";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, List, Spin } from "antd";
+import React from "react";
 import { Link } from "react-router-dom";
-import { getAllUserApi } from "../../apis/Api";
 
-const AllUsers = () => {
-	const [users, setUsers] = useState([]);
-
-	useEffect(() => {
-		getAllUserApi()
-			.then((res) => {
-				setUsers(res.data.data);
-			})
-			.catch((err) => {
-				console.log(err.response.data);
-			});
-	}, []);
-
+const AllUsers = ({ className, loading, users, onCLick }) => {
 	return (
-		<div className="w-1/4 bg-gray-200 p-4">
+		<div className={`rounded-lg bg-white p-4 shadow ${className}`}>
 			<h2 className="mb-4 text-xl font-bold">All Users</h2>
-			<ul>
-				{users.map((user) => (
-					<li key={user._id} className="mb-2">
-						<Link
-							to={`/chat/${user._id}`}
-							className="text-blue-500 hover:underline"
-						>
-							{user.firstName}
-						</Link>
-					</li>
-				))}
-			</ul>
+			{loading ? (
+				<div className="flex justify-center">
+					<Spin />
+				</div>
+			) : (
+				<List
+					dataSource={users}
+					renderItem={(user) => (
+						<List.Item>
+							<Link
+								to={`/chat/${user._id}`}
+								className="w-full"
+								onClick={onCLick}
+							>
+								<List.Item.Meta
+									avatar={<Avatar icon={<UserOutlined />} />}
+									title={`${user.firstName} ${user.lastName} (${user.role})`}
+								/>
+							</Link>
+						</List.Item>
+					)}
+				/>
+			)}
 		</div>
 	);
 };

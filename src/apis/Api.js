@@ -137,4 +137,5 @@ export const deleteFavoriteApi = (id) =>
 // Chat api
 export const sendMessageApi = (message) =>
 	Api.post("/api/messages/send", message, config);
-export const getMessagesApi = (id) => Api.get(`/api/messages/get/${id}`, config);
+export const getMessagesApi = (id, page) =>
+	Api.get(`/api/messages/get/${id}?page=${page}`, config);
