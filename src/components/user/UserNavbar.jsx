@@ -76,7 +76,10 @@ const UserNavbar = () => {
 					/>
 
 					<div className="hidden space-x-4 text-white md:flex">
-						<NavLink to="/user/dashboard" className={activeLinkClass}>
+						<NavLink
+							to={user ? "/user/dashboard" : "/"}
+							className={activeLinkClass}
+						>
 							Home
 						</NavLink>
 						<NavLink to="/user/pet/list" className={activeLinkClass}>

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import { SearchIcon } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";

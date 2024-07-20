@@ -10,7 +10,7 @@ import {
 	FaUser,
 } from "react-icons/fa";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useTheme } from "../../theme/ThemeContext/ThemeContext";
 
 const AdminNavbar = () => {
@@ -20,13 +20,25 @@ const AdminNavbar = () => {
 	);
 	const [isOpen, setIsOpen] = useState(false);
 	const user = JSON.parse(localStorage.getItem("user"));
+	const location = useLocation();
 
 	useEffect(() => {
-		const handleResize = () => setIsOpen(window.innerWidth > 768);
+		const handleResize = () => {
+			if (window.innerWidth >= 768) {
+				if (location.pathname.includes("/chat")) {
+					setIsOpen(false);
+				} else {
+					setIsOpen(true);
+				}
+			} else {
+				setIsOpen(false);
+			}
+		};
 		window.addEventListener("resize", handleResize);
 		handleResize();
+
 		return () => window.removeEventListener("resize", handleResize);
-	}, []);
+	}, [location.pathname]);
 
 	const NavItem = ({ to, icon, children }) => (
 		<NavLink
@@ -50,11 +62,13 @@ const AdminNavbar = () => {
 		window.location.reload();
 	};
 
+	const isChatPage = location.pathname.includes("/chat");
+
 	return (
 		<div className="relative">
 			<button
 				onClick={() => setIsOpen(!isOpen)}
-				className="fixed left-4 top-4 z-50 rounded-full bg-blue-600 p-2 text-white shadow-lg md:hidden"
+				className={`fixed left-4 top-4 z-50 rounded-full bg-blue-600 p-2 text-white shadow-lg ${isChatPage ? "" : "md:hidden"}`}
 			>
 				{isOpen ? <HiX size={24} /> : <HiMenuAlt3 size={24} />}
 			</button>
@@ -62,7 +76,7 @@ const AdminNavbar = () => {
 			<aside
 				className={`fixed inset-y-0 left-0 z-40 w-64 transform overflow-y-auto bg-white shadow-xl transition-all duration-300 ease-in-out dark:bg-gray-800 ${
 					isOpen ? "translate-x-0" : "-translate-x-full"
-				} md:translate-x-0`}
+				} `}
 			>
 				<div className="flex h-full flex-col justify-between p-4">
 					<div>
@@ -91,7 +105,7 @@ const AdminNavbar = () => {
 							>
 								Applications
 							</NavItem>
-							<NavItem to="/chat" icon={<FaEnvelope className="text-xl" />}>
+							<NavItem to="/chat/all" icon={<FaEnvelope className="text-xl" />}>
 								Messaging
 							</NavItem>
 						</nav>

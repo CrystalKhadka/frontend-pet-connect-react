@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseurl = "http://192.168.18.7:5000";
-const baseurl = "http://localhost:5000";
+const baseurl = "http://192.168.18.7:5000";
+// const baseurl = "http://localhost:5000";
 
 // Creating backend config
 const Api = axios.create({
@@ -17,6 +17,8 @@ const config = {
 		authorization: `Bearer ${localStorage.getItem("token")}`,
 	},
 };
+
+export const url = baseurl;
 
 export const petImageUrl = baseurl + "/pets";
 
@@ -139,3 +141,17 @@ export const sendMessageApi = (message) =>
 	Api.post("/api/messages/send", message, config);
 export const getMessagesApi = (id, page) =>
 	Api.get(`/api/messages/get/${id}?page=${page}`, config);
+
+export const getByIdApi = (id) =>
+	Api.get(`/api/messages/get_by_id/${id}`, config);
+
+// Notification
+export const getNotificationApi = () =>
+	Api.get(`/api/notifications/get`, config);
+
+export const readNotificationApi = (id) =>
+	Api.put(`/api/notifications/read/${id}`, config);
+
+// send notification
+export const sendNotificationApi = (data) =>
+	Api.post(`/api/notifications/send`, data, config);

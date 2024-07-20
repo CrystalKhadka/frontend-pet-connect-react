@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { AdjustmentsIcon, SearchIcon } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
 import {

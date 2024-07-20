@@ -1,6 +1,10 @@
+import "animate.css";
+import { useEffect } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { io } from "socket.io-client";
+import { url } from "./apis/Api";
 import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
@@ -22,13 +26,17 @@ import PetList from "./pages/User/PetList/PetList";
 import AdminRoutes from "./protected/Admin/AdminRoutes";
 import UserRoutes from "./protected/User/UserRoutes";
 import { ThemeProvider } from "./theme/ThemeContext/ThemeContext";
+/* eslint-disable no-unused-vars */
+
 
 function App() {
+	
 	return (
 		<ThemeProvider>
 			<Router>
 				<Navbar />
 				<ToastContainer />
+
 				<Routes>
 					<Route path="/" element={<Homepage />} />
 					<Route path="/register" element={<Register />} />
