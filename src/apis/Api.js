@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseurl = "http://192.168.18.7:5000";
-// const baseurl = "http://localhost:5000";
+// const baseurl = "http://192.168.18.7:5000";
+const baseurl = "http://localhost:5000";
 
 // Creating backend config
 const Api = axios.create({
@@ -18,9 +18,21 @@ const config = {
 	},
 };
 
+const jsonConfig = {
+	headers: {
+		"Content-Type": "application/json",
+		authorization: `Bearer ${localStorage.getItem("token")}`,
+	},
+};
+
 export const url = baseurl;
 
+// Pet image
 export const petImageUrl = baseurl + "/pets";
+
+// Message file
+export const messageFileUrl = baseurl + "/messages/files";
+export const messageImageUrl = baseurl + "/messages/images";
 
 // Test API
 export const testApi = () => Api.get("/test");
@@ -114,7 +126,7 @@ export const setPetAdoptedApi = (data) =>
 
 // Adoption Apis
 export const addAdoptionApi = (data) =>
-	Api.post("/api/adoption/create", data, config);
+	Api.post("/api/adoption/create", data, jsonConfig);
 
 // Get all adoption
 export const getAllAdoptionApi = (id) =>
@@ -144,6 +156,17 @@ export const getMessagesApi = (id, page) =>
 
 export const getByIdApi = (id) =>
 	Api.get(`/api/messages/get_by_id/${id}`, config);
+
+export const updateMessageApi = (id, message) =>
+	Api.put(`/api/messages/update/${id}`, message, config);
+
+export const deleteMessageApi = (id) =>
+	Api.delete(`/api/messages/delete/${id}`, config);
+
+export const getChatListApi = () => Api.get(`/api/messages/get`, config);
+
+export const sendFileApi = (data, config) =>
+	Api.post(`/api/messages/send/file`, data, config);
 
 // Notification
 export const getNotificationApi = () =>
