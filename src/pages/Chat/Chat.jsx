@@ -3,8 +3,6 @@ import EmojiPicker from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import io from "socket.io-client";
 import {
 	deleteMessageApi,
 	getAllUserApi,
@@ -12,20 +10,20 @@ import {
 	getUserByIdApi,
 	sendFileApi,
 	sendMessageApi,
+	sendNotificationApi,
 	updateMessageApi,
-	url,
 } from "../../apis/Api";
 import AllUsers from "../../components/Chat/AllUsers";
 import ChatHeader from "../../components/Chat/ChatHeader";
 import ChatInput from "../../components/Chat/ChatInput";
 import ChatMessages from "../../components/Chat/ChatMessages";
 import "./Chat.css";
+import { toast } from "react-toastify";
 
 const { Content } = Layout;
 const currentUser = JSON.parse(localStorage.getItem("user"));
-const socket = io(url, { query: { id: currentUser?.id ?? "" } });
 
-const Chat = () => {
+const Chat = ({ socket }) => {
 	const [messages, setMessages] = useState([]);
 	const [user, setUser] = useState(null);
 	const [page, setPage] = useState(1);
@@ -42,6 +40,10 @@ const Chat = () => {
 	const params = useParams();
 	const typingTimeoutRef = useRef(null);
 	const chatContainerRef = useRef(null);
+
+	useEffect(() => {
+		socket.emit("newUser", currentUser.id);
+	}, [socket]);
 
 	useEffect(() => {
 		getAllUserApi()
@@ -86,6 +88,9 @@ const Chat = () => {
 		socket.on("messageUpdated", handleMessageUpdate);
 		socket.on("messageDeleted", handleMessageDelete);
 		socket.on("typingNow", handleTypingIndicator);
+		socket.on("receiveMessage", (message) => {
+			toast.info(`${message.sender.firstName} sent you a message`);
+		});
 
 		return () => {
 			socket.off("message", handleNewMessage);
@@ -101,8 +106,26 @@ const Chat = () => {
 			params.id === message.receiver._id
 		) {
 			setMessages((prevMessages) => [...prevMessages, message]);
+			const notification = {
+				message: `You have a new message from ${message.sender.firstName}`,
+				receiver: message.receiver._id,
+			};
+			handleNotification(notification);
+
 			scrollToBottom();
 		}
+	};
+
+	const handleNotification = (notification) => {
+		sendNotificationApi(notification)
+			.then((res) => {
+				console.log(res);
+				const notification = res.data.newNotification;
+				socket.emit("sendNotification", notification);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	};
 
 	const handleMessageUpdate = (updatedMessage) => {
@@ -152,7 +175,7 @@ const Chat = () => {
 
 		sendMessageApi(data)
 			.then((res) => {
-				socket.emit("sendMessage", res.data.newMessage);
+				// socket.emit("sendMessage", res.data.newMessage);
 				scrollToBottom();
 			})
 			.catch((err) => {

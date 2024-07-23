@@ -1,10 +1,11 @@
 import {
 	HeartOutlined,
 	LogoutOutlined,
+	MenuOutlined,
 	SettingOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Modal, Select } from "antd";
+import { Button, Drawer, Dropdown, Menu, Modal, Select } from "antd";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
@@ -17,15 +18,19 @@ const UserNavbar = () => {
 	);
 	const user = JSON.parse(localStorage.getItem("user"));
 	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
 
 	const showModal = () => setIsModalVisible(true);
 	const handleCancel = () => setIsModalVisible(false);
+	const showMobileMenu = () => setMobileMenuVisible(true);
+	const hideMobileMenu = () => setMobileMenuVisible(false);
 
 	const handleThemeChange = (value) => {
 		setTheme(value);
 		toggleTheme(value);
 		handleCancel();
 	};
+
 	// Custom class for active link
 	const activeLinkClass = ({ isActive }) =>
 		isActive
@@ -75,6 +80,15 @@ const UserNavbar = () => {
 						alt="App Logo"
 					/>
 
+					{/* Mobile menu button */}
+					<Button
+						type="text"
+						icon={<MenuOutlined />}
+						onClick={showMobileMenu}
+						className="text-gray-800 dark:text-white md:hidden"
+					/>
+
+					{/* Desktop menu */}
 					<div className="hidden space-x-4 text-white md:flex">
 						<NavLink
 							to={user ? "/user/dashboard" : "/"}
@@ -95,7 +109,7 @@ const UserNavbar = () => {
 						)}
 					</div>
 
-					<div className="flex items-center text-white">
+					<div className="hidden items-center text-white md:flex">
 						{user ? (
 							<Dropdown overlay={menu} placement="bottomRight" arrow>
 								<Button type="text" className="text-gray-800 dark:text-white">
@@ -115,6 +129,92 @@ const UserNavbar = () => {
 					</div>
 				</div>
 			</div>
+
+			{/* Mobile menu drawer */}
+			<Drawer
+				title="Menu"
+				placement="right"
+				onClose={hideMobileMenu}
+				visible={mobileMenuVisible}
+			>
+				<Menu mode="vertical">
+					<Menu.Item key="home">
+						<NavLink
+							to={user ? "/user/dashboard" : "/"}
+							onClick={hideMobileMenu}
+						>
+							Home
+						</NavLink>
+					</Menu.Item>
+					<Menu.Item key="petList">
+						<NavLink to="/user/pet/list" onClick={hideMobileMenu}>
+							Pet List
+						</NavLink>
+					</Menu.Item>
+					<Menu.Item key="settings">
+						<NavLink to="/settings" onClick={hideMobileMenu}>
+							Settings
+						</NavLink>
+					</Menu.Item>
+					{user && (
+						<Menu.Item key="chat">
+							<NavLink to="/chat/all" onClick={hideMobileMenu}>
+								Chat
+							</NavLink>
+						</Menu.Item>
+					)}
+					{user ? (
+						<>
+							<Menu.Divider />
+							<Menu.Item key="profile" icon={<UserOutlined />}>
+								<NavLink to="/profile" onClick={hideMobileMenu}>
+									Profile
+								</NavLink>
+							</Menu.Item>
+							<Menu.Item key="myPets" icon={<SettingOutlined />}>
+								<NavLink to="/my-pets" onClick={hideMobileMenu}>
+									My Pets
+								</NavLink>
+							</Menu.Item>
+							<Menu.Item key="favorite" icon={<HeartOutlined />}>
+								<NavLink to="/user/favorite" onClick={hideMobileMenu}>
+									Favorite
+								</NavLink>
+							</Menu.Item>
+							<Menu.Item
+								key="theme"
+								onClick={() => {
+									showModal();
+									hideMobileMenu();
+								}}
+							>
+								Theme
+							</Menu.Item>
+							<Menu.Item
+								key="logout"
+								icon={<LogoutOutlined />}
+								onClick={handleLogout}
+							>
+								Sign out
+							</Menu.Item>
+						</>
+					) : (
+						<>
+							<Menu.Divider />
+							<Menu.Item key="login">
+								<NavLink to="/login" onClick={hideMobileMenu}>
+									Login
+								</NavLink>
+							</Menu.Item>
+							<Menu.Item key="register">
+								<NavLink to="/register" onClick={hideMobileMenu}>
+									Register
+								</NavLink>
+							</Menu.Item>
+						</>
+					)}
+				</Menu>
+			</Drawer>
 
 			<Modal
 				title="Choose Theme"

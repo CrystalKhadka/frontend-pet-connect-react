@@ -1,7 +1,6 @@
 import "animate.css";
-import { useEffect } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { io } from "socket.io-client";
 import { url } from "./apis/Api";
@@ -28,13 +27,14 @@ import UserRoutes from "./protected/User/UserRoutes";
 import { ThemeProvider } from "./theme/ThemeContext/ThemeContext";
 /* eslint-disable no-unused-vars */
 
+const currentUser = JSON.parse(localStorage.getItem("user"));
+export const socket = io(url, { query: { id: currentUser?.id ?? "" } });
 
 function App() {
-	
 	return (
 		<ThemeProvider>
 			<Router>
-				<Navbar />
+				<Navbar socket={socket} />
 				<ToastContainer />
 
 				<Routes>
@@ -42,7 +42,7 @@ function App() {
 					<Route path="/register" element={<Register />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/forgot" element={<ForgotPassword />} />
-					<Route path="/chat/:id" element={<Chat />} />
+					<Route path="/chat/:id" element={<Chat socket={socket} />} />
 
 					<Route element={<UserRoutes />}>
 						<Route path="/user/dashboard" element={<UserDashboard />} />

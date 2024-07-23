@@ -177,4 +177,4 @@ export const readNotificationApi = (id) =>
 
 // send notification
 export const sendNotificationApi = (data) =>
-	Api.post(`/api/notifications/send`, data, config);
+	Api.post(`/api/notifications/send`, data, jsonConfig);
