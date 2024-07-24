@@ -19,6 +19,9 @@ import Favorite from "./pages/Favorite/Favorite";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Homepage from "./pages/Homepage/Homepage";
 import Login from "./pages/Login/Login";
+import AdoptionPayment from "./pages/Payment/AdoptionPayment";
+import PaymentFailure from "./pages/Payment/PaymentFailure";
+import PaymentSuccess from "./pages/Payment/PaymentSuccess";
 import Register from "./pages/Register/Register";
 import UserDashboard from "./pages/User/Dashboard/UserDashboard";
 import PetList from "./pages/User/PetList/PetList";
@@ -50,6 +53,10 @@ function App() {
 						<Route path="/user/adoption/form/:id" element={<AdoptionForm />} />
 						{/* Favorite  */}
 						<Route path="/user/favorite" element={<Favorite />} />
+						{/* Payment/Donation */}
+						<Route path="/user/payment/:petId" element={<AdoptionPayment />} />
+						<Route path="/payment-success" element={<PaymentSuccess />} />
+						<Route path="/payment-failure/:id" element={<PaymentFailure />} />
 					</Route>
 
 					{/* Owner Routes */}

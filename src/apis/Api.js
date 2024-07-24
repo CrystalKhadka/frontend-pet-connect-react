@@ -178,3 +178,18 @@ export const readNotificationApi = (id) =>
 // send notification
 export const sendNotificationApi = (data) =>
 	Api.post(`/api/notifications/send`, data, jsonConfig);
+
+// Payment api
+export const createPaymentApi = (data) =>
+	Api.post(`/api/payment/add`, data, jsonConfig);
+
+const KhaltiApi = axios.create({
+	baseURL: "https://a.khalti.com/",
+	headers: {
+		"Content-Type": "application/json",
+		authorization: `key e1dc6acc872c4421ad0f92374be1299a`,
+	},
+});
+
+export const initiateKhaltiPayment = (data) =>
+	KhaltiApi.post("api/v2/epayment/initiate/", data);
