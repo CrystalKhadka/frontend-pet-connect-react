@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseurl = "http://192.168.18.7:5000";
-const baseurl = "http://localhost:5000";
+const baseurl = "http://192.168.137.1:5000";
+// const baseurl = "http://localhost:5000";
 
 // Creating backend config
 const Api = axios.create({

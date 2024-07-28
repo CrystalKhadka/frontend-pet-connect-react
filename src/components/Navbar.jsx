@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react";
+import { toast } from "react-toastify";
 import AdminNavbar from "./admin/AdminNavbar";
 import UserNavbar from "./user/UserNavbar";
-import { toast } from "react-toastify";
 
 const Navbar = ({ socket }) => {
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -18,12 +18,18 @@ const Navbar = ({ socket }) => {
 		if (socket) {
 			socket.on("receiveNotification", (notification) => {
 				console.log(notification);
-				toast.info(notification.message)
-					
+				toast.info(notification.message);
 			});
+
+			socket.on("sendTest", (data) => {
+				toast.info(data);
+			});
+
+			socket.emit("test", "Connected to website");
 
 			return () => {
 				socket.off("receiveNotification");
+				socket.off("sendTest");
 			};
 		}
 	}, [socket]);

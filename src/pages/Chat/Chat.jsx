@@ -1,8 +1,10 @@
-import { Input, Layout, Modal, Spin, Switch } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
+import { Button, Input, Layout, Modal, Spin, Switch } from "antd";
 import EmojiPicker from "emoji-picker-react";
 import React, { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
 	deleteMessageApi,
 	getAllUserApi,
@@ -18,7 +20,6 @@ import ChatHeader from "../../components/Chat/ChatHeader";
 import ChatInput from "../../components/Chat/ChatInput";
 import ChatMessages from "../../components/Chat/ChatMessages";
 import "./Chat.css";
-import { toast } from "react-toastify";
 
 const { Content } = Layout;
 const currentUser = JSON.parse(localStorage.getItem("user"));
@@ -40,6 +41,7 @@ const Chat = ({ socket }) => {
 	const params = useParams();
 	const typingTimeoutRef = useRef(null);
 	const chatContainerRef = useRef(null);
+	const [showUsers, setShowUsers] = useState(false);
 
 	useEffect(() => {
 		socket.emit("newUser", currentUser.id);
@@ -267,19 +269,32 @@ const Chat = ({ socket }) => {
 		}
 	};
 
+	const toggleUsers = () => {
+		setShowUsers(!showUsers);
+	};
 	return (
 		<Layout
 			className={`h-screen ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100"}`}
 		>
 			<Content className="p-4 md:p-6 lg:p-8">
 				<div className="mx-auto flex h-full max-w-6xl flex-col md:flex-row">
+					<Button
+						icon={<MenuOutlined />}
+						onClick={toggleUsers}
+						className="mb-4 md:hidden"
+					>
+						Toggle Users
+					</Button>
 					<AllUsers
-						className="mb-4 md:mb-0 md:mr-4 md:w-1/3 lg:w-1/4"
+						className={`mb-4 w-full md:mb-0 md:mr-4 md:w-1/3 lg:w-1/4 ${
+							showUsers ? "block" : "hidden md:block"
+						}`}
 						users={users}
 						loading={loading}
 						onClick={() => {
 							setMessages([]);
 							setPage(1);
+							setShowUsers(false); // Hide users list on mobile after selecting a user
 						}}
 						activeUser={params.id}
 						darkMode={darkMode}

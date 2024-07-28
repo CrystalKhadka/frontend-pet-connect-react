@@ -49,7 +49,7 @@ const UserNavbar = () => {
 				<NavLink to="/profile">Profile</NavLink>
 			</Menu.Item>
 			<Menu.Item key="2" icon={<SettingOutlined />}>
-				<NavLink to="/my-pets">My Pets</NavLink>
+				<NavLink to="/user/myPet">My Pets</NavLink>
 			</Menu.Item>
 			<Menu.Item key="3" icon={<HeartOutlined />}>
 				<NavLink to="/user/favorite">Favorite</NavLink>

@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/Admin/Dashboard/AdminDashboard";
 import MyPetList from "./pages/Admin/MyPet/PetList.jsx/MyPetList";
 import UpdatePet from "./pages/Admin/MyPet/UpdatePet/UpdatePet";
 import PetApplicationList from "./pages/Admin/PetApplicationList/PetApplicationList";
+import MyAdoptedPets from "./pages/AdoptedPets/MyAdoptedPets";
 import AdoptionForm from "./pages/Adoption/AdoptionForm";
 import Chat from "./pages/Chat/Chat";
 import Favorite from "./pages/Favorite/Favorite";
@@ -53,6 +54,8 @@ function App() {
 						<Route path="/user/adoption/form/:id" element={<AdoptionForm />} />
 						{/* Favorite  */}
 						<Route path="/user/favorite" element={<Favorite />} />
+						{/* my pets */}
+						<Route path="/user/myPet" element={<MyAdoptedPets />} />
 						{/* Payment/Donation */}
 						<Route path="/user/payment/:petId" element={<AdoptionPayment />} />
 						<Route path="/payment-success" element={<PaymentSuccess />} />
