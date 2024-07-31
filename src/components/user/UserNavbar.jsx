@@ -7,8 +7,10 @@ import {
 } from "@ant-design/icons";
 import { Button, Drawer, Dropdown, Menu, Modal, Select } from "antd";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getCurrentUserApi, profileImageUrl } from "../../apis/Api";
 import { useTheme } from "../../theme/ThemeContext/ThemeContext";
 
 const UserNavbar = () => {
@@ -16,7 +18,7 @@ const UserNavbar = () => {
 	const [theme, setTheme] = useState(
 		localStorage.getItem("theme") || "default",
 	);
-	const user = JSON.parse(localStorage.getItem("user"));
+
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
 
@@ -30,6 +32,16 @@ const UserNavbar = () => {
 		toggleTheme(value);
 		handleCancel();
 	};
+	const [user, setUser] = useState(null);
+	useEffect(() => {
+		getCurrentUserApi()
+			.then((res) => {
+				setUser(res.data.data);
+			})
+			.catch((err) => {
+				toast.error("Failed to load user profile");
+			});
+	}, []);
 
 	// Custom class for active link
 	const activeLinkClass = ({ isActive }) =>
@@ -113,7 +125,19 @@ const UserNavbar = () => {
 						{user ? (
 							<Dropdown overlay={menu} placement="bottomRight" arrow>
 								<Button type="text" className="text-gray-800 dark:text-white">
-									{user.firstName} <UserOutlined />
+									<img
+										src={
+											user.image
+												? `${profileImageUrl}/${user.image}`
+												: "/avatar.png"
+										}
+										alt={
+											user.firstName + " " + user.lastName + " profile image"
+										}
+										className="
+										w-8"
+									/>
+									{user.firstName}
 								</Button>
 							</Dropdown>
 						) : (

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseurl = "http://192.168.137.1:5000";
-// const baseurl = "http://localhost:5000";
+// const baseurl = "http://192.168.137.1:5000";
+const baseurl = "http://localhost:5000";
 
 // Creating backend config
 const Api = axios.create({
@@ -26,6 +26,9 @@ const jsonConfig = {
 };
 
 export const url = baseurl;
+
+// Profile image
+export const profileImageUrl = baseurl + "/profile";
 
 // Pet image
 export const petImageUrl = baseurl + "/pets";
@@ -69,6 +72,16 @@ export const getUserByIdApi = (id) => Api.get(`/api/user/get/${id}`, config);
 // get all user
 export const getAllUserApi = () => Api.get("/api/user/all", config);
 
+// get current user
+export const getCurrentUserApi = () => Api.get("/api/user/getMe", config);
+
+// update user profile
+export const updateUserProfileApi = (data) =>
+	Api.put("/api/user/update", data, config);
+
+// upload image
+export const uploadImageApi = (data) =>
+	Api.post("/api/user/upload", data, config);
 // ------------------- Pet API -------------------
 // Add pet API
 export const addPetApi = (data) => Api.post("/api/pet/add", data);

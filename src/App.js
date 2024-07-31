@@ -23,6 +23,7 @@ import Login from "./pages/Login/Login";
 import AdoptionPayment from "./pages/Payment/AdoptionPayment";
 import PaymentFailure from "./pages/Payment/PaymentFailure";
 import PaymentSuccess from "./pages/Payment/PaymentSuccess";
+import Profile from "./pages/profile/Profile";
 import Register from "./pages/Register/Register";
 import UserDashboard from "./pages/User/Dashboard/UserDashboard";
 import PetList from "./pages/User/PetList/PetList";
@@ -47,6 +48,7 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/forgot" element={<ForgotPassword />} />
 					<Route path="/chat/:id" element={<Chat socket={socket} />} />
+					<Route path="/profile" element={<Profile />} />
 
 					<Route element={<UserRoutes />}>
 						<Route path="/user/dashboard" element={<UserDashboard />} />
