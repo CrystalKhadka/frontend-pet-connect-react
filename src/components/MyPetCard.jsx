@@ -2,52 +2,72 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { petImageUrl } from "../apis/Api";
 
-const MyPetCard = ({ pet }) => {
+const MyPetCard = ({ singleAdoption }) => {
 	return (
-		<div className="mb-4 overflow-hidden rounded-lg bg-white shadow-md">
+		<div className="overflow-hidden rounded-xl bg-white shadow-lg transition-transform duration-300 hover:scale-105">
 			<div className="relative">
 				<img
-					className="h-48 w-full object-cover"
-					src={`${petImageUrl}/${pet.petImage}`}
-					alt={pet.petName}
+					className="h-56 w-full object-cover"
+					src={`${petImageUrl}/${singleAdoption.pet.petImage}`}
+					alt={singleAdoption.pet.petName}
 				/>
-				<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-2">
-					<h2 className="text-xl font-bold text-white">{pet.petName}</h2>
-				</div>
-			</div>
-			<div className="p-4">
-				<div className="mb-2 flex justify-between text-sm text-gray-600">
-					<span>{pet.petSpecies}</span>
-					<span>{pet.petAge} months</span>
-				</div>
-				<div className="flex items-center">
-					<i className="bi bi-geo-alt mr-1 text-gray-500"></i>
-					<span className="text-sm text-gray-500">Kalanki (3.0 Km)</span>
-				</div>
-				{/* Status badge */}
-				{pet.status && (
-					<div
-						className={`mt-2 inline-block rounded-full px-2 py-1 text-xs font-semibold ${
-							pet.status === "adopted"
+				<div className="absolute right-0 top-0 m-2">
+					<span
+						className={`rounded-full px-2 py-1 text-xs font-semibold ${
+							singleAdoption.status === "approved"
 								? "bg-green-500 text-white"
-								: pet.status === "pending"
+								: singleAdoption.status === "pending"
 									? "bg-yellow-500 text-white"
 									: "bg-gray-200 text-gray-800"
 						}`}
 					>
-						{pet.status.charAt(0).toUpperCase() + pet.status.slice(1)}
+						{singleAdoption.status.charAt(0).toUpperCase() +
+							singleAdoption.status.slice(1)}
+					</span>
+				</div>
+			</div>
+			<div className="p-4">
+				<h2 className="mb-2 text-xl font-bold text-gray-800">
+					{singleAdoption.pet.petName}
+				</h2>
+				<div className="mb-3 grid grid-cols-2 gap-2 text-sm text-gray-600">
+					<div>
+						<span className="font-semibold">Species:</span>{" "}
+						{singleAdoption.pet.petSpecies}
 					</div>
-				)}
-				{/* Donation button */}
-				<div className="mt-4">
+					<div>
+						<span className="font-semibold">Age:</span>{" "}
+						{singleAdoption.pet.petAge} months
+					</div>
+					<div>
+						<span className="font-semibold">Breed:</span>{" "}
+						{singleAdoption.pet.petBreed}
+					</div>
+					<div>
+						<span className="font-semibold">Color:</span>{" "}
+						{singleAdoption.pet.petColor}
+					</div>
+				</div>
+				<p className="mb-4 text-sm text-gray-500">
+					{singleAdoption.pet.petDescription}
+				</p>
+				<div className="flex items-center justify-between">
 					<Link
-						to={`/user/payment/${pet._id}`}
-						className={`block w-full rounded-full py-2 text-center text-white ${
-							pet.status === "pending"
+						to={`/user/pet-details/${singleAdoption.pet._id}`}
+						className="text-sm font-semibold text-blue-500 hover:text-blue-700"
+					>
+						View Details
+					</Link>
+					<Link
+						to={`/user/payment/${singleAdoption.pet._id}`}
+						className={`rounded-full px-4 py-2 text-sm font-semibold text-white ${
+							singleAdoption.status === "pending"
 								? "cursor-not-allowed bg-gray-400"
 								: "bg-green-500 hover:bg-green-600"
 						}`}
-						onClick={(e) => pet.status === "pending" && e.preventDefault()}
+						onClick={(e) =>
+							singleAdoption.status === "pending" && e.preventDefault()
+						}
 					>
 						Donate
 					</Link>

@@ -1,35 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getAdoptionBySenderApi } from "../../apis/Api";
 import MyPetCard from "../../components/MyPetCard";
 
 const MyAdoptedPets = () => {
-	// Mock data - replace with actual API call
-	const adoptedPets = [
-		{
-			_id: 1,
-			petName: "Kitty",
-			petSpecies: "Cat",
-			petAge: 12,
-			petImage: "kitty.jpg",
-			status:'adopted'
-		},
-		{
-			_id: 2,
-			petName: "Curly",
-			petSpecies: "Dog",
-			petAge: 24,
-			petImage: "curly.jpg",
-			status:'pending'
-		},
-	];
+	// Using the provided JSON data
+
+	const [adoptedPets, setAdoptedPets] = useState([]);
+
+	useEffect(() => {
+		getAdoptionBySenderApi()
+			.then((res) => {
+				setAdoptedPets(res.data.adoption);
+			})
+			.catch((e) => {
+				console.error("Error fetching adopted pets:", e);
+			});
+	}, []);
 
 	return (
 		<div className="container mx-auto p-4">
-			<h1 className="mb-6 text-2xl font-bold">Adopted Pets</h1>
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-				{adoptedPets.map((pet) => (
-					<MyPetCard key={pet._id} pet={pet} />
-				))}
-			</div>
+			<h1 className="mb-6 text-center text-3xl font-bold text-gray-800">
+				My Adopted Pets
+			</h1>
+
+			{adoptedPets.length === 0 ? (
+				<p className="mt-8 text-center text-gray-600">
+					You haven't adopted any pets yet.
+				</p>
+			) : (
+				<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+					{adoptedPets.map((singleAdoption) => (
+						<MyPetCard
+							key={singleAdoption._id}
+							singleAdoption={singleAdoption}
+						/>
+					))}
+				</div>
+			)}
 		</div>
 	);
 };

@@ -45,7 +45,7 @@ const AdminAdoptionForm = () => {
 				if (status === "approved") {
 					setPetAdoptedApi({
 						petId: selectedApplication.pet._id,
-						userId: selectedApplication.formReceiver._id,
+						userId: selectedApplication.formSender._id,
 					});
 				}
 				setApplications(
@@ -81,13 +81,14 @@ const AdminAdoptionForm = () => {
 							className="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg"
 						>
 							<h3 className="mb-2 text-xl font-semibold">
-								{application.form.fname} {application.form.lname}
+								{application.formSender.firstName}{" "}
+								{application.formSender.lastName}
 							</h3>
 							<p className="text-sm text-gray-600">
 								Age: {application.form.age}
 							</p>
 							<p className="text-sm text-gray-600">
-								Email: {application.form.email}
+								Email: {application.formSender.email}
 							</p>
 							<p className="mt-2 text-sm">Reason: {application.form.reason}</p>
 							<div className="mt-4">

@@ -152,6 +152,10 @@ export const countAdoptionApi = () => Api.get(`/api/adoption/count`, config);
 export const setAdoptionStatusApi = (id, status) =>
 	Api.put(`/api/adoption/status/${id}`, status, config);
 
+// Get adoption by form sender
+export const getAdoptionBySenderApi = () =>
+	Api.get(`/api/adoption/form_sender`, config);
+
 // ------------------- Favorite API -------------------
 export const addFavoriteApi = (data) =>
 	Api.post("/api/favorite/add", data, config);

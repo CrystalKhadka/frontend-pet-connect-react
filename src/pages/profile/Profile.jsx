@@ -57,7 +57,7 @@ const Profile = () => {
 			newErrors.lastName = "Last name is required";
 			isValid = false;
 		}
-		if (userProfile.phone.trim() === "") {
+		if (userProfile.phone === "") {
 			newErrors.phone = "Phone number is required";
 			isValid = false;
 		}
