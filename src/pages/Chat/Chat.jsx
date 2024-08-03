@@ -60,6 +60,10 @@ const Chat = ({ socket }) => {
 	}, []);
 
 	useEffect(() => {
+		if (params.id === "all") {
+			setLoading(false);
+			return;
+		}
 		setLoading(true);
 
 		if (params.id === currentUser.id) {
@@ -306,6 +310,14 @@ const Chat = ({ socket }) => {
 							<div className="flex h-full items-center justify-center">
 								<Spin size="large" />
 							</div>
+						) : user == null ? (
+							<>
+								<div>
+									<h1 className="text-center text-2xl font-bold">
+										Select a user to start chatting
+									</h1>
+								</div>
+							</>
 						) : (
 							<>
 								<ChatHeader user={user} darkMode={darkMode} />
@@ -326,7 +338,10 @@ const Chat = ({ socket }) => {
 										loader={<h4>Loading...</h4>}
 										scrollableTarget="scrollableDiv"
 										inverse={true}
-										style={{ display: "flex", flexDirection: "column-reverse" }}
+										style={{
+											display: "flex",
+											flexDirection: "column-reverse",
+										}}
 									>
 										<ChatMessages
 											messages={messages}
