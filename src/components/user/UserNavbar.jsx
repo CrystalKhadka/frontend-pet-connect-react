@@ -34,13 +34,15 @@ const UserNavbar = () => {
 	};
 	const [user, setUser] = useState(null);
 	useEffect(() => {
-		getCurrentUserApi()
-			.then((res) => {
-				setUser(res.data.data);
-			})
-			.catch((err) => {
-				toast.error("Failed to load user profile");
-			});
+		if (localStorage.getItem("user") && localStorage.getItem("token")) {
+			getCurrentUserApi()
+				.then((res) => {
+					setUser(res.data.data);
+				})
+				.catch((err) => {
+					toast.error("Failed to load user profile");
+				});
+		}
 	}, []);
 
 	// Custom class for active link
@@ -196,7 +198,7 @@ const UserNavbar = () => {
 								</NavLink>
 							</Menu.Item>
 							<Menu.Item key="myPets" icon={<SettingOutlined />}>
-								<NavLink to="/my-pets" onClick={hideMobileMenu}>
+								<NavLink to="/user/myPet" onClick={hideMobileMenu}>
 									My Pets
 								</NavLink>
 							</Menu.Item>

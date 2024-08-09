@@ -31,40 +31,9 @@ const AdoptionPayment = () => {
 
 	const handleKhaltiPayment = async (payment) => {
 		try {
-			const data = {
-				return_url: "http://localhost:3000/payment-success",
-				website_url: "http://localhost:3000",
-				amount: payment.paymentAmount * 100,
-				purchase_order_id: payment._id,
-				purchase_order_name: "Pet Adoption",
-				customer_info: {
-					name: payment.user.firstName,
-					email: payment.user.email,
-					phone: payment.user.phone,
-				},
-				amount_breakdown: [
-					{
-						label: "Adoption Fee",
-						amount: payment.paymentAmount * 100,
-					},
-				],
-				product_details: [
-					{
-						identity: payment.pet._id,
-						name: payment.pet.petName,
-						total_price: payment.paymentAmount * 100,
-						quantity: 1,
-						unit_price: payment.paymentAmount * 100,
-					},
-				],
-				merchant_extra: {
-					petId: payment.pet._id,
-					petName: payment.pet.name,
-					adoptionDate: new Date().toISOString(),
-				},
-			};
-
-			const res = await initiateKhaltiPayment(data);
+			const res = await initiateKhaltiPayment({
+				payment: payment,
+			});
 			window.location.href = res.data.payment_url;
 		} catch (err) {
 			setError(err.response?.data?.message || err.message);
@@ -79,28 +48,45 @@ const AdoptionPayment = () => {
 		setIsLoading(true);
 		setError("");
 
-		try {
-			const data = {
-				paymentAmount: amount,
-				paymentMethod: paymentMethod,
-				pet: params.petId,
-			};
+		const data = {
+			paymentAmount: amount,
+			paymentMethod: paymentMethod,
+			pet: params.petId,
+		};
 
-			const res = await createPaymentApi(data);
-
-			if (paymentMethod === "khalti") {
-				await handleKhaltiPayment(res.data.payment);
-			} else {
-				navigate("/payment-success");
-			}
-		} catch (err) {
-			setError(err.response?.data?.message || err.message);
-			navigate(
-				`/payment-failure/${params.petId}?error=${encodeURIComponent(err.message)}`,
-			);
-		} finally {
-			setIsLoading(false);
-		}
+		createPaymentApi(data)
+			.then(async (res) => {
+				if (paymentMethod === "khalti") {
+					console.log(res.data.payment);
+					initiateKhaltiPayment({
+						payment: res.data.payment,
+					})
+						.then((res) => {
+							window.location.href = res.data.payment_url;
+						})
+						.catch((err) => {
+							setError(err.response?.data?.message || err.message);
+							navigate(
+								`/payment-failure/${params.petId}?error=${encodeURIComponent(err.message)}`,
+							);
+						})
+						.finally(() => {
+							setIsLoading(false);
+						});
+				} else {
+					console.log(res.data);
+					navigate("/payment-success");
+				}
+			})
+			.catch((err) => {
+				setError(err.response?.data?.message || err.message);
+				navigate(
+					`/payment-failure/${params.petId}?error=${encodeURIComponent(err.message)}`,
+				);
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
 	};
 
 	return (

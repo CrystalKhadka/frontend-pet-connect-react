@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseurl = "http://192.168.137.1:5000";
-const baseurl = "http://localhost:5000";
+const baseurl = "http://192.168.137.1:5000";
+// const baseurl = "http://localhost:5000";
 
 // Creating backend config
 const Api = axios.create({
@@ -200,13 +200,13 @@ export const sendNotificationApi = (data) =>
 export const createPaymentApi = (data) =>
 	Api.post(`/api/payment/add`, data, jsonConfig);
 
-const KhaltiApi = axios.create({
-	baseURL: "https://a.khalti.com/",
-	headers: {
-		"Content-Type": "application/json",
-		authorization: `key e1dc6acc872c4421ad0f92374be1299a`,
-	},
-});
+
 
 export const initiateKhaltiPayment = (data) =>
-	KhaltiApi.post("api/v2/epayment/initiate/", data);
+	Api.post("api/khalti/initiate-payment", data, jsonConfig);
+
+export const verifyKhaltiPayment = (data) =>
+	Api.post("api/khalti/verify-payment", data, jsonConfig);
+
+export const khaltiPayment = (data) =>
+	Api.post("api/khalti/payment", data, jsonConfig);
