@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseurl = "http://192.168.137.1:5000";
-// const baseurl = "http://localhost:5000";
+// const baseurl = "http://192.168.137.1:5000";
+const baseurl = "http://localhost:5000";
 
 // Creating backend config
 const Api = axios.create({
@@ -200,13 +200,11 @@ export const sendNotificationApi = (data) =>
 export const createPaymentApi = (data) =>
 	Api.post(`/api/payment/add`, data, jsonConfig);
 
-
-
 export const initiateKhaltiPayment = (data) =>
 	Api.post("api/khalti/initiate-payment", data, jsonConfig);
 
-export const verifyKhaltiPayment = (data) =>
-	Api.post("api/khalti/verify-payment", data, jsonConfig);
+export const verifyKhaltiPayment = (token) =>
+	Api.get(`api/khalti/verify-payment/${token}`, jsonConfig);
 
 export const khaltiPayment = (data) =>
 	Api.post("api/khalti/payment", data, jsonConfig);

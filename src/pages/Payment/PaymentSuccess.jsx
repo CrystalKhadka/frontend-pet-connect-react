@@ -30,7 +30,7 @@ const PaymentSuccess = () => {
 		// console.log(data);
 
 		const pidx = queryParams.get("pidx");
-		verifyKhaltiPayment({ token: pidx })
+		verifyKhaltiPayment(pidx)
 			.then((res) => {
 				console.log(res);
 				if (res.data.data.status !== "Completed") {
