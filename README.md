@@ -2,7 +2,7 @@
 
 A React-based frontend for the Pet Adoption website, providing separate interfaces for adopters and pet owners to manage pets, handle adoption processes, and facilitate communication.
 
-(https://github.com/facebook/create-react-app).
+(https://www.youtube.com/watch?v=NJnRQQBSY44).
 
 ## Features
 
@@ -34,9 +34,9 @@ A React-based frontend for the Pet Adoption website, providing separate interfac
 
 ### Technology Stack
 
-- ![React.js Logo](path/to/react-logo.png) **React.js**: Core frontend library used to build dynamic user interfaces.
-- ![Redux Logo](path/to/redux-logo.png) **Redux**: State management tool used to manage and centralize the application state.
-- ![Tailwind CSS Logo](path/to/tailwind-logo.png) **Tailwind CSS**: A utility-first CSS framework used to style the application, providing flexibility and consistency across components.
+- **React.js**: Core frontend library used to build dynamic user interfaces.
+- **Redux**: State management tool used to manage and centralize the application state.
+- **Tailwind CSS**: A utility-first CSS framework used to style the application, providing flexibility and consistency across components.
 - **Node.js**: Backend runtime environment used to run server-side applications and handle API requests.
 - **Express.js**: A web application framework for Node.js used to build the RESTful API for the platform.
 - **MongoDB**: NoSQL database used to store pet listings, user information, and adoption records.
