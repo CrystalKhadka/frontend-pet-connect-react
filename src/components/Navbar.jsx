@@ -36,7 +36,7 @@ const Navbar = ({ socket }) => {
 
 	return user && user.role === "owner" ? (
 		<AdminNavbar />
-	) : user && user.role === "user" ? (
+	) : user && user.role === "adopter" ? (
 		<UserNavbar />
 	) : null;
 };

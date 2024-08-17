@@ -84,7 +84,7 @@ export const uploadImageApi = (data) =>
 	Api.post("/api/user/upload", data, config);
 // ------------------- Pet API -------------------
 // Add pet API
-export const addPetApi = (data) => Api.post("/api/pet/add", data);
+export const addPetApi = (data) => Api.post("/api/pet/add", data, config);
 
 // View pet by owner
 export const viewPetByOwnerApi = (id) => Api.get(`/api/pet/all/${id}`, config);
