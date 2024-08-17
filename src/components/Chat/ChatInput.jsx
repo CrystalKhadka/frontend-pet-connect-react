@@ -1,8 +1,4 @@
-import {
-	PaperClipOutlined,
-	SendOutlined,
-	SmileOutlined,
-} from "@ant-design/icons";
+import { PaperClipOutlined, SendOutlined } from "@ant-design/icons";
 import { Button, Input, Upload } from "antd";
 import React from "react";
 
@@ -11,8 +7,7 @@ const ChatInput = ({
 	onTyping,
 	onFileUpload,
 	darkMode,
-	showEmojiPicker,
-	setShowEmojiPicker,
+
 	currentInput,
 	setCurrentInput,
 	fileUploadProgress,
@@ -39,11 +34,6 @@ const ChatInput = ({
 					}}
 					placeholder="Type a message"
 					className={`mr-2 flex-grow ${darkMode ? "bg-gray-700 text-white" : ""}`}
-				/>
-				<Button
-					icon={<SmileOutlined />}
-					onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-					className="mr-2"
 				/>
 				<Upload
 					beforeUpload={(file) => {

@@ -1,19 +1,16 @@
 import { MenuOutlined } from "@ant-design/icons";
-import { Button, Input, Layout, Modal, Spin, Switch } from "antd";
-import EmojiPicker from "emoji-picker-react";
+import { Button, Layout, Spin, Switch } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-	deleteMessageApi,
 	getAllUserApi,
 	getMessagesApi,
 	getUserByIdApi,
 	sendFileApi,
 	sendMessageApi,
 	sendNotificationApi,
-	updateMessageApi,
 } from "../../apis/Api";
 import AllUsers from "../../components/Chat/AllUsers";
 import ChatHeader from "../../components/Chat/ChatHeader";
@@ -91,8 +88,7 @@ const Chat = ({ socket }) => {
 			});
 
 		socket.on("message", handleNewMessage);
-		socket.on("messageUpdated", handleMessageUpdate);
-		socket.on("messageDeleted", handleMessageDelete);
+
 		socket.on("typingNow", handleTypingIndicator);
 		socket.on("receiveMessage", (message) => {
 			toast.info(`${message.sender.firstName} sent you a message`);
@@ -100,8 +96,7 @@ const Chat = ({ socket }) => {
 
 		return () => {
 			socket.off("message", handleNewMessage);
-			socket.off("messageUpdated", handleMessageUpdate);
-			socket.off("messageDeleted", handleMessageDelete);
+
 			socket.off("typingNow", handleTypingIndicator);
 		};
 	}, [params.id]);
@@ -132,20 +127,6 @@ const Chat = ({ socket }) => {
 			.catch((err) => {
 				console.error(err);
 			});
-	};
-
-	const handleMessageUpdate = (updatedMessage) => {
-		setMessages((prevMessages) =>
-			prevMessages.map((msg) =>
-				msg._id === updatedMessage._id ? updatedMessage : msg,
-			),
-		);
-	};
-
-	const handleMessageDelete = (deletedMessageId) => {
-		setMessages((prevMessages) =>
-			prevMessages.filter((msg) => msg._id !== deletedMessageId),
-		);
 	};
 
 	const handleTypingIndicator = (data) => {
@@ -186,27 +167,6 @@ const Chat = ({ socket }) => {
 			})
 			.catch((err) => {
 				toast.error("Failed to send message");
-			});
-	};
-
-	const editMessage = (messageId, newText) => {
-		updateMessageApi(messageId, newText)
-			.then((res) => {
-				socket.emit("updateMessage", res.data.updatedMessage);
-				setEditingMessage(null);
-			})
-			.catch((err) => {
-				toast.error("Failed to edit message");
-			});
-	};
-
-	const deleteMessage = (messageId) => {
-		deleteMessageApi(messageId)
-			.then(() => {
-				socket.emit("deleteMessage", messageId);
-			})
-			.catch((err) => {
-				toast.error("Failed to delete message");
 			});
 	};
 
@@ -260,10 +220,6 @@ const Chat = ({ socket }) => {
 	const toggleDarkMode = () => {
 		setDarkMode(!darkMode);
 		// Apply dark mode styles to your app
-	};
-
-	const handleEmojiClick = (event, emojiObject) => {
-		setCurrentInput((prevInput) => prevInput + emojiObject.emoji);
 	};
 
 	const scrollToBottom = () => {
@@ -348,8 +304,6 @@ const Chat = ({ socket }) => {
 											isTyping={isTyping}
 											darkMode={darkMode}
 											currentUser={currentUser}
-											onEditMessage={(message) => setEditingMessage(message)}
-											onDeleteMessage={deleteMessage}
 										/>
 									</InfiniteScroll>
 								</div>
@@ -369,26 +323,6 @@ const Chat = ({ socket }) => {
 					</div>
 				</div>
 			</Content>
-			<Modal
-				visible={editingMessage !== null}
-				onCancel={() => setEditingMessage(null)}
-				onOk={() => {
-					editMessage(editingMessage._id, currentInput);
-					setCurrentInput("");
-				}}
-				title="Edit Message"
-			>
-				<Input
-					value={currentInput}
-					onChange={(e) => setCurrentInput(e.target.value)}
-					onPressEnter={() => {
-						editMessage(editingMessage._id, currentInput);
-						setCurrentInput("");
-						setEditingMessage(null);
-					}}
-				/>
-			</Modal>
-			{showEmojiPicker && <EmojiPicker onEmojiClick={handleEmojiClick} />}
 		</Layout>
 	);
 };

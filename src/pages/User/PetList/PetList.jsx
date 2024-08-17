@@ -16,7 +16,7 @@ const PetList = () => {
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(6);
 	const [totalPage, setTotalPage] = useState(0);
-	const [categories, setCategories] = useState([]);
+	const [categories, setCategories] = useState(["ff", "cat"]);
 	const [species, setSpecies] = useState(queryParams.get("category") || "all");
 	const [search, setSearch] = useState(queryParams.get("search") || "");
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -39,7 +39,7 @@ const PetList = () => {
 				console.error(err);
 				setError("Error fetching data");
 			});
-	}, [page, limit, species, search 	]);
+	}, [page, limit, species, search]);
 
 	const handlePagination = (newPage) => setPage(newPage);
 

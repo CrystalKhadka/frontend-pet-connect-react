@@ -90,11 +90,6 @@ const Login = () => {
 							ease.
 						</p>
 					</div>
-					<img
-						src="/path-to-your-pet-image.svg"
-						alt="Pet illustration"
-						className="mx-auto max-w-xs"
-					/>
 				</div>
 
 				{/* Right Side - Login Form */}

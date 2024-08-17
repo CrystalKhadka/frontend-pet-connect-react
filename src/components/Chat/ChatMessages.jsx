@@ -1,17 +1,10 @@
-import { DeleteOutlined, EditOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Popconfirm, Tooltip } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar } from "antd";
 import moment from "moment";
 import React from "react";
 import { messageFileUrl, messageImageUrl } from "../../apis/Api";
 
-const ChatMessages = ({
-	messages,
-	isTyping,
-	darkMode,
-	currentUser,
-	onEditMessage,
-	onDeleteMessage,
-}) => {
+const ChatMessages = ({ messages, isTyping, darkMode, currentUser }) => {
 	const renderMessage = (message) => {
 		const isOwnMessage = message.sender._id === currentUser.id;
 		const isFile = message.type === "file";
@@ -36,26 +29,6 @@ const ChatMessages = ({
 						<span className="text-xs font-semibold">
 							{isOwnMessage ? "You" : message.sender.firstName}
 						</span>
-						{isOwnMessage && (
-							<div className="ml-auto flex">
-								<Tooltip title="Edit">
-									<EditOutlined
-										onClick={() => onEditMessage(message)}
-										className="mr-2 cursor-pointer"
-									/>
-								</Tooltip>
-								<Tooltip title="Delete">
-									<Popconfirm
-										title="Are you sure you want to delete this message?"
-										onConfirm={() => onDeleteMessage(message._id)}
-										okText="Yes"
-										cancelText="No"
-									>
-										<DeleteOutlined className="cursor-pointer" />
-									</Popconfirm>
-								</Tooltip>
-							</div>
-						)}
 					</div>
 					<p className="break-words">
 						{isFile ? (

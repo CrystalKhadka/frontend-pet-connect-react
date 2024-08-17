@@ -34,7 +34,11 @@ const Navbar = ({ socket }) => {
 		}
 	}, [socket]);
 
-	return user && user.role === "owner" ? <AdminNavbar /> : <UserNavbar />;
+	return user && user.role === "owner" ? (
+		<AdminNavbar />
+	) : user && user.role === "user" ? (
+		<UserNavbar />
+	) : null;
 };
 
 export default Navbar;

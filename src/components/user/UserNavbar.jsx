@@ -113,9 +113,7 @@ const UserNavbar = () => {
 						<NavLink to="/user/pet/list" className={activeLinkClass}>
 							Pet List
 						</NavLink>
-						<NavLink to="/settings" className={activeLinkClass}>
-							Settings
-						</NavLink>
+
 						{user && (
 							<NavLink to="/chat/all" className={activeLinkClass}>
 								Chat
@@ -177,11 +175,7 @@ const UserNavbar = () => {
 							Pet List
 						</NavLink>
 					</Menu.Item>
-					<Menu.Item key="settings">
-						<NavLink to="/settings" onClick={hideMobileMenu}>
-							Settings
-						</NavLink>
-					</Menu.Item>
+
 					{user && (
 						<Menu.Item key="chat">
 							<NavLink to="/chat/all" onClick={hideMobileMenu}>

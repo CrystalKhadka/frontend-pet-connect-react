@@ -4,17 +4,17 @@ import { toast } from "react-toastify";
 import { registerUserApi } from "../../apis/Api";
 
 const Register = () => {
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
+	const [firstName, setFirstName] = useState("Crystal");
+	const [lastName, setLastName] = useState("Khadka");
+	const [email, setEmail] = useState("khadkacrystal@gmail.com");
+	const [password, setPassword] = useState("12345678");
+	const [confirmPassword, setConfirmPassword] = useState("12345678");
 	const [birthDate, setBirthDate] = useState("");
-	const [phone, setPhone] = useState("");
-	const [address, setAddress] = useState("");
-	const [gender, setGender] = useState("");
+	const [phone, setPhone] = useState("9843041037");
+	const [address, setAddress] = useState("KTM");
+	const [gender, setGender] = useState("male");
 	const [obscurePassword, setObscurePassword] = useState(false);
-	const [role, setRole] = useState("adopter");
+	const [role, setRole] = useState("owner");
 	const [showModal, setShowModal] = useState(false);
 
 	const [firstNameError, setFirstNameError] = useState("");
@@ -246,11 +246,6 @@ const Register = () => {
 									Create an account to start your journey with us.
 								</p>
 							</div>
-							<img
-								src="/path-to-your-illustration.svg"
-								alt="Registration illustration"
-								className="mx-auto max-w-xs"
-							/>
 						</div>
 
 						{/* Right Side - Registration Form */}
