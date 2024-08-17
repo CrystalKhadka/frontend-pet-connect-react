@@ -205,11 +205,9 @@ const SinglePetModal = ({ toggle, pet }) => {
 								</svg>
 								Adopt {pet.petName}
 							</Link>
-							<button
+							<Link
+								to={"/chat/" + pet.createdBy._id}
 								className="flex flex-1 items-center justify-center rounded-md bg-blue-500 py-3 text-center text-white transition duration-300 ease-in-out hover:bg-blue-600"
-								onClick={() => {
-									/* Implement chat functionality */
-								}}
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -224,7 +222,7 @@ const SinglePetModal = ({ toggle, pet }) => {
 									/>
 								</svg>
 								Chat with Caretaker
-							</button>
+							</Link>
 						</div>
 					</div>
 				</div>

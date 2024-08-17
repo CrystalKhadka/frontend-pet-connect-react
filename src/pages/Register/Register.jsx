@@ -4,17 +4,17 @@ import { toast } from "react-toastify";
 import { registerUserApi } from "../../apis/Api";
 
 const Register = () => {
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
+	const [firstName, setFirstName] = useState("Crystal");
+	const [lastName, setLastName] = useState("Khadka");
+	const [email, setEmail] = useState("khadkacrystal@gmail.com");
+	const [password, setPassword] = useState("12345678");
+	const [confirmPassword, setConfirmPassword] = useState("12345678");
 	const [birthDate, setBirthDate] = useState("");
-	const [phone, setPhone] = useState("");
-	const [address, setAddress] = useState("");
-	const [gender, setGender] = useState("");
+	const [phone, setPhone] = useState("9843041037");
+	const [address, setAddress] = useState("KTM");
+	const [gender, setGender] = useState("male");
 	const [obscurePassword, setObscurePassword] = useState(false);
-	const [role, setRole] = useState("adopter");
+	const [role, setRole] = useState("owner");
 	const [showModal, setShowModal] = useState(false);
 
 	const [firstNameError, setFirstNameError] = useState("");
@@ -233,23 +233,28 @@ const Register = () => {
 				</div>
 			)}
 
-			<div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center p-4">
-				<div className="bg-white rounded-2xl shadow-xl overflow-hidden max-w-4xl w-full">
+			<div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 p-4">
+				<div className="w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-xl">
 					<div className="flex flex-col md:flex-row">
 						{/* Left Side - Image and Welcome Message */}
-						<div className="md:w-1/2 bg-indigo-600 p-12 hidden md:flex flex-col justify-between">
+						<div className="hidden flex-col justify-between bg-indigo-600 p-12 md:flex md:w-1/2">
 							<div>
-								<h2 className="text-white text-4xl font-bold mb-6">Join Our Community!</h2>
-								<p className="text-indigo-200 mb-6">Create an account to start your journey with us.</p>
+								<h2 className="mb-6 text-4xl font-bold text-white">
+									Join Our Community!
+								</h2>
+								<p className="mb-6 text-indigo-200">
+									Create an account to start your journey with us.
+								</p>
 							</div>
-							<img src="/path-to-your-illustration.svg" alt="Registration illustration" className="max-w-xs mx-auto" />
 						</div>
 
 						{/* Right Side - Registration Form */}
-						<div className="md:w-1/2 p-12">
-							<h2 className="text-3xl font-bold text-gray-800 mb-8">Create Your Account</h2>
+						<div className="p-12 md:w-1/2">
+							<h2 className="mb-8 text-3xl font-bold text-gray-800">
+								Create Your Account
+							</h2>
 							<form onSubmit={handleSubmit} className="space-y-6">
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 									<InputField
 										label="First Name"
 										id="firstName"
@@ -259,6 +264,7 @@ const Register = () => {
 										value={firstName}
 										onChange={(e) => setFirstName(e.target.value)}
 										error={firstNameError}
+										placeholder="fname"
 									/>
 									<InputField
 										label="Last Name"
@@ -269,6 +275,7 @@ const Register = () => {
 										value={lastName}
 										onChange={(e) => setLastName(e.target.value)}
 										error={lastNameError}
+										placeholder="lname"
 									/>
 								</div>
 								<InputField
@@ -280,6 +287,7 @@ const Register = () => {
 									value={email}
 									onChange={(e) => setEmail(e.target.value)}
 									error={emailError}
+									placeholder="email"
 								/>
 								<InputField
 									label="Password"
@@ -292,10 +300,11 @@ const Register = () => {
 									error={passwordError}
 									rightIcon={
 										<i
-											className={`bi ${obscurePassword ? "bi-eye-slash" : "bi-eye"} text-gray-400 cursor-pointer`}
+											className={`bi ${obscurePassword ? "bi-eye-slash" : "bi-eye"} cursor-pointer text-gray-400`}
 											onClick={() => setObscurePassword(!obscurePassword)}
 										></i>
 									}
+									placeholder="password"
 								/>
 								<InputField
 									label="Confirm Password"
@@ -308,10 +317,11 @@ const Register = () => {
 									error={confirmPasswordError}
 									rightIcon={
 										<i
-											className={`bi ${obscurePassword ? "bi-eye-slash" : "bi-eye"} text-gray-400 cursor-pointer`}
+											className={`bi ${obscurePassword ? "bi-eye-slash" : "bi-eye"} cursor-pointer text-gray-400`}
 											onClick={() => setObscurePassword(!obscurePassword)}
 										></i>
 									}
+									placeholder="confirm password"
 								/>
 								<InputField
 									label="Birth Date"
@@ -322,6 +332,7 @@ const Register = () => {
 									value={birthDate}
 									onChange={(e) => setBirthDate(e.target.value)}
 									error={birthDateError}
+									placeholder="birth date"
 								/>
 								<InputField
 									label="Phone"
@@ -332,6 +343,7 @@ const Register = () => {
 									value={phone}
 									onChange={(e) => setPhone(e.target.value)}
 									error={phoneError}
+									placeholder="phone"
 								/>
 								<InputField
 									label="Address"
@@ -342,11 +354,14 @@ const Register = () => {
 									value={address}
 									onChange={(e) => setAddress(e.target.value)}
 									error={addressError}
+									placeholder="address"
 								/>
 								<div>
-									<label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+									<label className="mb-2 block text-sm font-medium text-gray-700">
+										Gender
+									</label>
 									<div className="flex space-x-4">
-										{['Male', 'Female', 'Other'].map((option) => (
+										{["Male", "Female", "Other"].map((option) => (
 											<label key={option} className="flex items-center">
 												<input
 													type="radio"
@@ -354,13 +369,17 @@ const Register = () => {
 													value={option.toLowerCase()}
 													checked={gender === option.toLowerCase()}
 													onChange={handleGenderChange}
-													className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+													className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
 												/>
-												<span className="ml-2 text-sm text-gray-700">{option}</span>
+												<span className="ml-2 text-sm text-gray-700">
+													{option}
+												</span>
 											</label>
 										))}
 									</div>
-									{genderError && <p className="mt-1 text-sm text-red-600">{genderError}</p>}
+									{genderError && (
+										<p className="mt-1 text-sm text-red-600">{genderError}</p>
+									)}
 								</div>
 								<div className="flex items-center">
 									<input
@@ -368,22 +387,41 @@ const Register = () => {
 										name="acceptTerms"
 										type="checkbox"
 										required
-										className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+										className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
 									/>
-									<label htmlFor="acceptTerms" className="ml-2 block text-sm text-gray-900">
-										I accept the <a href="/" className="text-indigo-600 hover:text-indigo-500">Terms of Use</a> & <a href="/" className="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
+									<label
+										htmlFor="acceptTerms"
+										className="ml-2 block text-sm text-gray-900"
+									>
+										I accept the{" "}
+										<a
+											href="/"
+											className="text-indigo-600 hover:text-indigo-500"
+										>
+											Terms of Use
+										</a>{" "}
+										&{" "}
+										<a
+											href="/"
+											className="text-indigo-600 hover:text-indigo-500"
+										>
+											Privacy Policy
+										</a>
 									</label>
 								</div>
 								<button
 									type="submit"
-									className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+									className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition duration-150 ease-in-out hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 								>
 									Register Now
 								</button>
 							</form>
 							<p className="mt-8 text-center text-sm text-gray-600">
-								Already have an account?{' '}
-								<Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+								Already have an account?{" "}
+								<Link
+									to="/login"
+									className="font-medium text-indigo-600 hover:text-indigo-500"
+								>
 									Log in
 								</Link>
 							</p>
@@ -393,37 +431,47 @@ const Register = () => {
 			</div>
 		</>
 	);
-}
+};
 
-
-const InputField = ({ label, id, name, type, icon, value, onChange, error, rightIcon }) => (
+const InputField = ({
+	label,
+	id,
+	name,
+	type,
+	icon,
+	value,
+	onChange,
+	error,
+	rightIcon,
+}) => (
 	<div>
-	  <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
-		{label}
-	  </label>
-	  <div className="relative rounded-md shadow-sm">
-		<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-		  <i className={`bi ${icon} text-gray-400`}></i>
+		<label
+			htmlFor={id}
+			className="mb-1 block text-sm font-medium text-gray-700"
+		>
+			{label}
+		</label>
+		<div className="relative rounded-md shadow-sm">
+			<div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+				<i className={`bi ${icon} text-gray-400`}></i>
+			</div>
+			<input
+				type={type}
+				id={id}
+				name={name}
+				value={value}
+				onChange={onChange}
+				className={`block w-full rounded-md border-gray-300 py-2 pl-10 pr-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${error ? "border-red-300" : ""}`}
+				placeholder={label}
+			/>
+			{rightIcon && (
+				<div className="absolute inset-y-0 right-0 flex items-center pr-3">
+					{rightIcon}
+				</div>
+			)}
 		</div>
-		<input
-		  type={type}
-		  id={id}
-		  name={name}
-		  value={value}
-		  onChange={onChange}
-		  className={`block w-full pl-10 pr-10 py-2 sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 ${error ? 'border-red-300' : ''}`}
-		  placeholder={label}
-		/>
-		{rightIcon && (
-		  <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-			{rightIcon}
-		  </div>
-		)}
-	  </div>
-	  {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+		{error && <p className="mt-1 text-sm text-red-600">{error}</p>}
 	</div>
-  )
-  
+);
 
-	
 export default Register;

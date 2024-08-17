@@ -1,13 +1,16 @@
 import {
 	HeartOutlined,
 	LogoutOutlined,
+	MenuOutlined,
 	SettingOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Modal, Select } from "antd";
+import { Button, Drawer, Dropdown, Menu, Modal, Select } from "antd";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getCurrentUserApi, profileImageUrl } from "../../apis/Api";
 import { useTheme } from "../../theme/ThemeContext/ThemeContext";
 
 const UserNavbar = () => {
@@ -15,17 +18,33 @@ const UserNavbar = () => {
 	const [theme, setTheme] = useState(
 		localStorage.getItem("theme") || "default",
 	);
-	const user = JSON.parse(localStorage.getItem("user"));
+
 	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
 
 	const showModal = () => setIsModalVisible(true);
 	const handleCancel = () => setIsModalVisible(false);
+	const showMobileMenu = () => setMobileMenuVisible(true);
+	const hideMobileMenu = () => setMobileMenuVisible(false);
 
 	const handleThemeChange = (value) => {
 		setTheme(value);
 		toggleTheme(value);
 		handleCancel();
 	};
+	const [user, setUser] = useState(null);
+	useEffect(() => {
+		if (localStorage.getItem("user") && localStorage.getItem("token")) {
+			getCurrentUserApi()
+				.then((res) => {
+					setUser(res.data.data);
+				})
+				.catch((err) => {
+					toast.error("Failed to load user profile");
+				});
+		}
+	}, []);
+
 	// Custom class for active link
 	const activeLinkClass = ({ isActive }) =>
 		isActive
@@ -44,7 +63,7 @@ const UserNavbar = () => {
 				<NavLink to="/profile">Profile</NavLink>
 			</Menu.Item>
 			<Menu.Item key="2" icon={<SettingOutlined />}>
-				<NavLink to="/my-pets">My Pets</NavLink>
+				<NavLink to="/user/myPet">My Pets</NavLink>
 			</Menu.Item>
 			<Menu.Item key="3" icon={<HeartOutlined />}>
 				<NavLink to="/user/favorite">Favorite</NavLink>
@@ -75,28 +94,50 @@ const UserNavbar = () => {
 						alt="App Logo"
 					/>
 
+					{/* Mobile menu button */}
+					<Button
+						type="text"
+						icon={<MenuOutlined />}
+						onClick={showMobileMenu}
+						className="text-gray-800 dark:text-white md:hidden"
+					/>
+
+					{/* Desktop menu */}
 					<div className="hidden space-x-4 text-white md:flex">
-						<NavLink to="/user/dashboard" className={activeLinkClass}>
+						<NavLink
+							to={user ? "/user/dashboard" : "/"}
+							className={activeLinkClass}
+						>
 							Home
 						</NavLink>
 						<NavLink to="/user/pet/list" className={activeLinkClass}>
 							Pet List
 						</NavLink>
-						<NavLink to="/settings" className={activeLinkClass}>
-							Settings
-						</NavLink>
+
 						{user && (
-							<NavLink to="/chat" className={activeLinkClass}>
+							<NavLink to="/chat/all" className={activeLinkClass}>
 								Chat
 							</NavLink>
 						)}
 					</div>
 
-					<div className="flex items-center text-white">
+					<div className="hidden items-center text-white md:flex">
 						{user ? (
 							<Dropdown overlay={menu} placement="bottomRight" arrow>
 								<Button type="text" className="text-gray-800 dark:text-white">
-									{user.firstName} <UserOutlined />
+									<img
+										src={
+											user.image
+												? `${profileImageUrl}/${user.image}`
+												: "/avatar.png"
+										}
+										alt={
+											user.firstName + " " + user.lastName + " profile image"
+										}
+										className="
+										w-8"
+									/>
+									{user.firstName}
 								</Button>
 							</Dropdown>
 						) : (
@@ -112,6 +153,88 @@ const UserNavbar = () => {
 					</div>
 				</div>
 			</div>
+
+			{/* Mobile menu drawer */}
+			<Drawer
+				title="Menu"
+				placement="right"
+				onClose={hideMobileMenu}
+				visible={mobileMenuVisible}
+			>
+				<Menu mode="vertical">
+					<Menu.Item key="home">
+						<NavLink
+							to={user ? "/user/dashboard" : "/"}
+							onClick={hideMobileMenu}
+						>
+							Home
+						</NavLink>
+					</Menu.Item>
+					<Menu.Item key="petList">
+						<NavLink to="/user/pet/list" onClick={hideMobileMenu}>
+							Pet List
+						</NavLink>
+					</Menu.Item>
+
+					{user && (
+						<Menu.Item key="chat">
+							<NavLink to="/chat/all" onClick={hideMobileMenu}>
+								Chat
+							</NavLink>
+						</Menu.Item>
+					)}
+					{user ? (
+						<>
+							<Menu.Divider />
+							<Menu.Item key="profile" icon={<UserOutlined />}>
+								<NavLink to="/profile" onClick={hideMobileMenu}>
+									Profile
+								</NavLink>
+							</Menu.Item>
+							<Menu.Item key="myPets" icon={<SettingOutlined />}>
+								<NavLink to="/user/myPet" onClick={hideMobileMenu}>
+									My Pets
+								</NavLink>
+							</Menu.Item>
+							<Menu.Item key="favorite" icon={<HeartOutlined />}>
+								<NavLink to="/user/favorite" onClick={hideMobileMenu}>
+									Favorite
+								</NavLink>
+							</Menu.Item>
+							<Menu.Item
+								key="theme"
+								onClick={() => {
+									showModal();
+									hideMobileMenu();
+								}}
+							>
+								Theme
+							</Menu.Item>
+							<Menu.Item
+								key="logout"
+								icon={<LogoutOutlined />}
+								onClick={handleLogout}
+							>
+								Sign out
+							</Menu.Item>
+						</>
+					) : (
+						<>
+							<Menu.Divider />
+							<Menu.Item key="login">
+								<NavLink to="/login" onClick={hideMobileMenu}>
+									Login
+								</NavLink>
+							</Menu.Item>
+							<Menu.Item key="register">
+								<NavLink to="/register" onClick={hideMobileMenu}>
+									Register
+								</NavLink>
+							</Menu.Item>
+						</>
+					)}
+				</Menu>
+			</Drawer>
 
 			<Modal
 				title="Choose Theme"

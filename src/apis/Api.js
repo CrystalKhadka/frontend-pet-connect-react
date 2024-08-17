@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// const baseurl = "http://192.168.18.7:5000";
+// const baseurl = "http://192.168.137.1:5000";
 const baseurl = "http://localhost:5000";
 
 // Creating backend config
@@ -18,7 +18,24 @@ const config = {
 	},
 };
 
+const jsonConfig = {
+	headers: {
+		"Content-Type": "application/json",
+		authorization: `Bearer ${localStorage.getItem("token")}`,
+	},
+};
+
+export const url = baseurl;
+
+// Profile image
+export const profileImageUrl = baseurl + "/profile";
+
+// Pet image
 export const petImageUrl = baseurl + "/pets";
+
+// Message file
+export const messageFileUrl = baseurl + "/messages/files";
+export const messageImageUrl = baseurl + "/messages/images";
 
 // Test API
 export const testApi = () => Api.get("/test");
@@ -49,6 +66,22 @@ export const googleLoginApi = (data) => Api.post("/api/user/google", data);
 export const getUserByGoogleEmail = (data) =>
 	Api.post(`/api/user/getGoogleUser`, data);
 
+// get user by id
+export const getUserByIdApi = (id) => Api.get(`/api/user/get/${id}`, config);
+
+// get all user
+export const getAllUserApi = () => Api.get("/api/user/all", config);
+
+// get current user
+export const getCurrentUserApi = () => Api.get("/api/user/getMe", config);
+
+// update user profile
+export const updateUserProfileApi = (data) =>
+	Api.put("/api/user/update", data, config);
+
+// upload image
+export const uploadImageApi = (data) =>
+	Api.post("/api/user/upload", data, config);
 // ------------------- Pet API -------------------
 // Add pet API
 export const addPetApi = (data) => Api.post("/api/pet/add", data);
@@ -106,7 +139,7 @@ export const setPetAdoptedApi = (data) =>
 
 // Adoption Apis
 export const addAdoptionApi = (data) =>
-	Api.post("/api/adoption/create", data, config);
+	Api.post("/api/adoption/create", data, jsonConfig);
 
 // Get all adoption
 export const getAllAdoptionApi = (id) =>
@@ -119,6 +152,10 @@ export const countAdoptionApi = () => Api.get(`/api/adoption/count`, config);
 export const setAdoptionStatusApi = (id, status) =>
 	Api.put(`/api/adoption/status/${id}`, status, config);
 
+// Get adoption by form sender
+export const getAdoptionBySenderApi = () =>
+	Api.get(`/api/adoption/form_sender`, config);
+
 // ------------------- Favorite API -------------------
 export const addFavoriteApi = (data) =>
 	Api.post("/api/favorite/add", data, config);
@@ -127,3 +164,47 @@ export const getFavoriteApi = () => Api.get(`/api/favorite/get`, config);
 
 export const deleteFavoriteApi = (id) =>
 	Api.delete(`/api/favorite/delete/${id}`, config);
+
+// Chat api
+export const sendMessageApi = (message) =>
+	Api.post("/api/messages/send", message, config);
+export const getMessagesApi = (id, page) =>
+	Api.get(`/api/messages/get/${id}?page=${page}`, config);
+
+export const getByIdApi = (id) =>
+	Api.get(`/api/messages/get_by_id/${id}`, config);
+
+export const updateMessageApi = (id, message) =>
+	Api.put(`/api/messages/update/${id}`, message, config);
+
+export const deleteMessageApi = (id) =>
+	Api.delete(`/api/messages/delete/${id}`, config);
+
+export const getChatListApi = () => Api.get(`/api/messages/get`, config);
+
+export const sendFileApi = (data, config) =>
+	Api.post(`/api/messages/send/file`, data, config);
+
+// Notification
+export const getNotificationApi = () =>
+	Api.get(`/api/notifications/get`, config);
+
+export const readNotificationApi = (id) =>
+	Api.put(`/api/notifications/read/${id}`, config);
+
+// send notification
+export const sendNotificationApi = (data) =>
+	Api.post(`/api/notifications/send`, data, jsonConfig);
+
+// Payment api
+export const createPaymentApi = (data) =>
+	Api.post(`/api/payment/add`, data, jsonConfig);
+
+export const initiateKhaltiPayment = (data) =>
+	Api.post("api/khalti/initiate-payment", data, jsonConfig);
+
+export const verifyKhaltiPayment = (token) =>
+	Api.get(`api/khalti/verify-payment/${token}`, jsonConfig);
+
+export const khaltiPayment = (data) =>
+	Api.post("api/khalti/payment", data, jsonConfig);

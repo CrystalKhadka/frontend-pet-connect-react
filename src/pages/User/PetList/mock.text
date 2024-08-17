@@ -1,0 +1,87 @@
+
+{
+    "success": true,
+    "message": "Total Pets",
+    "totalPets": 5
+}
+{
+    "success": true,
+    "message": "All Species",
+    "species": [
+        "cat",
+        "dog"
+    ]
+}
+{
+    "success": true,
+    "message": "Pets Fetched",
+    "pets": [
+        {
+            "_id": "66aa3f84108a429505bdf7a2",
+            "petName": "doggy",
+            "petSpecies": "dog",
+            "petBreed": "German Shepherd",
+            "petAge": 3,
+            "petWeight": 5,
+            "petColor": "black",
+            "petDescription": "this is German Shepherd",
+            "petImage": "1722433412169-th.jpg",
+            "petStatus": "available",
+            "createdAt": "2024-07-31T13:10:12.395Z",
+            "createdBy": {
+                "_id": "66aa3efa108a429505bdf791",
+                "firstName": "Crystal",
+                "lastName": "Khadka",
+                "email": "khadkacrystal@gmail.com",
+                "password": "$2b$10$hUQYZmMSTKmwrFoGno.P9elDvmbz4U.00sxjt54MFWQpnTkQgjdVK",
+                "role": "owner",
+                "image": "Crystal_Khadka_1722433274754.png",
+                "createdAt": "2024-07-31T13:10:11.773Z",
+                "otp": null,
+                "otpExpires": null,
+                "fromGoogle": true,
+                "__v": 0,
+                "address": "Chandragiri-15, Tinthana",
+                "gender": "male",
+                "phone": "9851015045"
+            },
+            "__v": 0
+        },
+        {
+            "_id": "66aa4084108a429505bdf7b2",
+            "petName": "kat",
+            "petSpecies": "cat",
+            "petBreed": "Himalayan  cat",
+            "petAge": 2,
+            "petWeight": 2,
+            "petColor": "white",
+            "petDescription": "this is a white cat with many features",
+            "petImage": "1722433668321-download.jpg",
+            "petStatus": "available",
+            "createdAt": "2024-07-31T13:10:12.395Z",
+            "createdBy": {
+                "_id": "66aa3efa108a429505bdf791",
+                "firstName": "Crystal",
+                "lastName": "Khadka",
+                "email": "khadkacrystal@gmail.com",
+                "password": "$2b$10$hUQYZmMSTKmwrFoGno.P9elDvmbz4U.00sxjt54MFWQpnTkQgjdVK",
+                "role": "owner",
+                "image": "Crystal_Khadka_1722433274754.png",
+                "createdAt": "2024-07-31T13:10:11.773Z",
+                "otp": null,
+                "otpExpires": null,
+                "fromGoogle": true,
+                "__v": 0,
+                "address": "Chandragiri-15, Tinthana",
+                "gender": "male",
+                "phone": "9851015045"
+            },
+            "__v": 0
+        }
+    ]
+}
+{
+    "success": true,
+    "message": "Favorites fetched successfully",
+    "favorites": []
+}

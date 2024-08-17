@@ -4,120 +4,106 @@ import { countAdoptionApi, petImageUrl } from "../../../apis/Api";
 
 const PetApplicationList = () => {
 	const [petApplications, setPetApplications] = useState([]);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
+		setIsLoading(true);
 		countAdoptionApi()
 			.then((response) => {
-				console.log(response.data.adoptions);
 				setPetApplications(response.data.adoptions);
+				setIsLoading(false);
 			})
 			.catch((error) => {
-				console.log(error);
+				console.error("Error fetching pet applications:", error);
+				setIsLoading(false);
 			});
 	}, []);
 
+	const getStatusColor = (status) => {
+		switch (status) {
+			case "adopted":
+				return "bg-blue-100 text-blue-800";
+			case "available":
+				return "bg-green-100 text-green-800";
+			default:
+				return "bg-yellow-100 text-yellow-800";
+		}
+	};
+
 	return (
-		<>
-			<div className="md:ml-64 md:px-8 md:py-16">
-				<header>
-					<h1 className="mb-4 text-center text-2xl">Pet List Admin Panel</h1>
-				</header>
-				<main>
-					<div className="container mx-auto">
-						<div className="rounded-lg bg-white p-6 shadow-md">
-							<div className="mb-4 flex items-center justify-between">
-								<h2 className="text-xl font-semibold">Application List</h2>
-							</div>
-							<div className="relative overflow-x-auto">
-								<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
-									<thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-										<tr>
-											<th scope="col" className="px-6 py-3">
-												Pet Image
-											</th>
-											<th scope="col" className="px-6 py-3">
-												Pet name
-											</th>
-											<th scope="col" className="px-6 py-3">
-												Pet type
-											</th>
-											<th scope="col" className="px-6 py-3">
-												Pet Species
-											</th>
-											<th scope="col" className="px-6 py-3">
-												Pet Status
-											</th>
-											<th scope="col" className="px-6 py-3">
-												Number of application
-											</th>
-											<th scope="col" className="px-6 py-3">
-												Actions
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-										{petApplications.map((application, index) => (
-											<tr key={index}>
-												<td className="whitespace-nowrap px-6 py-4">
-													<div className="flex items-center">
-														<div className="h-10 w-10 flex-shrink-0">
-															<img
-																className="h-10 w-10 rounded-full"
-																src={`${petImageUrl}/${application.pet.petImage}`}
-																alt=""
-															/>
-														</div>
-													</div>
-												</td>
-												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm font-medium text-gray-900">
-														{application.pet.petName}
-													</div>
-												</td>
-												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm text-gray-900">
-														{application.pet.petBreed}
-													</div>
-												</td>
-												<td className="whitespace-nowrap px-6 py-4">
-													<div className="text-sm text-gray-900">
-														{application.pet.petSpecies}
-													</div>
-												</td>
-												<td className="whitespace-nowrap px-6 py-4">
+		<div className="min-h-screen bg-gray-100 p-4 md:ml-64 md:p-8 md:px-8 md:py-16">
+			<h1 className="mb-8 text-3xl font-bold text-gray-800">
+				Pet Application List
+			</h1>
+
+			{isLoading ? (
+				<div className="flex justify-center">
+					<div className="h-8 w-8 animate-spin rounded-full border-b-2 border-gray-900"></div>
+				</div>
+			) : petApplications.length > 0 ? (
+				<div className="overflow-x-auto">
+					<ul className="w-full">
+						{petApplications.map((application) => (
+							<li
+								key={application.pet._id}
+								className="mb-4 overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
+							>
+								<div className="flex flex-col sm:flex-row">
+									<div className="w-full sm:w-48">
+										<img
+											src={`${petImageUrl}/${application.pet.petImage}`}
+											alt={application.pet.petName}
+											className="h-48 w-full object-cover sm:h-full"
+										/>
+									</div>
+									<div className="flex flex-1 flex-col justify-between p-4">
+										<div>
+											<h2 className="mb-2 text-xl font-semibold text-gray-800">
+												{application.pet.petName}
+											</h2>
+											<div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
+												<p>
+													<span className="font-medium">Type:</span>{" "}
+													{application.pet.petBreed}
+												</p>
+												<p>
+													<span className="font-medium">Species:</span>{" "}
+													{application.pet.petSpecies}
+												</p>
+												<p>
+													<span className="font-medium">Status:</span>{" "}
 													<span
-														className={
-															application.pet.petStatus === "adopted"
-																? "inline-flex rounded-full bg-red-100 px-2 text-xs font-semibold leading-5 text-red-800"
-																: application.pet.petStatus === "available"
-																	? "inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800"
-																	: "inline-flex rounded-full bg-yellow-100 px-2 text-xs font-semibold leading-5 text-yellow-800"
-														}
+														className={`inline-block rounded-full px-2 py-1 text-xs font-semibold ${getStatusColor(application.pet.petStatus)}`}
 													>
 														{application.pet.petStatus}
 													</span>
-												</td>
-												<td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+												</p>
+												<p>
+													<span className="font-medium">Applications:</span>{" "}
 													{application.count}
-												</td>
-												<td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
-													<Link
-														to={`/admin/adoption/form/${application.pet._id}`}
-														className="text-indigo-600 hover:text-indigo-900"
-													>
-														View
-													</Link>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</main>
-			</div>
-		</>
+												</p>
+											</div>
+										</div>
+										<div className="mt-4 text-right">
+											<Link
+												to={`/admin/adoption/form/${application.pet._id}`}
+												className="inline-block rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700"
+											>
+												View Applications
+											</Link>
+										</div>
+									</div>
+								</div>
+							</li>
+						))}
+					</ul>
+				</div>
+			) : (
+				<p className="text-center text-gray-600">
+					No pet applications available.
+				</p>
+			)}
+		</div>
 	);
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -22,6 +22,16 @@ const AdoptionForm = () => {
 
 	const param = useParams();
 
+	useEffect(() => {
+		viewPetByIdApi(param.id)
+			.then((res) => {
+				setPet(res.data.data);
+			})
+			.catch((err) => {
+				console.log(err.response.data);
+			});
+	}, [param]);
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log(param.id);
@@ -38,20 +48,13 @@ const AdoptionForm = () => {
 			reason,
 		};
 
-		viewPetByIdApi(param.id)
-			.then((res) => {
-				setPet(res.data.data);
-			})
-			.catch((err) => {
-				console.log(err.response.data);
-			});
+		// Timeout
 
 		console.log(pet);
-		const formData = JSON.stringify(form);
 
 		const data = {
-			form: formData,
-			formReceiver: pet.createdBy,
+			form: form,
+			formReceiver: pet.createdBy._id,
 			pet: param.id,
 		};
 
